@@ -19,7 +19,7 @@ Requirements for CLS
 * Create cross-referencing commands with hyperlinking: \secref (section), \tabref (table), \figref (figure), \algref (algorithm), etc. (Or maybe autoref or clever ref??) 
 * Class option to specify supplemental file. Supplemental file has numbers starting with "S" (e.g., section, figure, table, algorithm, theorem, etc.). Pulls original title and authors from main document. 
 * Class options to specify give a single sequence of numbers to the figures, tables, algorithms, equations, etc. (The old style uses the section number on the label number.)
-* Class option to specify "for review" that adds link numbers and
+* Class option to specify "for review" that adds link numbers and "for review only" watermark.
 
 Requirements for BST
 
@@ -36,6 +36,7 @@ Requirements for Instructions
 * Example of using new hyper-referencing macros.
 * Reference examples: Article with DOI, software with URL, web page, arXiv preprint, other preprint with URL.
 * Example of referencing between supplement and main document, in both directions. In other words, example of citing a table in the supplement from the main document and also a theorem in the main document in the supplement.
+* Care in inserting labels so that link is in the right place in the document (i.e., it's better to jump to the BOTTOM of a figure rather than its top.)
 
 Experimental Ideas
 
@@ -50,3 +51,17 @@ Experimental Ideas
 * Include amssymb,amsfonts,amsmath in class file by default (Tammy Kolda)
 
 
+Software citation example to be incorporated:
+
+@misc{clawpack,
+    title={Clawpack software},
+    author={Clawpack Development Team},
+    url={http://www.clawpack.org},
+    note={Version x.y}
+    year={2013}}
+
+will produce
+
+C. D. Team, Clawpack software, …
+
+(We need to fix this, by giving an example of how to correctly format the bibtex entry.)
