@@ -16,7 +16,7 @@ Requirements for CLS
 * Automatic bookmarks corresponding to section headings.
 * Automatic completion of PDF fields such as title, authors, abstract, etc.
 * Color hyperlinks with some options for visible (in the same way as for SIADS?) and invisible links.
-* Create cross-referencing commands with hyperlinking: \secref (section), \tabref (table), \figref (figure), \algref (algorithm), etc. (Or maybe autoref??) 
+* Create cross-referencing commands with hyperlinking: \secref (section), \tabref (table), \figref (figure), \algref (algorithm), etc. (Or maybe autoref or clever ref??) 
 * Class option to specify supplemental file. Supplemental file has numbers starting with "S" (e.g., section, figure, table, algorithm, theorem, etc.). Pulls original title and authors from main document. 
 * Class options to specify give a single sequence of numbers to the figures, tables, algorithms, equations, etc. (The old style uses the section number on the label number.)
 * Class option to specify "for review" that adds link numbers and
@@ -41,7 +41,7 @@ Experimental Ideas
 
 /Maybe to be implemented via class options??/
 
-* Make the spacing more generous, especially before and after theoremÅ]like statements are around bulleted lists.
+* Make the spacing more generous, especially before and after theorem¬Å]like statements are around bulleted lists.
 * Example of code listing (Matt Knepley).
 * Backref (David Gleich) 
 * Lower case title or support so that cut-and-paste works as we would wish (i.e., not all caps) (Tammy Kolda)
