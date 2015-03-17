@@ -7,7 +7,7 @@ Overall Requirments
 * PDF should not have any features
 * Update bibliography to support DOI, URL or EPRINT.
 * Include hyperlinking, include macros to support the hyperlinks.
-* Integrated support for supplemental materials, include crossreferencing.
+* Integrated support for supplemental materials, include crossreferencing. See http://www.sciencemag.org/content/345/6196/535/suppl/DC1 for a nice example with a coverpage on the front of the material, which may be nice to emulate.
 * "Review" mode, with line numbers and "for review" watermark.
 
 Requirements for CLS
@@ -25,6 +25,7 @@ Requirements for BST
 
 * Support for printing DOI, URL, and EPRINT, including hyperlinking.
 * Support for arXiv and other preprint services.
+* Support for referencing bibtex entries in original paper as well as possible additional references in the supplement, numbering should start with "S". (Maybe this is impossible, so we should instead just have separate references in the supplement.)
 
 Requirements for Instructions
 
