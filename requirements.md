@@ -47,5 +47,6 @@ Experimental Ideas
 * Lower case title or support so that cut-and-paste works as we would wish (i.e., not all caps) (Tammy Kolda)
 * Center each page (SISC editorial board meeting)
 * microtype (David Gleich??)
+* Include amssymb,amsfonts,amsmath in class file by default (Tammy Kolda)
 
 
