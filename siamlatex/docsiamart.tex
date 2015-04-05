@@ -1,0 +1,518 @@
+\documentclass[]{siamart}
+
+%% Used for \set, used in an example below
+\usepackage{braket,amsfonts}
+
+%% Used in table example below
+\usepackage{array,subfig}
+
+%% Used for TIKZ example, shown in the "Figures" section below.
+\usepackage{tikz}
+
+%% ------------------------------------------------------------------
+%% Items that need to be moved into the CLS file.
+%% ------------------------------------------------------------------
+\usepackage[capitalize,nameinlink]{cleveref}
+
+\crefformat{section}{#2\S#1#3}
+\crefrangeformat{section}{#3\S\S#1#4--#5#2#6}
+\crefmultiformat{section}{#2\S\S#1#3}{ and #2#1#3}{, #2#1#3}{, and #2#1#3}
+\crefrangemultiformat{section}{#3\S\S#1#4--#5#2#6}%
+{ and #3#1#4--#5#2#6}{, #3#1#4--#5#2#6}{, and #3#1#4--#5#2#6}
+
+\Crefformat{section}{#2Section~#1#3}
+\Crefrangeformat{section}{#3Sections~#1#4--#5#2#6}
+\Crefmultiformat{section}{#2Sections~#1#3}{ and #2#1#3}{, #2#1#3}{, and #2#1#3}
+\Crefrangemultiformat{section}{#3Sections~#1#4--#5#2#6}%
+{ and #3#1#4--#5#2#6}{, #3#1#4--#5#2#6}{, and #3#1#4--#5#2#6}
+
+\crefformat{equation}{#2(#1)#3}
+\crefrangeformat{equation}{(#3#1#4--#5#2#6)}
+\crefmultiformat{equation}{#2(#1)#3}{ and #2(#1)#3}
+{, #2(#1)#3}{, and #2(#1)#3}
+\crefrangemultiformat{equation}{(#3#1#4--#5#2#6)}%
+{ and (#3#1#4--#5#2#6)}{, (#3#1#4--#5#2#6)}{, and (#3#1#4--#5#2#6)}
+
+\Crefformat{equation}{#2Equation~(#1)#3}
+\Crefrangeformat{equation}{Equations~(#3#1#4--#5#2#6)}
+\Crefmultiformat{equation}{Equations~(#2#1#3)}{ and (#2#1#3)}
+{, (#2#1#3)}{, and (#2#1#3)}
+\Crefrangemultiformat{equation}{Equations~(#3#1#4--#5#2#6)}%
+{ and (#3#1#4--#5#2#6)}{, (#3#1#4--#5#2#6)}{, and (#3#1#4--#5#2#6)}
+
+
+%% ------------------------------------------------------------------
+%% End that need to be moved into the CLS file.
+%% ------------------------------------------------------------------
+
+%% ------------------------------------------------------------------
+%% Macros for in-document examples. These are not meant to reused for
+%% SIAM journal papers.
+%% ------------------------------------------------------------------
+%\usepackage{environ}
+\usepackage{xspace}
+\usepackage{bold-extra}
+\usepackage[most]{tcolorbox}
+\newcommand{\BibTeX}{{\scshape Bib}\TeX\xspace}
+\newcounter{example}
+\colorlet{texcscolor}{blue!50!black}
+\colorlet{texemcolor}{red!70!black}
+
+\lstdefinestyle{siamlatex}{%
+  style=tcblatex,
+  texcsstyle=*\color{texcscolor},
+  texcsstyle=[2]\color{texemcolor},
+  keywordstyle=[2]\color{texemcolor},
+  moretexcs={cref,Cref},
+}
+
+\tcbset{%
+  colframe=black!75!white!75,
+  coltitle=white,
+  colback=black!30!white!30, % left side
+  colbacklower=white, % right side
+  fonttitle=\bfseries,
+  arc=0pt,outer arc=0pt,
+  top=1pt,bottom=1pt,left=1mm,right=1mm,middle=1mm,boxsep=1mm,
+  leftrule=0.3mm,rightrule=0.3mm,toprule=0.3mm,bottomrule=0.3mm,
+  listing options={style=siamlatex}
+}
+
+\newtcblisting[use counter=example]{example}[2][]{%
+  title={Example~\thetcbcounter: #2},#1}
+
+\newtcbinputlisting[use counter=example]{\examplefile}[3][]{%
+  title={Example~\thetcbcounter: #2},listing file={#3},#1}
+
+\DeclareTotalTCBox{\code}{ v O{} }
+{ fontupper=\ttfamily\color{texemcolor},
+  nobeforeafter,
+  tcbox raise base,
+  colback=white,colframe=white,
+  top=0pt,bottom=0pt,left=0mm,right=0mm,
+  leftrule=0pt,rightrule=0pt,toprule=0mm,bottomrule=0mm,
+  boxsep=0.5mm,
+  #2}{#1}
+
+\newcommand{\Comment}[2][To do]{\textcolor{green!60!black}{\textbf{#1:} #2}}
+
+%% ------------------------------------------------------------------
+%% End of macros for in-document examples. 
+%% ------------------------------------------------------------------
+
+\begin{document}
+
+%% ------------------------------------------------------------------
+%% HEADER
+%% ------------------------------------------------------------------
+\begin{tcbverbatimwrite}{\jobname_header.tex}
+\title{Guide to Using SIAM's \LaTeX\ Style%
+  \thanks{Acknowledgments such as funding go here.}}
+
+\subtitle{\today} 
+
+\author{Dianne Doe%
+  \thanks{Imagination Corp., Chicago, IL, \email{ddoe@imag.com}.}%
+  \and
+  Paul T. Frank%
+  \thanks{Department of Mathematics, Fictional University, Boise, ID.}
+  \and
+  Jane E. Smith%
+  \footnotemark[3] % Reuse the 3rd "thanks" footnote
+  \footnotemark[4] % Define contents below
+}
+
+\maketitle
+
+% Need to briefly change \thefootnote for inserting text explicitly
+% (rather than via \thanks)
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\footnotetext[4]{These are example author names.}
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\end{tcbverbatimwrite}
+\input{\jobname_header.tex}
+%% ------------------------------------------------------------------
+%% END HEADER
+%% ------------------------------------------------------------------
+
+%% ------------------------------------------------------------------
+%% MARKBOTH
+%% ------------------------------------------------------------------
+\begin{tcbverbatimwrite}{\jobname_markboth.tex}
+\pagestyle{myheadings}
+\thispagestyle{plain}
+\markboth{Dianne Doe, Paul T. Frank, and Jane E. Smith}%
+{Guide to Using  SIAM'S \LaTeX\ Style}
+\end{tcbverbatimwrite}
+\input{\jobname_markboth.tex}
+%% ------------------------------------------------------------------
+%% END MARKBOTH
+%% ------------------------------------------------------------------
+
+
+
+%% ------------------------------------------------------------------
+%% ABSTRACT
+%% ------------------------------------------------------------------
+\begin{tcbverbatimwrite}{\jobname_abstract.tex}
+%\newcommand{\BibTeX}{{\scshape Bib}\TeX\xspace} <- Preamble
+\begin{abstract}
+  Documentation is given for use of the SIAM \LaTeX\ macros.
+  Instructions and suggestions for compliance with SIAM style
+  standards are also included. Familiarity with standard \LaTeX\
+  commands is assumed.
+\end{abstract}
+
+\begin{keywords}
+  \LaTeX, \BibTeX, SIAM Journals 
+\end{keywords}
+
+\begin{AMS}
+\end{AMS}
+\end{tcbverbatimwrite}
+\input{\jobname_abstract.tex}
+%% ------------------------------------------------------------------
+%% END HEADER
+%% ------------------------------------------------------------------
+
+\section{Introduction}
+\label{sec:intro}
+
+This file is documentation for the SIAM \LaTeX\ style, including how
+to typeset the main document, the \BibTeX\ file, and any supplementary
+material. More information
+about SIAM's editorial style can be found in the style manual, available
+at \url{http://www.siam.org/journals/pdf/stylemanual.pdf}.
+%
+The SIAM latex files can be found at
+\url{http://www.siam.org/journals/auth-info.php}. The files are that
+are distributed are given below.
+\begin{itemize}
+\item \texttt{siamart.cls} (required): Main \LaTeX\ class file.
+\item \texttt{siamplain.bst} (required): Bibliographic style file for \BibTeX.
+\item \texttt{docsiamart.tex}: Produces this documentation.
+\item \texttt{docsiambib.bib}: Example \BibTeX\ database.
+\item \texttt{docsiamsupp.tex}: Supplemental file example and documentation.
+\end{itemize}
+%
+The outline of a SIAM \LaTeX\ article is shown in \cref{ex:outline}.
+
+\begin{example}[label={ex:outline},listing only,%
+  listing options={style=siamlatex,{morekeywords=[2]{siamart}},}]%
+  {Document outline}
+\documentclass{siamart}
+
+% Packages and macros definitions go here.
+
+\begin{document}
+
+% Front matter goes here: title, authors, abstract, etc.
+% Main body goes here.
+% Appendices goes here (optional).
+% Acknowledgements go here (optional).
+% Bibliography goes here.
+
+\end{document}
+\end{example}
+
+Class options can be included in the bracketed argument of the
+command, separated by commas.
+By default, lines which extend past the
+margin will have black boxes next to them to help authors identify
+lines that they need to fix, by re-writing or inserting
+breaks. Enabling the \code{final} option
+turns these boxes off, so that very small margin breaks which are not
+noticible will not cause boxes to be generated.
+Use the \code{review} option to create line numbers, useful for papers
+submitted to SIAM for review.
+
+
+\section{Front matter}
+\label{sec:front}
+\Comment{We should change this to set pdftitle and pdfauthor, and then also use these in setting the page headers with markboth.}
+The title and author parts are formatted using the standard
+\code{\title}, \code{\author}, and \code{\maketitle} commands as
+described in Lamport \cite{La86}.
+%
+If there is more than one author, the authors should be separated by
+the \code{\and} command.  
+%
+The addresses and support acknowledgments are added via
+\code{\thanks}. Each author's thanks should specify their address.
+The support acknowledgment should be put in a thanks for the title,
+unless specific support needs to be specified for individual authors,
+in which case it should follow the author address or be in a separate
+footnote.  
+%
+The header for this file was produced by the code in \cref{ex:header}, including
+examples of various footnote specifications.
+%
+\Comment[To fix]{The fourth footnote on the cover page is not aligned with the other footnotes.}
+
+\examplefile[label={ex:header},listing only,%
+listing options={style=siamlatex,%
+deletetexcs={and,thanks,title,author},%
+{moretexcs=[2]{and,thanks,title,author,maketitle}}}
+]{Title and authors}{\jobname_header.tex}
+
+
+\Cref{ex:markboth} shows how to specify the page headings, with
+the authors' names and the title (possibly shortened to fit).
+
+\examplefile[label={ex:markboth},listing only,%
+listing options={style=siamlatex,%
+deletetexcs={pagestyle,thispagestyle,markboth},%
+{moretexcs=[2]{pagestyle,thispagestyle,markboth}}}
+]{Page headers}{\jobname_markboth.tex}
+
+Following the author and title is the abstract, key words listing, and AMS subject
+classifications, designated using the \code{abstract}, \code{keywords}, and \code{AMS}
+environments. 
+Authors are responsible for providing AMS numbers which can be found
+on the AMS web site \cite{AMSMSC2010}. The abstract, keywords, and AMS subject classifications
+for this document were specified in \cref{ex:abstract}.
+
+\examplefile[label={ex:abstract},listing only,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{abstract,keywords,AMS}}}
+]{Abstract, keywords, and AMS classifications}{\jobname_abstract.tex}
+
+
+\section{Sections and cross-referencing}
+\label{sec:sec}
+Sections are denoted using standard \LaTeX\ section commands, i.e., \code{\section}, \code{\subsection}, etc. The appendices are defined the same way except that the first one is preceded by the \code{\appendix} command.
+The acknowledgment section is preceeded by \code{\section*{Acknowledgments}}; it comes after any appendices and before the bibliography.
+
+SIAM uses the \texttt{cleveref} package for cross-referencing, including
+customizations to adhere to SIAM's style guidelines. 
+%
+The macros automatically determine the proper way to format standard
+references, including the name of the reference and the hyperlink.
+%
+Use \code{\Cref} for a reference at the beginning of a sentence and
+\code{\cref} otherwise.
+%
+A label for a section should always begin with \texttt{sec}.
+%
+\Cref{ex:secref} shows how to reference sections.
+
+
+\Comment{Hyperlinks are currently black, even though they are enabled. We may want to turn on some colors for testing purposes and/or to try different options.}
+
+\Comment{For some reason, the SIAM style does not have PDF
+  bookmarks. Let's fix that.}
+
+\Comment{Explain how to reference section is the supplement.}
+
+\begin{example}[label={ex:secref},lefthand ratio=0.4,bicolor,sidebyside,%
+listing options={style=siamlatex,basicstyle=\ttfamily\scriptsize,%
+deletetexcs={cref,Cref},{moretexcs=[2]{cref,Cref}}}]
+{Right and wrong ways to reference a section}
+Inside a sentence\dots\\
+Single: \cref{sec:intro}\\
+Range: \cref{sec:intro,sec:front,%
+sec:sec}\\
+Multiple: \cref{sec:intro,sec:sec,%
+sec:tab,sec:math,sec:thm}\\
+Appendix: \cref{sec:changes}\\
+
+Beginning of a sentence\dots\\
+Single: \Cref{sec:intro}\\
+Range: \Cref{sec:intro,sec:front,%
+sec:sec}\\
+Multiple: \Cref{sec:intro,sec:sec,%
+sec:tab,sec:math,sec:thm}\\
+Appendix: \Cref{sec:changes}\\
+
+
+Just don't do it this way\dots\\
+Section~\ref{sec:intro}  
+\end{example}
+
+\section{Math and equations}
+\label{sec:math}
+Here we show some example equations, with numbering, and examples of
+referencing the equations.
+The SIAM \LaTeX\ class adds the following macros by default: 
+\code{\const},
+\code{\diag},
+\code{\grad},
+\code{\Range},
+\code{\rank},
+\code{\supp}.
+%
+This have the effect of rendering the item as a \texttt{mathop}. 
+\Cref{ex:matrices,ex:range,ex:ml,ex:aligned,ex:foo} use many of the features of the package \code{amsmath} and examples
+from \cite{MiGo04}.
+
+
+\begin{example}[label={ex:matrices},bicolor]{Creating matrices}
+\Cref{eq:matrices} shows some environments for making nice matrices.
+\begin{equation}\label{eq:matrices}
+  S=\begin{bmatrix}1&0\\0&0\end{bmatrix}
+  \quad\text{and}\quad
+  C=\begin{pmatrix}1&1&0\\1&1&0\\0&0&0\end{pmatrix}.
+\end{equation}
+\end{example}
+
+\begin{example}[label={ex:range},bicolor,%
+listing options={style=siamlatex,%
+{moretexcs=[2]{Range}}}
+]{Using SIAM-defined macros}
+% \usepackage{braket,amsfonts} <- Preamble
+We use a special SIAM macro in \cref{eq:range}.
+\begin{equation}\label{eq:range}
+  \Range(A) = \set{ y \in \mathbb{R}^n | y = Ax }
+\end{equation}
+\end{example}
+
+\begin{example}[label={ex:ml},bicolor,sidebyside,%
+lefthand ratio=0.5]{Equation split across lines}
+\begin{multline}\label{eq:ml}
+(a+b)^2 +c^2 + d^2 \\
+= a^2 + 2ab + b^2 +c^2 + d^2
+\end{multline}
+\end{example}
+
+\begin{example}[label={ex:aligned},bicolor,sidebyside]{Aligned equations}
+\begin{align}
+x^2 + y^2 &= z^2 \label{eq:aa}\\
+x^3 + y^3 &\geq z^3 \nonumber \\
+x^3 + y^3 &< z^3 \label{eq:bb}
+\end{align}  
+\end{example}
+
+\Comment[To fix]{May need to tell cleveref how to reference subequations.}
+
+\begin{example}[label={ex:foo},bicolor,sidebyside,lefthand ratio=.7]{Subequations}
+\begin{subequations} \label{eq:foo}
+\begin{align} f &= g \label{subeq:a} \\
+  f' &= g' \label{subeq:b} \\
+  \mathcal{L}f &= \mathcal{L}g \label{subeq:c}
+\end{align}
+\end{subequations}
+\end{example}
+
+\Cref{ex:eqref} shows how to reference equations using \code{\cref}.
+
+\begin{example}[label={ex:eqref},bicolor]%
+{Right ways to reference equations}
+Equations are automatically referenced correctly as a single equation
+\cref{eq:range}, a range of equations \cref{eq:matrices,eq:range,eq:ml}, 
+or an arbitrary set of equations: \cref{eq:matrices,eq:ml,eq:aa,eq:bb}.
+
+\par\smallskip
+Be sure to use the correct version of the beginning of a sentence so that 
+the word ``Equation'' is inserted first for a single: \Cref{eq:range},
+range: \Cref{eq:matrices,eq:range,eq:ml} or multiple: 
+\Cref{eq:matrices,eq:ml,eq:aa,eq:bb}.
+
+\par\smallskip
+\Cref{eq:foo} is an example of using the subequations environment, with suequations \cref{subeq:a,subeq:b,subeq:c}. 
+\end{example}
+
+\section{Theorem-like environments}
+\label{sec:thm}
+
+\Comment{Need to show what theorem-like environments exist, how to create new ones, and how to reference them.}
+
+\section{Lists}
+
+\Comment{SIAM prefers special list styles. These should be achievable via options to the enumitem package.}
+
+\section{Tables}
+\label{sec:tab}
+
+\Cref{ex:table} show the code to generate \cref{tab:KoMa14}. This
+example uses subfloats via the \texttt{subfig} package, as well as
+special column options from the \texttt{array} package.
+
+\begin{tcbverbatimwrite}{\jobname_table.tex}
+%\usepackage{array,subfig} <- Preamble
+\newcolumntype{R}{>{$}r<{$}}  %
+\newcolumntype{V}[1]{>{[\;}*{#1}{R@{\;\;}}R<{\;]}} %
+\begin{table}[htbp]
+  \caption{Example table adapted from Kolda and Mayo \cite{KoMa14}.}
+  \label{tab:KoMa14}
+  \centering
+  \subfloat[$\beta=1$]{
+    \begin{tabular}{|c|R|V{3}|c|r@{\,$\pm$\,}l|} \hline
+occ. & \multicolumn{1}{c|}{$\lambda$} & \multicolumn{4}{c|}{$\mathbf{x}$} & 
+fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
+ 718 & 11.3476 &  0.5544 &  0.3155 &  1.2018 &  0.0977 &   45 & 0.17 & 0.06 \\ \hline 
+ 134 &  3.7394 &  0.2642 & -1.1056 &  0.2657 & -0.3160 &   31 & 0.12 & 0.05 \\ \hline 
+ 144 &  2.9979 &  1.0008 &  0.4969 & -0.0212 & -0.4817 &   31 & 0.12 & 0.05 \\ \hline 
+   4 & \multicolumn{6}{c|}{\emph{--- Failed to converge ---}} & 0.21 & 0.10 \\ \hline 
+ \end{tabular}}
+
+  \subfloat[$\beta=-1$]{
+    \begin{tabular}{|c|R|V{3}|c|r@{\,$\pm$\,}l|} \hline
+occ. & \multicolumn{1}{c|}{$\lambda$} & \multicolumn{4}{c|}{$\mathbf{x}$} & 
+fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
+  72 & -1.1507 &  0.2291 &  0.6444 &  0.3540 & -0.8990 &   34 & 0.14 & 0.06 \\ \hline 
+ 150 & -3.2777 &  0.8349 & -0.7603 & -0.3532 & -0.2635 &   33 & 0.14 & 0.07 \\ \hline 
+ 148 & -3.5998 &  1.0486 &  0.6046 &  0.3736 &  0.3971 &   41 & 0.16 & 0.08 \\ \hline 
+ 624 & -6.3985 &  0.1003 &  0.1840 &  0.5305 &  1.2438 &   48 & 0.19 & 0.08 \\ \hline 
+   4 & \multicolumn{6}{c|}{\emph{--- Converged to wrong solution ---}} & 0.10 & 0.11 \\ \hline 
+   2 & \multicolumn{6}{c|}{\emph{--- Failed to converge ---}} & 0.23 & 0.02 \\ \hline 
+ \end{tabular}}
+\end{table}
+\end{tcbverbatimwrite}
+
+\examplefile[float=htpb,label={ex:table},listing only, listing options={%
+  style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
+{Example table with subtables}{\jobname_table.tex}
+
+\input{\jobname_table.tex}
+
+\section{Figures}
+\label{sec:fig}
+\Comment{Need to add Tikz and epstopdf examples in this section.}
+
+
+\section{Supplemental material}
+
+\Comment{Explain how to do supplementary material, including \LaTeX\ files as well as multimedia.}
+
+\section{Bibliography}
+
+\Comment{Need to add some discussion here, including new fields. Show the code that is used the generate the bibliography.}
+
+The \BibTeX for \cite{KoMa14} is shown below in \cref{ex:article}; observe the new \code{doi} field which produces a hyperlink in the citation.
+
+\examplefile[float=htbp,label=ex:article,listing only,%
+listing options={style=siamlatex,firstline=1,lastline=12,{morekeywords=[2]{doi}}}
+]{Example article in \BibTeX}{docsiambib.bib}
+
+\Comment{Tammy needs to add many more examples to demonstrate the new fields:
+ArXiv example: \cite{PeKoPi14},
+PubMed example: \cite{ZhDuYanQi15}
+}
+
+\section{Other hyperlinks}
+The SIAM \LaTeX\ class adds a command for specifying an email address with a hyperlink:
+% \begin{coderunb}{Email hyperlink}
+% To obtain the data, send email 
+% to \email{datasets@imag.com}. 
+% \end{coderunb}
+
+\appendix
+\section{Changes}
+\label{sec:changes}
+The new SIAM styles includes the following significant changes as compared to older versions:
+\begin{itemize}
+\item Removed uppercase on title.
+\end{itemize}
+
+\section*{Acknowledgments}
+Acknowledgements go here.
+\Comment{Something is broken. There should not be an ``Appendix'' starting this, and the title is missing.}
+
+\bibliographystyle{siamplain}
+\bibliography{docsiambib}
+
+\bigskip
+
+\Comment{This files creates a bunch of extra files as it compiles. Not sure how to remove them.}
+
+\end{document}

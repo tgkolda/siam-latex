@@ -50,7 +50,7 @@ Experimental Ideas
 * Center each page (SISC editorial board meeting)
 * microtype (David Gleich??)
 * Include amssymb,amsfonts,amsmath in class file by default (Tammy Kolda)
-
+* Proof environment that works when the proofs ends in a math equation, or at least an example of how to hack it. (Tammy Kolda)
 
 Software citation example to be incorporated:
 
