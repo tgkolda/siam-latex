@@ -40,6 +40,13 @@
 \Crefrangemultiformat{equation}{Equations~(#3#1#4--#5#2#6)}%
 { and (#3#1#4--#5#2#6)}{, (#3#1#4--#5#2#6)}{, and (#3#1#4--#5#2#6)}
 
+% Setting the links to green for now so that we can see them!
+% This should be an option where we can enable and disable them.
+\colorlet{siamlinkcolor}{green!50!black}
+\hypersetup{
+  colorlinks = true,
+  allcolors = siamlinkcolor,
+}
 
 %% ------------------------------------------------------------------
 %% End that need to be moved into the CLS file.
@@ -94,7 +101,7 @@
   boxsep=0.5mm,
   #2}{#1}
 
-\newcommand{\Comment}[2][To do]{\textcolor{green!60!black}{\textbf{#1:} #2}}
+\newcommand{\Comment}[2][To do]{\textcolor{red!60!yellow}{\textbf{#1:} #2}}
 
 %% ------------------------------------------------------------------
 %% End of macros for in-document examples. 
@@ -302,7 +309,7 @@ A label for a section should always begin with \texttt{sec}.
 \Comment{For some reason, the SIAM style does not have PDF
   bookmarks. Let's fix that.}
 
-\Comment{Explain how to reference section is the supplement.}
+\Comment{Explain how to automatically reference sections in the supplement.}
 
 \begin{example}[label={ex:secref},lefthand ratio=0.4,bicolor,sidebyside,%
 listing options={style=siamlatex,basicstyle=\ttfamily\scriptsize,%
@@ -408,7 +415,7 @@ range: \Cref{eq:matrices,eq:range,eq:ml} or multiple:
 \Cref{eq:matrices,eq:ml,eq:aa,eq:bb}.
 
 \par\smallskip
-\Cref{eq:foo} is an example of using the subequations environment, with suequations \cref{subeq:a,subeq:b,subeq:c}. 
+\Cref{eq:foo} is an example of using the subequations environment, with subequations \cref{subeq:a,subeq:b,subeq:c}. 
 \end{example}
 
 \section{Theorem-like environments}
@@ -476,18 +483,82 @@ fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
 
 \section{Bibliography}
 
-\Comment{Need to add some discussion here, including new fields. Show the code that is used the generate the bibliography.}
+The SIAM \BibTeX style file, now called \texttt{siamplain.bst}, has been updated to include the new keys listed below:
+\begin{itemize}
+\item \code{doi}: Digital object identifier, a unique alphanumeric string
+\item \code{url}: Web address, usually impermanent
+\item \code{urldate}: Date that the web address was last accessed
+\item \code{eprint}: Archive identifier, a unique alphanumeric string
+\item \code{eprintclass}: Archive class
+\item \code{archive}: Archive URL, defaults to \nolinkurl{http://arXiv.org/abs}
+\item \code{archivepreprint}: Archive name, defaults to ``arXiv''.
+\item \code{eid}: Article ID, if there are no page numbers
+\item \code{pagetotal}: Total number of pages, for use with article ID
+\end{itemize}
+Every entry type has been modified to include an optional link to a
+DOI, a URL, and/or an archive preprint reference.
+%
+Additionally, the \code{article} entry now supports an Article ID,
+\code{eid}, and number of pages, \code{pagetotal}.
+%
+To use this, include the following code in your \LaTeX\ source code:
+\code{\bibliographystyle{siamplain}}.
 
-The \BibTeX for \cite{KoMa14} is shown below in \cref{ex:article}; observe the new \code{doi} field which produces a hyperlink in the citation.
+\subsection{DOI}
 
-\examplefile[float=htbp,label=ex:article,listing only,%
+A digital object identifier (DOI) is a unique alphanumeric string that provides a persistent link to its location on the Internet. The publisher assigns a DOI when your article is published and made available electronically. Using the \code{doi} field in \BibTeX to specify it, as shown for \cite{KoMa14} in \cref{ex:article}; observe the new \code{doi} field which produces a hyperlink in the citation.
+Do not include the full URL, i.e., \nolinkurl{http://dx.doi.org/} preceding the DOI.
+
+\examplefile[label=ex:article,listing only,%
 listing options={style=siamlatex,firstline=1,lastline=12,{morekeywords=[2]{doi}}}
 ]{Example article in \BibTeX}{docsiambib.bib}
 
-\Comment{Tammy needs to add many more examples to demonstrate the new fields:
-ArXiv example: \cite{PeKoPi14},
-PubMed example: \cite{ZhDuYanQi15}
-}
+\subsection{URL}
+There is also now support for the  \code{url} field. Generally, the DOI is preferred to the URL, since the DOIs should be a permanent references. For that reason. it is good practice to specify the last date that the URL was accessed, which is specified by the optional \code{urldate} field. Reference \cite{Hi14} produced by \cref{ex:url} shows an example of using these fields.
+
+\examplefile[label=ex:url,listing only,%
+listing options={style=siamlatex,firstline=14,lastline=22,%
+{morekeywords=[2]{url,urldate}}}
+]{Example with the URL field in \BibTeX}{docsiambib.bib}
+
+\subsection{Preprint servers such as arXiv}
+
+More and more manuscripts on available on preprint servers. In fact,
+SIAM's publication policy explicitly allows the final accepted version
+of any article to be posted on a preprint server such as arXiv.
+
+For an arXiv paper,
+the \code{eprint} field is used to specify identifier. The optional \code{eprintclass} field specifies the class. \Cref{ex:arxiv} shows the \BibTeX for \cite{PeKoPi14}. 
+
+\examplefile[label=ex:arxiv,listing only,%
+listing options={style=siamlatex,firstline=24,lastline=32,%
+{morekeywords=[2]{eprint,eprintclass}}}
+]{Example arXiv reference in \BibTeX}{docsiambib.bib}
+
+Other preprint servers are supported as well, but these require specification of the \code{archive} and \code{archiveprefix}. In this case, the target URL is formed by concatenating the \code{archive}, a forward slash (\texttt{/}), and the \code{eprint}; and the text for the hyperlink is formed by concatenating the \code{archiveprevix}, a color (:), and the \code{eprint}.
+%
+\Cref{ex:pubmed} shows the code to generate \cite{WoZhMeSh05}, including the preprint from PubMed.
+Note that this example has both the journal citation as well as the link for the preprint.
+
+\examplefile[label=ex:pubmed,listing only,%
+listing options={style=siamlatex,firstline=34,lastline=49,%
+{morekeywords=[2]{eprint,eprintclass,archive,archiveprefix}}}
+]{Example PubMed reference in \BibTeX}{docsiambib.bib}
+
+\subsection{Article ID}
+Some journals use an article ID rather than page numbers. 
+The field \texttt{eid} specifies the article ID. The optional field \texttt{pagetotal} can say the number
+of pages in the document. An example of an article using these fields is shown in \cref{ex:eid} for citation \cite{Ne03}.
+
+\examplefile[label=ex:eid,listing only,%
+listing options={style=siamlatex,firstline=51,lastline=61,%
+{morekeywords=[2]{eid,pagetotal}}}
+]{Example article ID reference in \BibTeX}{docsiambib.bib}
+
+
+
+
+\Comment{The new siam bib file is called \texttt{siamplain.bst}. There could also be a \texttt{siamalpha.bst} for alphabetic style references per the request of David Gleich.}
 
 \section{Other hyperlinks}
 \Cref{ex:email} shows an examil of the \code{\email} command.

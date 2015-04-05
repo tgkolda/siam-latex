@@ -194,52 +194,30 @@ FUNCTION {format.names}
 
 STRINGS { last.authors }
 
-FUNCTION {init.last.authors}
-{ "" 'last.authors :=
-}
 
 FUNCTION {format.authors}
 { author empty$
-    { "" 'last.authors :=
-      ""
-    }
-    { author last.authors =
-        { "\leavevmode\vrule height 2pt depth -1.6pt width 23pt" }
-        { author format.names scapify }
-      if$
-      author 'last.authors :=
-    }
+    { "" }
+    { author format.names scapify }
   if$
 }
 
 FUNCTION {format.organization}
 { organization empty$
-    { "" 'last.authors :=
-      ""
-    }
-    { organization last.authors =
-        { "\leavevmode\vrule height 2pt depth -1.6pt width 23pt" }
-        { organization scapify }
-      if$
-      organization 'last.authors :=
-    }
+    { "" }
+    { organization scapify }
   if$
 }
 
 FUNCTION {format.editors}
 { editor empty$
-    { "" 'last.authors :=
-      ""
-    }
-    { editor last.authors =
-        { "\leavevmode\vrule height 2pt depth -1.6pt width 23pt" }
-    { editor format.names scapify }
+    { "" }
+    { editor format.names scapify 
       if$
       editor num.names$ #1 >
         { ", eds." * }
-    { ", ed." * }
+	{ ", ed." * }
       if$
-      editor 'last.authors :=
     }
   if$
 }
@@ -1144,8 +1122,6 @@ FUNCTION {begin.bib}
 EXECUTE {begin.bib}
 
 EXECUTE {init.state.consts}
-
-EXECUTE {init.last.authors}
 
 ITERATE {call.type$}
 
