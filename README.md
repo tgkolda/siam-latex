@@ -5,6 +5,10 @@ The goals for the new style file are in the file:
 
 * requirements.md
 
+The new macros being designed are here:
+
+* siamlatex - The "new" macros being crowdsourced via this project.
+
 Previous versions of the SIAM macros are available in the following
 subdirectories:
 
