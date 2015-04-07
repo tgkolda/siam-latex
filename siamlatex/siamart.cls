@@ -1007,7 +1007,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 \RequirePackage{ifpdf}
 \RequirePackage{graphics,graphicx}
-\RequirePackage[colorlinks,hidelinks,naturalnames=false,hypertexnames=false,breaklinks]{hyperref}
+\RequirePackage[colorlinks=false,frenchlinks=false,pdfborder={0 0 0},naturalnames=false,hypertexnames=false,breaklinks]{hyperref}
 %\urlstyle{same}
 \ifpdf
 \else
