@@ -659,11 +659,11 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 \def\@endtheorem{\par\addvspace{\@sectionspace}}
 
-\def\proof{\par\addvspace{\@sectionspace}\textit{Proof}. \ignorespaces}
+%\def\proof{\par\addvspace{\@sectionspace}\textit{Proof}. \ignorespaces}
 
-\newcommand{\@proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
+%\newcommand{\@proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
 
-\def\endproof{\ifmmode\@proofbox\else\@proofbox\par\addvspace{\@sectionspace}\fi}
+%\def\endproof{\ifmmode\@proofbox\else\@proofbox\par\addvspace{\@sectionspace}\fi}
 
 % \if@nocaps
 % \newcommand{\titleupper}[1]{#1}
@@ -671,11 +671,11 @@ Vol.\ #3, No.\ #4, pp.\ #5
 % \newcommand{\titleupper}[1]{\uppercase{#1}}
 % \fi
 
-  \newtheorem{theorem}{Theorem}
-  \newtheorem{lemma}[theorem]{Lemma}
-  \newtheorem{corollary}[theorem]{Corollary}
-  \newtheorem{proposition}[theorem]{Proposition}
-  \newtheorem{definition}[theorem]{Definition}
+  % \newtheorem{theorem}{Theorem}
+  % \newtheorem{lemma}[theorem]{Lemma}
+  % \newtheorem{corollary}[theorem]{Corollary}
+  % \newtheorem{proposition}[theorem]{Proposition}
+  % \newtheorem{definition}[theorem]{Definition}
 % \else
 %   \newtheorem{theorem}{Theorem}[section]
 %   \newtheorem{lemma}[theorem]{Lemma}

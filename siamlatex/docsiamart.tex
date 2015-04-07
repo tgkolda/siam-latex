@@ -1,19 +1,14 @@
 \documentclass[]{siamart}
 
-%% Used for \set, used in an example below
-\usepackage{braket,amsfonts}
-
-%% Used in table example below
-\usepackage{array,subfig}
-
-%% Used for TIKZ example, shown in the "Figures" section below.
-\usepackage{tikz}
-
 %% ------------------------------------------------------------------
 %% Items that need to be moved into the CLS file.
 %% ------------------------------------------------------------------
-\usepackage[capitalize,nameinlink]{cleveref}
+\usepackage{xcolor}
 
+% This needs to be loaded *before* cleveref
+\usepackage{amsthm}
+
+\usepackage[capitalize,nameinlink]{cleveref}
 \crefformat{section}{#2\S#1#3}
 \crefrangeformat{section}{#3\S\S#1#4--#5#2#6}
 \crefmultiformat{section}{#2\S\S#1#3}{ and #2#1#3}{, #2#1#3}{, and #2#1#3}
@@ -48,9 +43,59 @@
   allcolors = siamlinkcolor,
 }
 
+
+% Define styles compatible with SIAM's preferences; see amsthm documentation.
+\newtheoremstyle{siamthm}{3pt}{3pt}{\itshape}{\parindent}{\scshape}{.}{.5em}{}
+\newtheoremstyle{siamrmk}{3pt}{3pt}{}{\parindent}{\itshape}{.}{.5em}{}
+
+% Fix the ams proof to be indented.
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+  \normalfont
+  \topsep6\p@\@plus6\p@ \trivlist
+  \item[\hskip5\labelsep\itshape
+    #1\@addpunct{.}]\ignorespaces
+}{%
+  \qed\endtrivlist
+}
+\makeatother
+
+
+% These need to be defined *after* loading cleveref
+\theoremstyle{siamthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+
 %% ------------------------------------------------------------------
 %% End that need to be moved into the CLS file.
 %% ------------------------------------------------------------------
+
+
+%% ------------------------------------------------------------------
+%% Code used in examples, needed to reproduce 
+%% ------------------------------------------------------------------
+%% Used for \set, used in an example below
+\usepackage{braket,amsfonts}
+
+%% Used in table example below
+\usepackage{array,subfig}
+
+%% Used for TIKZ example, shown in the "Figures" section below.
+\usepackage{tikz}
+
+%% Used for creating new theorems, remarks
+\theoremstyle{siamthm}
+\newtheorem{claim}[theorem]{Claim}
+
+\theoremstyle{siamrmk}
+\newtheorem{remark}[theorem]{Remark}
+%% ------------------------------------------------------------------
+%% End Code used in examples, needed to reproduce 
+%% ------------------------------------------------------------------
+
 
 %% ------------------------------------------------------------------
 %% Macros for in-document examples. These are not meant to reused for
@@ -421,8 +466,76 @@ range: \Cref{eq:matrices,eq:range,eq:ml} or multiple:
 \section{Theorem-like environments}
 \label{sec:thm}
 
+The SIAM style defines the following theorem-like environments, using
+the \texttt{amsthm} package:
+\begin{itemize}
+\item \code{theorem}
+\item \code{lemma}
+\item \code{corollary}
+\item \code{definition}
+\item \code{proposition}
+\end{itemize}
+An example theorem and lemma declaration is shown in \cref{ex:theorem}.  These
+are all numbered in the same sequence and produce labels in small caps
+with an italic body. Use the command \code{\textup} to produce Roman
+type for numbers and parentheses.
+
+\begin{example}[label=ex:theorem,bicolor,parbox=false]{Defining a theorem}
+\begin{theorem}[Chu's theorem]\label{thm:a}
+  Sample theorem included for illustration.  
+  Numbers and parentheses, like \textup{\cref{eq:aa}}, should be set 
+  in Roman type.  Here is a sample equation:
+  \begin{equation*}
+    x^2 = y^2 \sin z^2 \text{ for all } x .
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}
+  The proof is left to the reader.
+\end{proof}
+
+\begin{lemma}\label{lem:a}
+  Here is an example lemma.
+\end{lemma}
+
+\begin{proof}
+  Here is a proof that ends in an equation:
+  \begin{equation}
+    \label{eq:proof}
+    x + y = z. \mbox{\qedhere}
+  \end{equation}
+\end{proof}
+
+We can talk about the theorem. \Cref{thm:a} references the theorem.
+\end{example}
+
+\begin{proof}
+  Here is a proof that ends in an equation:
+\begin{equation}
+G(t)=L\gamma!\,t^{-\gamma}+t^{-\delta}\eta(t) \qedhere
+\end{equation}
+\end{proof}
+
 \Comment{Need to show what theorem-like environments exist, how to create new ones, and how to reference them.}
 
+Other environments may be specified by
+the \code{\newtheorem} command, numbering it together with the
+\code{theorem}. For instance, a new \code{claim} can be defined as
+shown in \cref{ex:newtheorem}.
+
+\begin{example}[label=ex:newtheorem,bicolor,parbox=false]{Declaring a new ``theorem'' type}
+This is a text.
+\begin{claim}\label{claim:b}
+  Here is an example of a claim.
+\end{claim}
+\end{example}
+
+Does \cref{claim:b} work?
+
+
+\begin{claim}[Kolda's claim]\label{claim:c}
+  Here is an example of a claim.
+\end{claim}
 \section{Lists}
 
 \Comment{SIAM prefers special list styles. These should be achievable via options to the enumitem package.}
