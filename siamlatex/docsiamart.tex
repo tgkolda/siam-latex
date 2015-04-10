@@ -4,9 +4,9 @@
 %% Items that need to be moved into the CLS file.
 %% ------------------------------------------------------------------
 \usepackage{xcolor}
-
+\usepackage{amsmath}
 % This needs to be loaded *before* cleveref
-\usepackage{amsthm}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
 
 \usepackage[capitalize,nameinlink]{cleveref}
 \crefformat{section}{#2\S#1#3}
@@ -44,30 +44,71 @@
 }
 
 
-% Define styles compatible with SIAM's preferences; see amsthm documentation.
-\newtheoremstyle{siamthm}{3pt}{3pt}{\itshape}{\parindent}{\scshape}{.}{.5em}{}
-\newtheoremstyle{siamrmk}{3pt}{3pt}{}{\parindent}{\itshape}{.}{.5em}{}
-
-% Fix the ams proof to be indented.
+%% --- Setting up theorems using ntheorem package ---
+% The \newtheorem calls have to happen /after/ loading cleverref.
 \makeatletter
-\renewenvironment{proof}[1][\proofname]{\par
-  \normalfont
-  \topsep6\p@\@plus6\p@ \trivlist
-  \item[\hskip5\labelsep\itshape
-    #1\@addpunct{.}]\ignorespaces
-}{%
-  \qed\endtrivlist
-}
+\renewtheoremstyle{plain}%
+ {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ ##2\theorem@separator]}%
+ {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\theorem@separator]}
+\renewtheoremstyle{nonumberplain}%
+ {\item[\theorem@headerfont\hskip\labelsep\hskip\parindent ##1\theorem@separator]}%
+ {\item[\theorem@headerfont\hskip\labelsep\hskip\parindent ##1\ (##3)\theorem@separator]}
 \makeatother
 
+% Retained from old style file
+\newcommand{\proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
 
-% These need to be defined *after* loading cleveref
-\theoremstyle{siamthm}
+% Proof
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\normalfont\itshape}
+\theorembodyfont{\normalfont}
+\theoremseparator{.}
+\theoremsymbol{\proofbox}
+\newtheorem{proof}{Proof}
+
+% Theorem
+\theoremstyle{plain}
+\theoremheaderfont{\normalfont\sc}
+\theorembodyfont{\normalfont\itshape}
+\theoremseparator{.}
+\theoremsymbol{}
 \newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\newsiamthm}[2]{
+  \theoremstyle{plain}
+  \theoremheaderfont{\normalfont\sc}
+  \theorembodyfont{\normalfont\itshape}
+  \theoremseparator{.}
+  \theoremsymbol{}
+  \newtheorem{#1}[theorem]{#2}
+}
+
+% Other predefined environments
+\newsiamthm{lemma}{Lemma}
+\newsiamthm{corollary}{Corollary}
+\newsiamthm{proposition}{Proposition}
+\newsiamthm{definition}{Definition}
+
+\newcommand{\newsiamdefn}[2]{
+  \theoremstyle{plain}
+  \theoremheaderfont{\normalfont\sc}
+  \theorembodyfont{\normalfont}
+  \theoremseparator{.}
+  \theoremsymbol{}
+  \newtheorem{#1}[theorem]{#2}
+}
+
+\newcommand{\newsiamremark}[2]{
+  \theoremstyle{plain}
+  \theoremheaderfont{\normalfont\itshape}
+  \theorembodyfont{\normalfont}
+  \theoremseparator{.}
+  \theoremsymbol{}
+  \newtheorem{#1}[theorem]{#2}
+}
+
+
+
 
 %% ------------------------------------------------------------------
 %% End that need to be moved into the CLS file.
@@ -87,11 +128,10 @@
 \usepackage{tikz}
 
 %% Used for creating new theorems, remarks
-\theoremstyle{siamthm}
-\newtheorem{claim}[theorem]{Claim}
-
-\theoremstyle{siamrmk}
-\newtheorem{remark}[theorem]{Remark}
+\newsiamthm{claim}{Claim}
+\newsiamremark{rem}{Remark}
+\newsiamremark{ex}{Example}
+\newsiamdefn{defn}{Definition}
 %% ------------------------------------------------------------------
 %% End Code used in examples, needed to reproduce 
 %% ------------------------------------------------------------------
@@ -502,7 +542,7 @@ type for numbers and parentheses.
   Here is a proof that ends in an equation:
   \begin{equation}
     \label{eq:proof}
-    x + y = z. \mbox{\qedhere}
+    x + y = z. 
   \end{equation}
 \end{proof}
 
@@ -512,7 +552,7 @@ We can talk about the theorem. \Cref{thm:a} references the theorem.
 \begin{proof}
   Here is a proof that ends in an equation:
 \begin{equation}
-G(t)=L\gamma!\,t^{-\gamma}+t^{-\delta}\eta(t) \qedhere
+G(t)=L\gamma!\,t^{-\gamma}+t^{-\delta}\eta(t) 
 \end{equation}
 \end{proof}
 

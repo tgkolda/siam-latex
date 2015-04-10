@@ -638,12 +638,12 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %\def\@opargbegintheorem#1#2#3{\par\bgroup%
 %   {\scshape #1\ #2\ ({\upshape #3}). }\it\ignorespaces}
 %\def\@endtheorem{\egroup\vspace{\belowdisplayskip}}
-%\def\proof{\par{\it Proof}. \ignorespaces}
-%
-%\def\endproof{\vbox{\hrule height0.6pt\hbox{%
-%   \vrule height1.3ex width0.6pt\hskip0.8ex
-%   \vrule width0.6pt}\hrule height0.6pt
-%  }}
+% \def\proof{\par{\it Proof}. \ignorespaces}
+
+% \def\endproof{\vbox{\hrule height0.6pt\hbox{%
+%    \vrule height1.3ex width0.6pt\hskip0.8ex
+%    \vrule width0.6pt}\hrule height0.6pt
+%   }}
 
 \newlength{\@sectionspace}
 \setlength{\@sectionspace}{1.3ex \@plus .5ex \@minus .2ex} %the space added before a new section
@@ -653,17 +653,17 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newcommand{\insertsectionspace}{\addvspace{\@sectionspace}}
 \newcommand{\removesectionspace}{\vspace{\@negsectionspace}} %I didn't end up needing these, but they might be needed somewhere
 
-\def\@begintheorem#1#2{\par\addvspace{\@sectionspace}{\scshape #1\ #2. }\itshape\ignorespaces}
+% \def\@begintheorem#1#2{\par\addvspace{\@sectionspace}{\scshape #1\ #2. }\itshape\ignorespaces}
 
-\def\@opargbegintheorem#1#2#3{\par\addvspace{\@sectionspace}{\scshape #1\ #2\ ({\upshape #3}). }\itshape\ignorespaces}
+% \def\@opargbegintheorem#1#2#3{\par\addvspace{\@sectionspace}{\scshape #1\ #2\ ({\upshape #3}). }\itshape\ignorespaces}
 
-\def\@endtheorem{\par\addvspace{\@sectionspace}}
+% \def\@endtheorem{\par\addvspace{\@sectionspace}}
 
-%\def\proof{\par\addvspace{\@sectionspace}\textit{Proof}. \ignorespaces}
+% \def\proof{\par\addvspace{\@sectionspace}\textit{Proof}. \ignorespaces}
 
-%\newcommand{\@proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
+% \newcommand{\@proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
 
-%\def\endproof{\ifmmode\@proofbox\else\@proofbox\par\addvspace{\@sectionspace}\fi}
+% \def\endproof{\ifmmode\@proofbox\else\@proofbox\par\addvspace{\@sectionspace}\fi}
 
 % \if@nocaps
 % \newcommand{\titleupper}[1]{#1}
@@ -1048,44 +1048,44 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %new: make new head for assumptions, remarks, etc. Numbered? Unnumbered?
 
 %%% create theorems, etc. with upright font, no italic
-\def\newheading#1{%
-  \@ifnextchar[{\@othmup{#1}}{\@nthmup{#1}}}
-\def\@nthmup#1#2{%
-  \@ifnextchar[{\@xnthmup{#1}{#2}}{\@ynthmup{#1}{#2}}}
-\def\@xnthmup#1#2[#3]{%
-  \expandafter\@ifdefinable\csname #1\endcsname
-    {\@definecounter{#1}\@newctr{#1}[#3]%
-     \expandafter\xdef\csname the#1\endcsname{%
-       \expandafter\noexpand\csname the#3\endcsname \@thmcountersep
-          \@thmcounterup{#1}}%
-     \global\@namedef{#1}{\@thmup{#1}{#2}}%
-     \global\@namedef{end#1}{\@endtheoremup}}}
-\def\@ynthmup#1#2{%
-  \expandafter\@ifdefinable\csname #1\endcsname
-    {\@definecounter{#1}%
-     \expandafter\xdef\csname the#1\endcsname{\@thmcounterup{#1}}%
-     \global\@namedef{#1}{\@thmup{#1}{#2}}%
-     \global\@namedef{end#1}{\@endtheoremup}}}
-\def\@othmup#1[#2]#3{%
-  \@ifundefined{c@#2}{\@nocounterr{#2}}%
-    {\expandafter\@ifdefinable\csname #1\endcsname
-    {\global\@namedef{the#1}{\@nameuse{the#2}}%
-  \global\@namedef{#1}{\@thmup{#2}{#3}}%
-  \global\@namedef{end#1}{\@endtheoremup}}}}
-\def\@thmup#1#2{%
-  \refstepcounter{#1}%
-  \@ifnextchar[{\@ythmup{#1}{#2}}{\@xthmup{#1}{#2}}}
-\def\@xthmup#1#2{%
-  \@begintheoremup{#2}{\csname the#1\endcsname}\ignorespaces}
-\def\@ythmup#1#2[#3]{%
-  \@opargbegintheoremup{#2}{\csname the#1\endcsname}{#3}\ignorespaces}
-\def\@thmcounterup#1{\noexpand\arabic{#1}}
-\def\@thmcountersep{.}
-\def\@begintheoremup#1#2{\trivlist
-   \item[\hskip \labelsep{\bfseries #1\ #2.}]\upshape}
-\def\@opargbegintheoremup#1#2#3{\trivlist
-      \item[\hskip \labelsep{\bfseries #1\ #2\ (#3).}]\upshape}
-\def\@endtheoremup{\endtrivlist}
+% \def\newheading#1{%
+%   \@ifnextchar[{\@othmup{#1}}{\@nthmup{#1}}}
+% \def\@nthmup#1#2{%
+%   \@ifnextchar[{\@xnthmup{#1}{#2}}{\@ynthmup{#1}{#2}}}
+% \def\@xnthmup#1#2[#3]{%
+%   \expandafter\@ifdefinable\csname #1\endcsname
+%     {\@definecounter{#1}\@newctr{#1}[#3]%
+%      \expandafter\xdef\csname the#1\endcsname{%
+%        \expandafter\noexpand\csname the#3\endcsname \@thmcountersep
+%           \@thmcounterup{#1}}%
+%      \global\@namedef{#1}{\@thmup{#1}{#2}}%
+%      \global\@namedef{end#1}{\@endtheoremup}}}
+% \def\@ynthmup#1#2{%
+%   \expandafter\@ifdefinable\csname #1\endcsname
+%     {\@definecounter{#1}%
+%      \expandafter\xdef\csname the#1\endcsname{\@thmcounterup{#1}}%
+%      \global\@namedef{#1}{\@thmup{#1}{#2}}%
+%      \global\@namedef{end#1}{\@endtheoremup}}}
+% \def\@othmup#1[#2]#3{%
+%   \@ifundefined{c@#2}{\@nocounterr{#2}}%
+%     {\expandafter\@ifdefinable\csname #1\endcsname
+%     {\global\@namedef{the#1}{\@nameuse{the#2}}%
+%   \global\@namedef{#1}{\@thmup{#2}{#3}}%
+%   \global\@namedef{end#1}{\@endtheoremup}}}}
+% \def\@thmup#1#2{%
+%   \refstepcounter{#1}%
+%   \@ifnextchar[{\@ythmup{#1}{#2}}{\@xthmup{#1}{#2}}}
+% \def\@xthmup#1#2{%
+%   \@begintheoremup{#2}{\csname the#1\endcsname}\ignorespaces}
+% \def\@ythmup#1#2[#3]{%
+%   \@opargbegintheoremup{#2}{\csname the#1\endcsname}{#3}\ignorespaces}
+% \def\@thmcounterup#1{\noexpand\arabic{#1}}
+% \def\@thmcountersep{.}
+% \def\@begintheoremup#1#2{\trivlist
+%    \item[\hskip \labelsep{\bfseries #1\ #2.}]\upshape}
+% \def\@opargbegintheoremup#1#2#3{\trivlist
+%       \item[\hskip \labelsep{\bfseries #1\ #2\ (#3).}]\upshape}
+% \def\@endtheoremup{\endtrivlist}
 
 
 \setlength{\textheight}{598pt} %{598.2275pt}
