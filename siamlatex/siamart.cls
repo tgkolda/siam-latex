@@ -578,11 +578,11 @@ Vol.\ #3, No.\ #4, pp.\ #5
                {\begin{list}{{\upshape (\roman{rmnum})}}{\usecounter{rmnum}
                 \setlength{\leftmargin}{0pt}
                 \setlength{\itemindent}{42pt}}}{\end{list}}
-\newcounter{muni}
-\newenvironment{remunerate}
-               {\begin{list}{{\upshape \arabic{muni}.}}{\usecounter{muni}
-                \setlength{\leftmargin}{0pt}
-                \setlength{\itemindent}{38pt}}}{\end{list}}
+% \newcounter{muni}
+% \newenvironment{remunerate}
+%                {\begin{list}{{\upshape \arabic{muni}.}}{\usecounter{muni}
+%                 \setlength{\leftmargin}{0pt}
+%                 \setlength{\itemindent}{38pt}}}{\end{list}}
                                 
 \newenvironment{@abssec}[1]{%
      \if@twocolumn

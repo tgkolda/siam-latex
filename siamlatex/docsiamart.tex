@@ -162,6 +162,10 @@
 \newcounter{example}
 \colorlet{texcscolor}{blue!50!black}
 \colorlet{texemcolor}{red!70!black}
+\colorlet{texpreamble}{black!75}
+
+\newcommand\bs{\symbol{'134}} % print backslash in typewriter OT1/T1
+\newcommand{\preamble}[2][\small]{\textcolor{texpreamble}{#1\texttt{#2 \emph{\% <- Preamble}}}\par}
 
 \lstdefinestyle{siamlatex}{%
   style=tcblatex,
@@ -217,23 +221,18 @@
 \subtitle{\today} 
 
 \author{Dianne Doe%
-  \thanks{Imagination Corp., Chicago, IL, \email{ddoe@imag.com}.}%
+  \thanks{Imagination Corp., Chicago, IL (\email{ddoe@imag.com}).}%
   \and
   Paul T. Frank%
-  \thanks{Department of Mathematics, Fictional University, Boise, ID.}
+  \thanks{Department of Applied Mathematics, Fictional University, Boise, ID
+    (\email{ptfrank@fictional.edu}, \email{jesmith@fictional.edu}).}
   \and
   Jane E. Smith%
-  \footnotemark[3] % Reuse the 3rd "thanks" footnote
-  \footnotemark[4] % Define contents below
+  \footnotemark[3]
 }
 
 \maketitle
 
-% Need to briefly change \thefootnote for inserting text explicitly
-% (rather than via \thanks)
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
-\footnotetext[4]{These are example author names.}
-\renewcommand{\thefootnote}{\arabic{footnote}}
 \end{tcbverbatimwrite}
 \input{\jobname_header.tex}
 %% ------------------------------------------------------------------
@@ -260,7 +259,6 @@
 %% ABSTRACT
 %% ------------------------------------------------------------------
 \begin{tcbverbatimwrite}{\jobname_abstract.tex}
-%\newcommand{\BibTeX}{{\scshape Bib}\TeX\xspace} <- Preamble
 \begin{abstract}
   Documentation is given for use of the SIAM \LaTeX\ macros.
   Instructions and suggestions for compliance with SIAM style
@@ -346,13 +344,11 @@ The addresses and support acknowledgments are added via
 \code{\thanks}. Each author's thanks should specify their address.
 The support acknowledgment should be put in a thanks for the title,
 unless specific support needs to be specified for individual authors,
-in which case it should follow the author address or be in a separate
-footnote.  
+in which case it should follow the author address.  
 %
-The header for this file was produced by the code in \cref{ex:header}, including
-examples of various footnote specifications.
+The header for this file was produced by the code in \cref{ex:header}, including an
+example of a shared footnote.
 %
-\Comment[To fix]{The fourth footnote on the cover page is not aligned with the other footnotes.}
 
 \examplefile[label={ex:header},listing only,%
 listing options={style=siamlatex,%
@@ -377,7 +373,9 @@ Authors are responsible for providing AMS numbers which can be found
 on the AMS web site \cite{AMSMSC2010}. The abstract, keywords, and AMS subject classifications
 for this document were specified in \cref{ex:abstract}.
 
-\examplefile[label={ex:abstract},listing only,%
+\examplefile[label={ex:abstract},%
+before upper={\preamble{\bs newcommand\{\bs BibTeX\}\{\{\bs scshape Bib\}\bs TeX\bs xspace\}}},
+listing only,%
 listing options={style=siamlatex,%
 {morekeywords=[2]{abstract,keywords,AMS}}}
 ]{Abstract, keywords, and AMS classifications}{\jobname_abstract.tex}
@@ -394,6 +392,7 @@ for equations, tables, figures, sections, etc..
 %
 Hyperlinks are created with the \code{\href} and \code{\url} commands,
 as shown in \cref{ex:href}.
+SIAM has also defined the \code{\email} command, as shown in \cref{ex:header}.
 
 \begin{example}[label={ex:href},bicolor]{Creating hyperlinks}
 Click \href{http://www.siam.org}{here} to go to the SIAM homepage;
@@ -418,8 +417,7 @@ This have the effect of rendering the item as a \texttt{mathop}.
 use many of the features of the package \code{amsmath} and examples
 from \cite{MiGo04}.
 
-\begin{example}[label={ex:bbm},bicolor]{Blackboard math}
-%\usepackage{amsfonts} <- Preamble
+\begin{example}[label={ex:bbm},bicolor,before upper={\preamble{\bs usepackage\{amsfonts\}}}]{Blackboard math}
 Blackboard bold characters, such as $\mathbb{C}$ and $\mathbb{R}$,
 should be created with the \texttt{amsfonts} package, although this
 is not included by default.
@@ -447,11 +445,12 @@ Display matrices can be rendered using environments from \texttt{amsmath}:
 Equation \cref{eq:matrices} shows some example matrices.
 \end{example}
 
-\begin{example}[label={ex:range},bicolor,%
+\begin{example}[label={ex:range},%
+before upper={\preamble{\bs usepackage\{braket,amsfonts\}}},%
+bicolor,%
 listing options={style=siamlatex,%
 {moretexcs=[2]{Range}}}
 ]{Using SIAM-defined macros}
-% \usepackage{braket,amsfonts} <- Preamble
 An example of a SIAM macro:
 \begin{equation}\label{eq:range}
   \Range(A) = \set{ y \in \mathbb{R}^n | y = Ax }
@@ -553,8 +552,9 @@ remark-like environments:
 \item \code{newsiamremark} - Italics header, normal body.
 \end{itemize}
 
-\begin{example}[bicolor,parbox=false]{New theorem-like environment}
-%\newsiamthm{claim}{Claim} <- Preamble
+\begin{example}[bicolor,%
+before upper={\preamble{\bs newsiamthm\{claim\}\{Claim\}}},%
+parbox=false]{New theorem-like environment}
 \begin{claim}\label{cl:constant}
   If $f'(x) = 0$ for all $x \in (a,b)$ then $f(x)$ is constant on $(a,b)$.
 \end{claim}
@@ -563,15 +563,17 @@ remark-like environments:
 \end{proof}
 \end{example}
 
-\begin{example}[bicolor,parbox=false]{New definition-like environment}
-%\newsiamdefn{defn}{Definition} <- Preamble
+\begin{example}[bicolor,%
+before upper={\preamble{\bs newsiamdefn\{defn\}\{Definition\}}},%
+parbox=false]{New definition-like environment}
 \begin{defn}\label{defn:sym}
   We say a matrix $A$ is \emph{symmetric} if $a_{ij} = a_{ji}$ for all $i,j$.
 \end{defn}
 \end{example}
 
-\begin{example}[bicolor,parbox=false]{New remark-like environment}
-%\newsiamremark{ex}{Example} <- Preamble
+\begin{example}[bicolor,%
+before upper={\preamble{\bs newsiamremark\{ex\}\{Example\}}},%
+parbox=false]{New remark-like environment}
 \begin{ex}[Trivial note]\label{ex:a}
   Let $f(x) = 2$. Since $f'(x) = 0$ for all $x$, $f$ is constant
   everywhere.
@@ -584,31 +586,6 @@ We can reference multiple types of objects with a single reference:
 \end{example}
 
 
-\section{Lists}
-
-\Comment[Possible change]{SIAM prefers special list styles where the
-  lines wrap back to the left marge, but they are awful. You can have
-  nested lists, for example. Is it necessary to retain them?.}
-
-An example of SIAM's preferred enumerated list environment is shown in
-\cref{ex:list}.
-\begin{example}[label=ex:list,bicolor]{SIAM's \texttt{remunerate} list style}
-\begin{remunerate}
-\item Use Gauss quadrature on each interval.
-\item Convert the integral to a linear combination of
-      integrals of products of B-splines and provide a recurrence for
-      integrating the product of a pair of B-splines.
-\item Convert the sums of B-splines to piecewise
-      B\'{e}zier format and integrate segment
-      by segment using the properties of the Bernstein polynomials.
-\item Express the product of a pair of B-splines as a linear combination
-      of B-splines.
-      Use this to reformulate the integrand as a linear combination
-      of B-splines, and integrate term by term.
-\item Integrate by parts.
-\end{remunerate}
-\end{example}
-
 \section{Tables}
 \label{sec:tab}
 
@@ -617,7 +594,6 @@ example uses subfloats via the \texttt{subfig} package, as well as
 special column options from the \texttt{array} package.
 
 \begin{tcbverbatimwrite}{\jobname_table.tex}
-%\usepackage{array,subfig} <- Preamble
 \newcolumntype{R}{>{$}r<{$}}  %
 \newcolumntype{V}[1]{>{[\;}*{#1}{R@{\;\;}}R<{\;]}} %
 \begin{table}[htbp]
@@ -648,7 +624,9 @@ fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
 \end{table}
 \end{tcbverbatimwrite}
 
-\examplefile[float=htpb,label={ex:table},listing only, listing options={%
+\examplefile[float=htpb,label={ex:table},%
+before upper={\preamble[\scriptsize]{\bs usepackage\{array,subfig\}}},%
+listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
 {Example table with subtables}{\jobname_table.tex}
 
@@ -672,7 +650,6 @@ fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
 \Cref{alg:buildtree} is produced by the code in \cref{ex:alg}.
 
 \begin{tcbverbatimwrite}{\jobname_alg.tex}
-%\usepackage{algorithmic} <- Preamble
 \begin{algorithm}
 \caption{Build tree}
 \label{alg:buildtree}
@@ -689,9 +666,11 @@ fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
 \end{algorithm}
 \end{tcbverbatimwrite}
 
-\examplefile[float=htpb,label={ex:alg},listing only, listing options={%
+\examplefile[float=htpb,label={ex:alg},%
+before upper={\preamble[\scriptsize]{\bs usepackage\{algorithmic\}}},%
+listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
-{Example table with subtables}{\jobname_alg.tex}
+{Example algorithm}{\jobname_alg.tex}
 
 \input{\jobname_alg.tex}
 
@@ -829,13 +808,6 @@ listing options={style=siamlatex,firstline=51,lastline=61,%
 
 \Comment{The new siam bib file is called \texttt{siamplain.bst}. There could also be a \texttt{siamalpha.bst} for alphabetic style references per the request of David Gleich.}
 
-\section{Other hyperlinks}
-\Cref{ex:email} shows an examil of the \code{\email} command.
-
-\begin{example}[label={ex:email},sidebyside,bicolor]{Email hyperlink}
-To obtain the data, send email 
-to \email{datasets@imag.com}. 
-\end{example}
 
 \appendix
 \section{Changes}
