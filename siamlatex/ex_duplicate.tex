@@ -1,0 +1,26 @@
+\usepackage{lipsum}
+\usepackage{amsfonts}
+
+\newcommand{\TheTitle}{A Mathematical Analysis of Frogs}
+\newcommand{\TheShortTitle}{Mathematics of Frogs}
+\newcommand{\TheAuthors}{Dianne Doe, Paul T. Frank, and Jane E. Smith}
+\newcommand{\TheShortAuthors}{D. Doe, P. T. Frank, and J. E. Smith}
+
+\newcommand{\TitleAndAuthorCommands}{%
+\title{A Mathematical Analysis of Frogs\thanks{This work was funded by the Frog Research Institute under contract no.~FRI-454.}}
+\author{Dianne Doe%
+  \thanks{Imagination Corp., Chicago, IL (\email{ddoe@imag.com}).}%
+  \and
+  Paul T. Frank%
+  \thanks{Department of Applied Mathematics, Fictional University, Boise, ID
+    (\email{ptfrank@fictional.edu}, \email{jesmith@fictional.edu}).}
+  \and
+  Jane E. Smith%
+  \footnotemark[3]}
+}
+
+\newcommand{\PageHeaderCommands}{%
+\pagestyle{myheadings}
+\thispagestyle{plain}
+\markboth{\TheAuthors}{\pretitle\TheShortTitle}
+}

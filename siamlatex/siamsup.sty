@@ -1,0 +1,17 @@
+\makeatletter
+\def\@suppname{\uppercase{Supplementary Materials: }}
+\def\@suppabbrv{S}
+\long\def\theequation{\@suppabbrv\@arabic \c@equation}
+\long\def\thefigure{\@suppabbrv\@arabic\c@figure}
+\long\def\thetable{\@suppabbrv\@arabic\c@table}
+\long\def\thesection{\@suppabbrv\@arabic\c@section}
+\long\def\thepage{\@suppabbrv\@arabic\c@page}
+\long\def\thetheorem{\@suppabbrv\@arabic\c@theorem}
+\long\def\@pretitle{\@suppname}
+\let\svbibcite\bibcite
+\def\bibcite#1#2{\svbibcite{#1}{\@suppabbrv#2}}
+\makeatletter
+\let\svbiblabel\@biblabel
+\def\@biblabel#1{\svbiblabel{\@suppabbrv#1}}
+\makeatother
+

@@ -1,0 +1,47 @@
+\documentclass[review]{siamart}
+\usepackage{siamsup}
+\input{ex_duplicate}
+\externaldocument[MAIN-]{ex_article}
+
+\begin{document}
+
+\TitleAndAuthorCommands
+\maketitle
+
+\PageHeaderCommands
+
+\section{A detailed example}
+
+Here we include a detailed example.
+Consider the following equation:
+\begin{equation}
+  \label{eq:suppa}
+  a^2 + b^2 = c^2.
+\end{equation}
+
+\lipsum[100-101]
+
+\begin{theorem}
+  An example theorem.
+\end{theorem}
+
+\lipsum[102]
+ 
+\begin{lemma}
+  An example lemma.
+\end{lemma}
+
+\lipsum[103-105]
+
+\section{Proof of \cref{MAIN-thm:bigthm}}
+\label{sec:proof}
+
+\lipsum[106-115]
+
+Citing an article in supplement: \cite{KoMa14}.
+
+\bibliographystyle{siamplain}
+\bibliography{ex_references}
+
+
+\end{document}

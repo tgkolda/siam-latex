@@ -1,0 +1,40 @@
+\documentclass[review]{siamart}
+\input{ex_duplicate}
+\externaldocument[S-]{ex_supplement}
+
+\begin{document}
+
+\TitleAndAuthorCommands
+\maketitle
+
+\PageHeaderCommands
+
+\begin{abstract}
+  \lipsum[1]
+\end{abstract}
+
+\begin{keywords}
+  frogs, analysis
+\end{keywords}
+
+\section{Introduction}
+\lipsum[2-3]
+
+\section{Main result}
+\lipsum[4-5]
+
+\begin{theorem}[$LDL^T$ Factorization \cite{GoVa13}]\label{thm:bigthm}
+  If $A \in \mathbb{R}^{n \times n}$ is symmetric and the principal submatrix $A(1:k,1:k)$ is nonsingular for $k=1:n-1$, then there exists a unit lower triangular matrix $L$ and a diagonal matrix 
+  \begin{displaymath}
+    D = \diag(d_1,\dots,d_n)
+  \end{displaymath}
+  such that $A=LDL^T$. The factorization is unique.
+\end{theorem}
+
+The proof is deferred to \cref{S-sec:proof}.
+
+\lipsum[6]
+
+\bibliographystyle{siamplain}
+\bibliography{ex_references}
+\end{document}

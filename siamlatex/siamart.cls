@@ -4,6 +4,9 @@
 %% 
 %% [[[DATE GOES HERE]]]
 %%
+%% Major overhaul including hyperlinks, clever cross-references, and
+%% supplemental file support.
+%% 
 %% You are not allowed to change this file. 
 %% 
 %% You are allowed to distribute this file under the condition that 
@@ -38,10 +41,8 @@
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
 \NeedsTeXFormat{LaTeX2e}[1995/06/01]
-%\ProvidesClass{siamltex}[2015/XX/XX vX.X LaTeX document e-class]
 \ProvidesClass{siamart}[2015/02/20 v1.0 LaTeX document e-class]
 \RequirePackage[leqno]{amsmath}
-%\RequirePackage{lineno}
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@titlepage
@@ -86,8 +87,6 @@
 \DeclareOption{notitlepage}{\@titlepagefalse}
 \DeclareOption{onecolumn}{\@twocolumnfalse}
 \DeclareOption{twocolumn}{\@twocolumntrue}
-%\DeclareOption{leqno}{\input{leqno.clo}}
-%\DeclareOption{subeqn}{\input{subeqn.clo}}
 \DeclareOption{translated}{\@translatedtrue} % jan 7 2004
 %\DeclareOption{openbib}{\@openbibtrue}
 \ExecuteOptions{letterpaper,10pt,twoside,onecolumn,leqno,draft,notitlepage}
@@ -206,13 +205,28 @@
 \if@compatibility
   \setlength\topmargin{\z@}
 \else
-   \setlength\topmargin {\z@}
+\setlength\topmargin {\z@}
 %  \@settopoint\topmargin
 \fi
 \if@review
-  \usepackage{lineno}
+  \RequirePackage{lineno}
   \linenumbers
-\else
+  % See http://phaseportrait.blogspot.com/2007/08/lineno-and-amsmath-compatibility.html
+  \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+    \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+    \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+    \renewenvironment{#1}%
+    {\linenomath\csname old#1\endcsname}%
+    {\csname oldend#1\endcsname\endlinenomath}}% 
+  \newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+    \patchAmsMathEnvironmentForLineno{#1}%
+    \patchAmsMathEnvironmentForLineno{#1*}}%
+  \patchBothAmsMathEnvironmentsForLineno{equation}%
+  \patchBothAmsMathEnvironmentsForLineno{align}%
+  \patchBothAmsMathEnvironmentsForLineno{flalign}%
+  \patchBothAmsMathEnvironmentsForLineno{alignat}%
+  \patchBothAmsMathEnvironmentsForLineno{gather}%
+  \patchBothAmsMathEnvironmentsForLineno{multline}%
 \fi
 \setlength\footnotesep{6.65\p@}
 \skip\footins 13\p@ \@plus 4\p@ \@minus 2\p@
@@ -343,7 +357,8 @@
     \let\subsectionmark\@gobble
     }
 
-
+\def\@pretitle{}
+\def\pretitle{\@pretitle}
 \newcommand\maketitle{\par
   \begingroup\def\@fnsymbol##1{\ensuremath{\ifcase##1\or *\or \dagger\or \ddagger\or
    \mathsection\or \mathparagraph\or \|\or \#\or \dagger\dagger
@@ -416,7 +431,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \@slugger
   \begin{center}%
 \@supertitle%
-    {\bfseries\@ucnothanks\@title\par}%
+    {\bfseries\@pretitle\@ucnothanks{\@title}\par}%
     \vskip .075in%
     {\footnotesize
       \spaceskip=1.5\fontdimen2\the\font
@@ -578,11 +593,11 @@ Vol.\ #3, No.\ #4, pp.\ #5
                {\begin{list}{{\upshape (\roman{rmnum})}}{\usecounter{rmnum}
                 \setlength{\leftmargin}{0pt}
                 \setlength{\itemindent}{42pt}}}{\end{list}}
-% \newcounter{muni}
-% \newenvironment{remunerate}
-%                {\begin{list}{{\upshape \arabic{muni}.}}{\usecounter{muni}
-%                 \setlength{\leftmargin}{0pt}
-%                 \setlength{\itemindent}{38pt}}}{\end{list}}
+\newcounter{muni}
+\newenvironment{remunerate}
+               {\begin{list}{{\upshape \arabic{muni}.}}{\usecounter{muni}
+                \setlength{\leftmargin}{0pt}
+                \setlength{\itemindent}{38pt}}}{\end{list}}
                                 
 \newenvironment{@abssec}[1]{%
      \if@twocolumn
@@ -638,12 +653,12 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %\def\@opargbegintheorem#1#2#3{\par\bgroup%
 %   {\scshape #1\ #2\ ({\upshape #3}). }\it\ignorespaces}
 %\def\@endtheorem{\egroup\vspace{\belowdisplayskip}}
-% \def\proof{\par{\it Proof}. \ignorespaces}
-
-% \def\endproof{\vbox{\hrule height0.6pt\hbox{%
-%    \vrule height1.3ex width0.6pt\hskip0.8ex
-%    \vrule width0.6pt}\hrule height0.6pt
-%   }}
+%\def\proof{\par{\it Proof}. \ignorespaces}
+%
+%\def\endproof{\vbox{\hrule height0.6pt\hbox{%
+%   \vrule height1.3ex width0.6pt\hskip0.8ex
+%   \vrule width0.6pt}\hrule height0.6pt
+%  }}
 
 \newlength{\@sectionspace}
 \setlength{\@sectionspace}{1.3ex \@plus .5ex \@minus .2ex} %the space added before a new section
@@ -652,38 +667,6 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 \newcommand{\insertsectionspace}{\addvspace{\@sectionspace}}
 \newcommand{\removesectionspace}{\vspace{\@negsectionspace}} %I didn't end up needing these, but they might be needed somewhere
-
-% \def\@begintheorem#1#2{\par\addvspace{\@sectionspace}{\scshape #1\ #2. }\itshape\ignorespaces}
-
-% \def\@opargbegintheorem#1#2#3{\par\addvspace{\@sectionspace}{\scshape #1\ #2\ ({\upshape #3}). }\itshape\ignorespaces}
-
-% \def\@endtheorem{\par\addvspace{\@sectionspace}}
-
-% \def\proof{\par\addvspace{\@sectionspace}\textit{Proof}. \ignorespaces}
-
-% \newcommand{\@proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
-
-% \def\endproof{\ifmmode\@proofbox\else\@proofbox\par\addvspace{\@sectionspace}\fi}
-
-% \if@nocaps
-% \newcommand{\titleupper}[1]{#1}
-% \else
-% \newcommand{\titleupper}[1]{\uppercase{#1}}
-% \fi
-
-  % \newtheorem{theorem}{Theorem}
-  % \newtheorem{lemma}[theorem]{Lemma}
-  % \newtheorem{corollary}[theorem]{Corollary}
-  % \newtheorem{proposition}[theorem]{Proposition}
-  % \newtheorem{definition}[theorem]{Definition}
-% \else
-%   \newtheorem{theorem}{Theorem}[section]
-%   \newtheorem{lemma}[theorem]{Lemma}
-%   \newtheorem{corollary}[theorem]{Corollary}
-%   \newtheorem{proposition}[theorem]{Proposition}
-%   \newtheorem{definition}[theorem]{Definition}
-% \fi
-
 
 % FROM FIXUP.STY
 % We now redefine the eqnarray environment to correct the space around
@@ -978,65 +961,47 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 
 
-\def\newarticle{\input{newart.tex}}
+% \def\newarticle{\input{newart.tex}}
 
-\RequirePackage[dvips]{color}
-%\definecolor{header1}{cmyk}{.9,.5,0,.35}
-%\definecolor{blue1}{cmyk}{.9,.7,0,0}
-%\definecolor{blue2}{cmyk}{.93,.95,.2,.07}
-%\definecolor{maroon}{cmyk}{.4,1,.3,.2}
-%\definecolor{gold1}{cmyk}{.2,.2,1,.1}
-%\definecolor{gray}{cmyk}{0,0,0,.5}
-%\definecolor{green1}{cmyk}{1,0,1,0}
-%\definecolor{proofcolor}{cmyk}{1,0,1,0}
-%\definecolor{red1}{cmyk}{0,1,.8,0}
-%\definecolor{orange1}{cmyk}{0,.55,1,0}
-%\definecolor{strip}{cmyk}{.6,.1,.1,.1}
+% \RequirePackage[dvips]{color}
+% %\definecolor{header1}{cmyk}{.9,.5,0,.35}
+% %\definecolor{blue1}{cmyk}{.9,.7,0,0}
+% %\definecolor{blue2}{cmyk}{.93,.95,.2,.07}
+% %\definecolor{maroon}{cmyk}{.4,1,.3,.2}
+% %\definecolor{gold1}{cmyk}{.2,.2,1,.1}
+% %\definecolor{gray}{cmyk}{0,0,0,.5}
+% %\definecolor{green1}{cmyk}{1,0,1,0}
+% %\definecolor{proofcolor}{cmyk}{1,0,1,0}
+% %\definecolor{red1}{cmyk}{0,1,.8,0}
+% %\definecolor{orange1}{cmyk}{0,.55,1,0}
+% %\definecolor{strip}{cmyk}{.6,.1,.1,.1}
 
-\definecolor{header1}{cmyk}{0,0,0,1}
-\definecolor{blue1}{cmyk}{0,0,0,1}
-\definecolor{blue2}{cmyk}{0,0,0,1}
-\definecolor{maroon}{cmyk}{0,0,0,1}
-\definecolor{gold1}{cmyk}{0,0,0,1}
-\definecolor{gray}{cmyk}{0,0,0,1}
-\definecolor{green1}{cmyk}{0,0,0,1}
-\definecolor{proofcolor}{cmyk}{0,0,0,1}
-\definecolor{red1}{cmyk}{0,0,0,1}
-\definecolor{orange1}{cmyk}{0,0,0,1}
-\definecolor{strip}{cmyk}{0,0,0,1}
+% \definecolor{header1}{cmyk}{0,0,0,1}
+% \definecolor{blue1}{cmyk}{0,0,0,1}
+% \definecolor{blue2}{cmyk}{0,0,0,1}
+% \definecolor{maroon}{cmyk}{0,0,0,1}
+% \definecolor{gold1}{cmyk}{0,0,0,1}
+% \definecolor{gray}{cmyk}{0,0,0,1}
+% \definecolor{green1}{cmyk}{0,0,0,1}
+% \definecolor{proofcolor}{cmyk}{0,0,0,1}
+% \definecolor{red1}{cmyk}{0,0,0,1}
+% \definecolor{orange1}{cmyk}{0,0,0,1}
+% \definecolor{strip}{cmyk}{0,0,0,1}
 
-\RequirePackage{ifpdf}
+
+
 \RequirePackage{graphics,graphicx}
+\RequirePackage{xr-hyper}
 \RequirePackage[colorlinks=false,frenchlinks=false,pdfborder={0 0 0},naturalnames=false,hypertexnames=false,breaklinks]{hyperref}
-%\urlstyle{same}
+\RequirePackage{ifpdf}
 \ifpdf
 \else
-\usepackage{breakurl}
+   \RequirePackage{breakurl}
 \fi
-%\def\wwwbrowser{C:\string\Program\space
-%Files\string\Plus!\string\Microsoft\space
-%Internet\string\iexplore.exe}
-%\definecolor{extlink}{cmyk}{.05,1,1,.45}
-%\definecolor{intlink}{cmyk}{1,0,1,.5}
-%\definecolor{softpage}{cmyk}{0,0.01,.05,0}
-%\definecolor{extlink}{cmyk}{0,0,0,0.7}
-%\definecolor{intlink}{cmyk}{0,0,0,0.7}
-%\definecolor{softpage}{cmyk}{0,0,0,0.7}
 
-% \def\@linkcolor{intlink}
-% \def\@anchorcolor{black}
-% \def\@citecolor{intlink}
-% \def\@filecolor{cyan}
-% \def\@urlcolor{extlink}
-% \def\@menucolor{red}
-%%%\def\@pagecolor{softpage}
 \newcommand{\email}[1]{\protect\href{mailto:#1}{#1}}
 \newcommand{\mref}[2]{\href{mailto:#1}{#2}}
 \renewcommand{\mref}[1]{\burlalt{mailto:#1}{#1}}%new
-
-
-\newcommand{\web}[1]{\href{#1}{#1}}
-%%%\pagecolor{softpage}
 
 
 %%%%to fix link jump to "bottom" of float
@@ -1044,51 +1009,124 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 \setlength{\parskip}{1\parskip}
 
-
-%new: make new head for assumptions, remarks, etc. Numbered? Unnumbered?
-
-%%% create theorems, etc. with upright font, no italic
-% \def\newheading#1{%
-%   \@ifnextchar[{\@othmup{#1}}{\@nthmup{#1}}}
-% \def\@nthmup#1#2{%
-%   \@ifnextchar[{\@xnthmup{#1}{#2}}{\@ynthmup{#1}{#2}}}
-% \def\@xnthmup#1#2[#3]{%
-%   \expandafter\@ifdefinable\csname #1\endcsname
-%     {\@definecounter{#1}\@newctr{#1}[#3]%
-%      \expandafter\xdef\csname the#1\endcsname{%
-%        \expandafter\noexpand\csname the#3\endcsname \@thmcountersep
-%           \@thmcounterup{#1}}%
-%      \global\@namedef{#1}{\@thmup{#1}{#2}}%
-%      \global\@namedef{end#1}{\@endtheoremup}}}
-% \def\@ynthmup#1#2{%
-%   \expandafter\@ifdefinable\csname #1\endcsname
-%     {\@definecounter{#1}%
-%      \expandafter\xdef\csname the#1\endcsname{\@thmcounterup{#1}}%
-%      \global\@namedef{#1}{\@thmup{#1}{#2}}%
-%      \global\@namedef{end#1}{\@endtheoremup}}}
-% \def\@othmup#1[#2]#3{%
-%   \@ifundefined{c@#2}{\@nocounterr{#2}}%
-%     {\expandafter\@ifdefinable\csname #1\endcsname
-%     {\global\@namedef{the#1}{\@nameuse{the#2}}%
-%   \global\@namedef{#1}{\@thmup{#2}{#3}}%
-%   \global\@namedef{end#1}{\@endtheoremup}}}}
-% \def\@thmup#1#2{%
-%   \refstepcounter{#1}%
-%   \@ifnextchar[{\@ythmup{#1}{#2}}{\@xthmup{#1}{#2}}}
-% \def\@xthmup#1#2{%
-%   \@begintheoremup{#2}{\csname the#1\endcsname}\ignorespaces}
-% \def\@ythmup#1#2[#3]{%
-%   \@opargbegintheoremup{#2}{\csname the#1\endcsname}{#3}\ignorespaces}
-% \def\@thmcounterup#1{\noexpand\arabic{#1}}
-% \def\@thmcountersep{.}
-% \def\@begintheoremup#1#2{\trivlist
-%    \item[\hskip \labelsep{\bfseries #1\ #2.}]\upshape}
-% \def\@opargbegintheoremup#1#2#3{\trivlist
-%       \item[\hskip \labelsep{\bfseries #1\ #2\ (#3).}]\upshape}
-% \def\@endtheoremup{\endtrivlist}
-
-
 \setlength{\textheight}{598pt} %{598.2275pt}
+
+\usepackage{amsmath}
+
+% This needs to be loaded *before* cleveref
+\usepackage{algorithm}
+
+\makeatletter
+\renewcommand{\ALG@name}{\sc Algorithm}
+\makeatother
+
+
+% This needs to be loaded *before* cleveref
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+
+\usepackage[capitalize,nameinlink]{cleveref}
+\crefformat{section}{#2\S#1#3}
+\crefrangeformat{section}{#3\S\S#1#4--#5#2#6}
+\crefmultiformat{section}{#2\S\S#1#3}{ and #2#1#3}{, #2#1#3}{, and #2#1#3}
+\crefrangemultiformat{section}{#3\S\S#1#4--#5#2#6}%
+{ and #3#1#4--#5#2#6}{, #3#1#4--#5#2#6}{, and #3#1#4--#5#2#6}
+
+\Crefformat{section}{#2Section~#1#3}
+\Crefrangeformat{section}{#3Sections~#1#4--#5#2#6}
+\Crefmultiformat{section}{#2Sections~#1#3}{ and #2#1#3}{, #2#1#3}{, and #2#1#3}
+\Crefrangemultiformat{section}{#3Sections~#1#4--#5#2#6}%
+{ and #3#1#4--#5#2#6}{, #3#1#4--#5#2#6}{, and #3#1#4--#5#2#6}
+
+\crefformat{equation}{#2(#1)#3}
+\crefrangeformat{equation}{(#3#1#4--#5#2#6)}
+\crefmultiformat{equation}{#2(#1)#3}{ and #2(#1)#3}
+{, #2(#1)#3}{, and #2(#1)#3}
+\crefrangemultiformat{equation}{(#3#1#4--#5#2#6)}%
+{ and (#3#1#4--#5#2#6)}{, (#3#1#4--#5#2#6)}{, and (#3#1#4--#5#2#6)}
+
+\Crefformat{equation}{#2Equation~(#1)#3}
+\Crefrangeformat{equation}{Equations~(#3#1#4--#5#2#6)}
+\Crefmultiformat{equation}{Equations~(#2#1#3)}{ and (#2#1#3)}
+{, (#2#1#3)}{, and (#2#1#3)}
+\Crefrangemultiformat{equation}{Equations~(#3#1#4--#5#2#6)}%
+{ and (#3#1#4--#5#2#6)}{, (#3#1#4--#5#2#6)}{, and (#3#1#4--#5#2#6)}
+
+% Setting the links to green for now so that we can see them!
+% This should be an option where we can enable and disable them.
+\RequirePackage{xcolor}
+\colorlet{siamlinkcolor}{green!50!black}
+\hypersetup{
+  colorlinks = true,
+  allcolors = siamlinkcolor,
+}
+
+
+%% --- Setting up theorems using ntheorem package ---
+% The \newtheorem calls have to happen /after/ loading cleverref.
+\makeatletter
+\renewtheoremstyle{plain}%
+ {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ ##2\theorem@separator]}%
+ {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\theorem@separator]}
+\renewtheoremstyle{nonumberplain}%
+ {\item[\theorem@headerfont\hskip\labelsep\hskip\parindent ##1\theorem@separator]}%
+ {\item[\theorem@headerfont\hskip\labelsep\hskip\parindent ##1\ (##3)\theorem@separator]}
+\makeatother
+
+% Retained from old style file
+\newcommand{\proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
+
+% Proof
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\normalfont\itshape}
+\theorembodyfont{\normalfont}
+\theoremseparator{.}
+\theoremsymbol{\proofbox}
+\newtheorem{proof}{Proof}
+
+% Theorem
+\theoremstyle{plain}
+\theoremheaderfont{\normalfont\sc}
+\theorembodyfont{\normalfont\itshape}
+\theoremseparator{.}
+\theoremsymbol{}
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\newsiamthm}[2]{
+  \theoremstyle{plain}
+  \theoremheaderfont{\normalfont\sc}
+  \theorembodyfont{\normalfont\itshape}
+  \theoremseparator{.}
+  \theoremsymbol{}
+  \newtheorem{#1}[theorem]{#2}
+}
+
+% Other predefined environments
+\newsiamthm{lemma}{Lemma}
+\newsiamthm{corollary}{Corollary}
+\newsiamthm{proposition}{Proposition}
+\newsiamthm{definition}{Definition}
+
+\newcommand{\newsiamdefn}[2]{
+  \theoremstyle{plain}
+  \theoremheaderfont{\normalfont\sc}
+  \theorembodyfont{\normalfont}
+  \theoremseparator{.}
+  \theoremsymbol{}
+  \newtheorem{#1}[theorem]{#2}
+}
+
+\newcommand{\newsiamremark}[2]{
+  \theoremstyle{plain}
+  \theoremheaderfont{\normalfont\itshape}
+  \theorembodyfont{\normalfont}
+  \theoremseparator{.}
+  \theoremsymbol{}
+  \newtheorem{#1}[theorem]{#2}
+}
+
+
+
+
 
 \endinput
 %% 
