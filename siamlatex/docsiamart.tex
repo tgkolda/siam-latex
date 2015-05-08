@@ -21,6 +21,13 @@
 %% Algorithm style, could alternatively use algpseudocode
 \usepackage{algorithmic}
 
+%% For figures
+\usepackage{graphicx,epstopdf,subfig}
+
+\usetikzlibrary{arrows,intersections}
+
+
+
 %% ------------------------------------------------------------------
 %% End Code used in examples, needed to reproduce 
 %% ------------------------------------------------------------------
@@ -121,8 +128,8 @@
 \begin{tcbverbatimwrite}{\jobname_markboth.tex}
 \pagestyle{myheadings}
 \thispagestyle{plain}
-\markboth{Dianne Doe, Paul T. Frank, and Jane E. Smith}%
-{Guide to Using  SIAM'S \LaTeX\ Style}
+\markboth{\MakeUppercase{Dianne Doe, Paul T. Frank, and Jane E. Smith}}%
+{\MakeUppercase{\siampretitle\@ Guide to Using  SIAM'S \LaTeX\ Style}}
 \end{tcbverbatimwrite}
 \input{\jobname_markboth.tex}
 %% ------------------------------------------------------------------
@@ -196,6 +203,9 @@ The outline of a SIAM \LaTeX\ article is shown in \cref{ex:outline}.
 
 Class options can be included in the bracketed argument of the
 command, separated by commas.
+The \code{supplement} option specifies that the file is a supplement
+and not the main document, causing changes in the appearance of the title and
+numbering; see \cref{sec:supplement} for details.
 By default, lines which extend past the
 margin will have black boxes next to them to help authors identify
 lines that they need to fix, by rewriting or inserting
@@ -504,13 +514,96 @@ fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
 before upper={\preamble[\scriptsize]{\bs usepackage\{array,subfig\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
-{Example table with subtables}{\jobname_table.tex}
+{Example table with subtables.}{\jobname_table.tex}
 
 \input{\jobname_table.tex}
 
 \section{Figures}
 \label{sec:fig}
-\Comment{Need to add Tikz and epstopdf examples in this section.}
+
+\Cref{ex:fig} shows the code to generate \cref{fig:testfig}.  This
+example uses the \texttt{graphicx} package for the
+\code{\includegraphics} command.  SIAM requires EPS figures for final
+production, but most people work in \texttt{pdflatex}. Therefore, we
+recommend the package \texttt{epstopdf} to automatically convert EPS
+images to PDF for inclusion in PDF documents created by
+\texttt{pdflatex}.
+
+
+\begin{tcbverbatimwrite}{\jobname_fig.tex}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[$\epsilon_{\max}=5$]{\label{fig:a}\includegraphics{lexample_fig1}}
+  \subfloat[$\epsilon_{\max}=0.5$]{\label{fig:b}\includegraphics{lexample_fig2}}
+  \caption{Example figure using external image files.}
+  \label{fig:testfig}
+\end{figure}
+\end{tcbverbatimwrite}
+
+\examplefile[label={ex:fig},%
+before upper={\preamble[\scriptsize]{\bs usepackage\{graphicx,epstopdf,subfig\}}},%
+listing only, listing options={%
+  style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
+{Example figure with subfigures and external files}{\jobname_fig.tex}
+
+\input{\jobname_fig.tex}
+
+PGF is a TeX macro package for generating graphics. It is platform- and format-independent and works together with the most important TeX backend drivers, including pdftex and dvips. It comes with a user-friedly syntax layer called TikZ.
+More details can be found at \url{http://sourceforge.net/projects/pgf/}, and detailed instructions are available in the manual.
+\Cref{ex:tikz} shows the code to generate \cref{fig:tikz}, which uses TikZ/PGF.
+This example was written by Henri Menke at
+\url{http://texwelt.de/wissen/fragen/4912/skizze-zur-illustration-linearer-regression}.
+\begin{tcbverbatimwrite}{\jobname_tikz.tex}
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    thick,
+    >=stealth',
+    dot/.style = {
+      draw,
+      fill = white,
+      circle,
+      inner sep = 0pt,
+      minimum size = 4pt
+    }
+    ]
+    \coordinate (O) at (0,0);
+    \draw[->] (-0.3,0) -- (8,0) coordinate[label = {below:$x$}] (xmax);
+    \draw[->] (0,-0.3) -- (0,5) coordinate[label = {right:$f(x)$}] (ymax);
+    \path[name path=x] (0.3,0.5) -- (6.7,4.7);
+    \path[name path=y] plot[smooth] coordinates {(-0.3,2) (2,1.5) (4,2.8) (6,5)};
+    \scope[name intersections = {of = x and y, name = i}]
+    \fill[gray!20] (i-1) -- (i-2 |- i-1) -- (i-2) -- cycle;
+    \draw      (0.3,0.5) -- (6.7,4.7) node[pos=0.8, below right] {Sekante};
+    \draw[red] plot[smooth] coordinates {(-0.3,2) (2,1.5) (4,2.8) (6,5)};
+    \draw (i-1) node[dot, label = {above:$P$}] (i-1) {} -- node[left]
+    {$f(x_0)$} (i-1 |- O) node[dot, label = {below:$x_0$}] {};
+    \path (i-2) node[dot, label = {above:$Q$}] (i-2) {} -- (i-2 |- i-1)
+    node[dot] (i-12) {};
+    \draw           (i-12) -- (i-12 |- O) node[dot,
+    label = {below:$x_0 + \varepsilon$}] {};
+    \draw[blue, <->] (i-2) -- node[right] {$f(x_0 + \varepsilon) - f(x_0)$}
+    (i-12);
+    \draw[blue, <->] (i-1) -- node[below] {$\varepsilon$} (i-12);
+    \path       (i-1 |- O) -- node[below] {$\varepsilon$} (i-2 |- O);
+    \draw[gray]      (i-2) -- (i-2 -| xmax);
+    \draw[gray, <->] ([xshift = -0.5cm]i-2 -| xmax) -- node[fill = white]
+    {$f(x_0 + \varepsilon)$}  ([xshift = -0.5cm]xmax);
+    \endscope
+  \end{tikzpicture}
+  \caption{Example TikZ figure by Henri Menke.}  
+  \label{fig:tikz}
+\end{figure}
+\end{tcbverbatimwrite}
+
+\examplefile[label={ex:tikz},%
+before upper={\preamble[\scriptsize]{\bs usetikzlibrary\{arrows,intersections\}}},%
+listing only, listing options={%
+  style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
+{Example TikZ/PGF for platform-independent graphics.}{\jobname_tikz.tex}
+
+\input{\jobname_tikz.tex}
+
 
 \section{Algorithms}
 \label{sec:algs}
@@ -602,8 +695,10 @@ Section~\ref{sec:intro}
 \end{example}
 
 \section{Supplemental material}
-
+\label{sec:supplement}
 \Comment{Explain how to do supplementary material, including \LaTeX\ files as well as multimedia.}
+
+No appendices in supplements!
 
 \section{Bibliography}
 
