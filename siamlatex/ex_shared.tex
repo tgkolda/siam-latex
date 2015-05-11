@@ -1,13 +1,40 @@
+% SIAM Shared Information Template
+% This is information that is shared between the main document and any
+% supplement. If not supplement is required, then this information can
+% be included directly in the main document.
+
+% Packages and macros go here
 \usepackage{lipsum}
 \usepackage{amsfonts}
+\usepackage{array}
+\usepackage{subfig}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{algorithmic}
+\usepackage{ifpdf}
+\usepackage{accsupp}
+\ifpdf
+  \DeclareGraphicsExtensions{.eps,.pdf,.png,.jpg}
+\else
+  \DeclareGraphicsExtensions{.eps}
+\fi
 
-\newcommand{\TheTitle}{A Mathematical Analysis of Frogs}
-\newcommand{\TheShortTitle}{Mathematics of Frogs}
+\newcolumntype{R}{>{$}r<{$}}  %
+\newcolumntype{V}[1]{>{[\;}*{#1}{R@{\;\;}}R<{\;]}} %
+
+% Full title for title and pdftitle
+\newcommand{\TheTitle}{An Example Article} 
+% Short title for running head
+\newcommand{\TheShortTitle}{An Example Article} 
+% Full author list, but not thanks, for  pdfauthor
 \newcommand{\TheAuthors}{Dianne Doe, Paul T. Frank, and Jane E. Smith}
+% Short author list for running head
 \newcommand{\TheShortAuthors}{D. Doe, P. T. Frank, and J. E. Smith}
 
+% Title and Author. If the supplement option is on, then
+% "Supplementary Material" is automatically inserted before the title.
 \newcommand{\TitleAndAuthorCommands}{%
-\title{A Mathematical Analysis of Frogs\thanks{This work was funded by the Frog Research Institute under contract no.~FRI-454.}}
+\title{\MakeUppercase{\TheTitle}\thanks{This work was funded by the Frog Research Institute under contract no.~FRI-454.}}
 \author{Dianne Doe%
   \thanks{Imagination Corp., Chicago, IL (\email{ddoe@imag.com}).}%
   \and
@@ -19,8 +46,17 @@
   \footnotemark[3]}
 }
 
-\newcommand{\PageHeaderCommands}{%
+% Declare page headings
 \pagestyle{myheadings}
-\thispagestyle{plain}
-\markboth{\TheAuthors}{\siampretitle\TheShortTitle}
+\markboth{\MakeUppercase{\TheAuthors}}{\MakeUppercase{\siampretitle\TheShortTitle}}
+
+% Optional: Set up PDF title and authors
+\hypersetup{%
+  pdftitle={\siampretitle\TheTitle},
+  pdfauthor={\TheAuthors}
 }
+
+%%% Local Variables: 
+%%% mode:latex
+%%% TeX-master: "ex_article"
+%%% End: 

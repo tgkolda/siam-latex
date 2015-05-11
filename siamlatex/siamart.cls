@@ -250,6 +250,24 @@
 
 
 %% <<tgk<<
+
+%% >>tgk>> --- Added Summer 2015 ---
+%%
+%% Fix to make bookmarks show up when using pdflatex (+hypertex).
+%%
+\setcounter{tocdepth}{3}
+%% <<tgk<<
+
+%% >>tgk>> --- Added Summer 2015 ---
+%%
+%% First step to adding the ntheorem package for theorems, etc. Second
+%% step is further down below. Need to split them because of the way
+%% that cleveref works.
+%%
+% This needs to be loaded *before* cleveref and lineno
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+%% <<tgk<<
+
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Support for "review" class option to turn on linenumbers via the
@@ -257,7 +275,7 @@
 %% packages do not play well together.
 %%
 \if@review
-  \RequirePackage{lineno}
+  \RequirePackage[displaymath,mathlines]{lineno}
   \linenumbers
   % The \linenumbers command does not play nice with amsmath, so we
   % have added some patches to fix it. See   
@@ -278,7 +296,7 @@
   \patchBothAmsMathEnvironmentsForLineno{gather}%
   \patchBothAmsMathEnvironmentsForLineno{multline}%
 \fi
-%% ---
+%% <<tgk<<
 
 \setlength\footnotesep{6.65\p@}
 \skip\footins 13\p@ \@plus 4\p@ \@minus 2\p@
@@ -882,6 +900,9 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 \newcounter{figure}
 %% >>tgk>> --- Modified Summer 2015 ---
+%%
+%% Added \siamprelabel for supplement.
+%%
 \renewcommand\thefigure{\siamprelabel\@arabic\c@figure}
 %% <<tgk<<
 \def\fps@figure{tp}
@@ -1207,27 +1228,21 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Adding algorithm support, including modifying the name.
+%% Note that the SIAM style manual wants the "Algorithm" title to be
+%% in smallcaps, but it's not clear why. It's not consistent with
+%% figure and table.
 %%
 
 % This needs to be loaded *before* cleveref
 \usepackage{algorithm}
 
 \makeatletter
-\renewcommand{\ALG@name}{\sc Algorithm}
+\renewcommand{\ALG@name}{Algorithm}
 \renewcommand\thealgorithm{\siamprelabel\@arabic\c@algorithm}
 \makeatother
 
 %% <<tgk<<
 
-%% >>tgk>> --- Added Summer 2015 ---
-%%
-%% First step to adding the ntheorem package for theorems, etc. Second
-%% step is further down below. Need to split them because of the way
-%% that cleveref works.
-%%
-% This needs to be loaded *before* cleveref
-\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
-%% <<tgk<<
 
 %% >>tgk>> --- Added Summer 2015 ---
 %%
@@ -1292,6 +1307,10 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 % Retained from old style file
 \newcommand{\proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
+
+% Extra space around theorem-like environments
+\theorempreskip{1ex}
+\theorempostskip{1ex}
 
 % Proof environment: No number, italic header, normal body, ends with proofbox.
 \theoremstyle{nonumberplain}
