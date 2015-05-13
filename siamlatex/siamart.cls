@@ -1284,22 +1284,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %%
 \usepackage[capitalize,nameinlink]{cleveref}
 
-% Customized to use \S rather than the name "section", as preferred by
-% SIAM. 
-\crefformat{section}{#2\S#1#3}
-\crefrangeformat{section}{#3\S\S#1#4--#5#2#6}
-\crefmultiformat{section}{#2\S\S#1#3}{ and #2#1#3}{, #2#1#3}{, and #2#1#3}
-\crefrangemultiformat{section}{#3\S\S#1#4--#5#2#6}%
-{ and #3#1#4--#5#2#6}{, #3#1#4--#5#2#6}{, and #3#1#4--#5#2#6}
+% Per SIAM Style Manual, "section" should be lowercase
+\crefname{section}{section}{sections}
+\crefname{subsection}{subsection}{subsections}
 
-% But spell out section at the beginning of a sentence.
-\Crefformat{section}{#2Section~#1#3}
-\Crefrangeformat{section}{#3Sections~#1#4--#5#2#6}
-\Crefmultiformat{section}{#2Sections~#1#3}{ and #2#1#3}{, #2#1#3}{, and #2#1#3}
-\Crefrangemultiformat{section}{#3Sections~#1#4--#5#2#6}%
-{ and #3#1#4--#5#2#6}{, #3#1#4--#5#2#6}{, and #3#1#4--#5#2#6}
+% Per SIAM Style Manual, "Figure" should be spelled out in references
+\Crefname{figure}{Figure}{Figures}
 
-% Don't say equation in front on an equation.
+% Per SIAM Style Manual, don't say equation in front on an equation.
 \crefformat{equation}{#2(#1)#3}
 \crefrangeformat{equation}{(#3#1#4--#5#2#6)}
 \crefmultiformat{equation}{#2(#1)#3}{ and #2(#1)#3}

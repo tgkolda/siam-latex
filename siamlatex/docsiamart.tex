@@ -24,8 +24,11 @@
 %% For figures
 \usepackage{graphicx,epstopdf,subfig}
 
+%% For TikZ
 \usetikzlibrary{arrows,intersections}
 
+%% For referencing line numbers
+\Crefname{ALC@unique}{Line}{Lines}
 
 
 %% ------------------------------------------------------------------
@@ -682,8 +685,11 @@ listing only, listing options={%
 SIAM automatically includes the \texttt{algorithm} package in the
 class definition. Users have the choice of \texttt{algpseudocode},
 \texttt{algorithmic}, and other packages for formatting the algorithm.
-For example, \Cref{alg:buildtree} is produced by the code in \cref{ex:alg}.
-
+For example, \cref{alg:buildtree} is produced by the code in \cref{ex:alg}.
+In order to reference lines within the algorithm, we need to tell the
+\texttt{cleveref} package how to do the referencing, which is the
+second line of \cref{ex:alg}. Then we can use the code
+\code{\cref{line3}} to produce \cref{line3}.
 
 \Comment[From TGK]{SIAM wants the algorithm caption to be small caps, but I'm
   not sure why because this does not match the table and figures.}
@@ -693,10 +699,10 @@ For example, \Cref{alg:buildtree} is produced by the code in \cref{ex:alg}.
 \begin{algorithm}
 \caption{Build tree}
 \label{alg:buildtree}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \STATE{Define $P:=T:=\{ \{1\},\ldots,\{d\}$\}}
 \WHILE{$\#P > 1$}
-\STATE{Choose $C^\prime\in\mathcal{C}_p(P)$ with $C^\prime := \operatorname{argmin}_{C\in\mathcal{C}_p(P)} \varrho(C)$}
+\STATE\label{line3}{Choose $C^\prime\in\mathcal{C}_p(P)$ with $C^\prime := \operatorname{argmin}_{C\in\mathcal{C}_p(P)} \varrho(C)$}
 \STATE{Find an optimal partition tree $T_{C^\prime}$ }
 \STATE{Update $P := (P{\setminus} C^\prime) \cup \{ \bigcup_{t\in C^\prime} t \}$}
 \STATE{Update $T := T \cup \{ \bigcup_{t\in\tau} t : \tau\in T_{C^\prime}{\setminus} \mathcal{L}(T_{C^\prime})\}$}
@@ -707,7 +713,8 @@ For example, \Cref{alg:buildtree} is produced by the code in \cref{ex:alg}.
 \end{tcbverbatimwrite}
 
 \examplefile[float=htpb,label={ex:alg},%
-before upper={\preamble[\scriptsize]{\bs usepackage\{algorithmic\}}},%
+before upper={\preamble[\scriptsize]{\bs usepackage\{algorithmic\}}%
+\vspace{-1.0ex}\preamble[\scriptsize]{\bs Crefname\{ALC@unique\}\{Line\}\{Lines\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
 {Example algorithm}{tmp_\jobname_alg.tex}
