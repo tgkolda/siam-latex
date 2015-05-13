@@ -11,8 +11,6 @@
 \usepackage{graphicx}
 \usepackage{epstopdf}
 \usepackage{algorithmic}
-\usepackage{ifpdf}
-\usepackage{accsupp}
 \ifpdf
   \DeclareGraphicsExtensions{.eps,.pdf,.png,.jpg}
 \else
@@ -46,9 +44,11 @@
   \footnotemark[3]}
 }
 
-% Declare page headings
+% Declare page headings - use the \siampretitle command, which inserts
+% "Supplementary Material" when appropriate.
 \pagestyle{myheadings}
-\markboth{\MakeUppercase{\TheAuthors}}{\MakeUppercase{\siampretitle\TheShortTitle}}
+\markboth{\MakeUppercase{\TheAuthors}}%
+{\MakeUppercase{\siampretitle\TheShortTitle}}
 
 % Optional: Set up PDF title and authors
 \hypersetup{%

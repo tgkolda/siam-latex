@@ -73,6 +73,13 @@
 \newif\if@supplement
 \@supplementfalse
 %% <<tgk<<
+%% >>tgk>> --- Added Summer 2015 ---
+%%
+%% Hide links
+%%
+\newif\if@hidelinks
+\@hidelinksfalse
+%% <<tgk<<
 %_%_%_%_%
 \newif\if@translated
 \@translatedfalse
@@ -113,6 +120,10 @@
 %% >>tgk>> --- Added 2015 ---
 %% Support for "supplement" class option (more below).
 \DeclareOption{supplement}{\@supplementtrue}
+%% <<tgk<<
+%% >>tgk>> --- Added 2015 ---
+%% Support for "hidelinks" class option (more below).
+\DeclareOption{hidelinks}{\@hidelinkstrue}
 %% <<tgk<<
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
 \DeclareOption{notitlepage}{\@titlepagefalse}
@@ -854,39 +865,56 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newcommand\rank{\mathop{\operator@font rank}\nolimits}
 \newcommand\supp{\mathop{\operator@font supp}\nolimits}
 
+%% >>tgk>> --- Modified Summer 2015 ---
+%%
+%% The original changes to introduce the appendix didn't work
+%% correctly. In particular, calling \section*{Acknowledgments} after
+%% declaring \appendix produced an appendix with a letter (i.e.,
+%% Appendix B) but no title --- exactly the reverse of what we would
+%% expect. Now, using \section* produces what you would expect, i.e.,
+%% just the title "Acknowledgments".
+%%
+
 \newcommand\appendix{%
-\renewcommand{\section}{%
-\secdef\append\sappend}%
- \setcounter{section}{0}%
- \setcounter{subsection}{0}%
- \renewcommand\thesection{\Alph{section}}}
+  \setcounter{section}{0}
+  \setcounter{subsection}{0}
+  \renewcommand\thesection{Appendix \Alph{section}}
+}
 
-\newcommand\Appendix{%
-\renewcommand{\section}{%
-\secdef\Append\sAppend}%
- \setcounter{section}{0}%
- \setcounter{subsection}{0}%
- \renewcommand\thesection{\Alph{section}}} 
+% \newcommand\appendix{%
+% \renewcommand{\section}{%
+% \secdef\append\sappend}%
+%  \setcounter{section}{0}%
+%  \setcounter{subsection}{0}%
+%  \renewcommand\thesection{\Alph{section}}}
 
-\newcommand\append[2][?]{%
-\refstepcounter{section}%
-{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-\reset@font\normalsize\bfseries\appendixname\ \thesection\@. #2.}}
+% \newcommand\Appendix{%
+% \renewcommand{\section}{%
+% \secdef\Append\sAppend}%
+%  \setcounter{section}{0}%
+%  \setcounter{subsection}{0}%
+%  \renewcommand\thesection{\Alph{section}}} 
 
-\newcommand\sappend[1]{%
-\refstepcounter{section}
-{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-\reset@font\normalsize\bfseries\appendixname\ \thesection\@.}}
+% \newcommand\append[2][?]{%
+% \refstepcounter{section}%
+% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
+% \reset@font\normalsize\bfseries\appendixname\ \thesection\@. #2.}}
 
-\newcommand\Append[2][?]{%
-\refstepcounter{section}%
-{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-\reset@font\normalsize\bfseries\appendixname. #2.}}
+% \newcommand\sappend[1]{%
+% \refstepcounter{section}
+% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
+% \reset@font\normalsize\bfseries\appendixname\ \thesection\@.}}
 
-\newcommand\sAppend[1]{%
-\refstepcounter{section}
-{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-\reset@font\normalsize\bfseries\appendixname.}}
+% \newcommand\Append[2][?]{%
+% \refstepcounter{section}%
+% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
+% \reset@font\normalsize\bfseries\appendixname. #2.}}
+
+% \newcommand\sAppend[1]{%
+% \refstepcounter{section}
+% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
+% \reset@font\normalsize\bfseries\appendixname.}}
+%% <<tgk<<
 
 \setlength\arraycolsep{5\p@}
 \setlength\tabcolsep{6\p@}
@@ -1196,13 +1224,18 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% 
 %% Add support for color in order to color the hyperlinks.
 %% 
-% [[[TODO: Make adding color hyperlinks an option.]]]
+\if@hidelinks
+\hypersetup{
+  hidelinks = true
+}
+\else
 \RequirePackage{xcolor}
 \colorlet{siamlinkcolor}{green!50!black}
 \hypersetup{
   colorlinks = true,
   allcolors = siamlinkcolor,
 }
+\fi
 %% <<tgk<<
 
 \newcommand{\email}[1]{\protect\href{mailto:#1}{#1}}

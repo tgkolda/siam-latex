@@ -15,7 +15,7 @@
 %% Used for creating new theorems, remarks
 \newsiamthm{claim}{Claim}
 \newsiamremark{rem}{Remark}
-\newsiamremark{ex}{Example}
+\newsiamremark{expl}{Example}
 \newsiamdefn{defn}{Definition}
 
 %% Algorithm style, could alternatively use algpseudocode
@@ -45,7 +45,9 @@
 \newcounter{example}
 \colorlet{texcscolor}{blue!50!black}
 \colorlet{texemcolor}{red!70!black}
-\colorlet{texpreamble}{black!75}
+%\colorlet{texpreamble}{black!75}
+\colorlet{texpreamble}{red!70!black}
+\colorlet{codebackground}{black!25!white!25}
 
 \newcommand\bs{\symbol{'134}} % print backslash in typewriter OT1/T1
 \newcommand{\preamble}[2][\small]{\textcolor{texpreamble}{#1\texttt{#2 \emph{\% <- Preamble}}}\par}
@@ -61,8 +63,8 @@
 \tcbset{%
   colframe=black!75!white!75,
   coltitle=white,
-  colback=black!30!white!30, % left side
-  colbacklower=white, % right side
+  colback=codebackground, % bottom/left side
+  colbacklower=white, % top/right side
   fonttitle=\bfseries,
   arc=0pt,outer arc=0pt,
   top=1pt,bottom=1pt,left=1mm,right=1mm,middle=1mm,boxsep=1mm,
@@ -77,10 +79,11 @@
   title={Example~\thetcbcounter: #2},listing file={#3},#1}
 
 \DeclareTotalTCBox{\code}{ v O{} }
-{ fontupper=\ttfamily\color{texemcolor},
+{ %fontupper=\ttfamily\color{texemcolor},
+  fontupper=\ttfamily\color{black},
   nobeforeafter,
   tcbox raise base,
-  colback=white,colframe=white,
+  colback=codebackground,colframe=white,
   top=0pt,bottom=0pt,left=0mm,right=0mm,
   leftrule=0pt,rightrule=0pt,toprule=0mm,bottomrule=0mm,
   boxsep=0.5mm,
@@ -97,7 +100,7 @@
 %% ------------------------------------------------------------------
 %% HEADER
 %% ------------------------------------------------------------------
-\begin{tcbverbatimwrite}{\jobname_header.tex}
+\begin{tcbverbatimwrite}{tmp_\jobname_header.tex}
 \title{Guide to Using SIAM's \LaTeX\ Style%
   \thanks{Acknowledgments such as funding go here.}}
 
@@ -117,7 +120,7 @@
 \maketitle
 
 \end{tcbverbatimwrite}
-\input{\jobname_header.tex}
+\input{tmp_\jobname_header.tex}
 %% ------------------------------------------------------------------
 %% END HEADER
 %% ------------------------------------------------------------------
@@ -125,13 +128,13 @@
 %% ------------------------------------------------------------------
 %% MARKBOTH
 %% ------------------------------------------------------------------
-\begin{tcbverbatimwrite}{\jobname_markboth.tex}
+\begin{tcbverbatimwrite}{tmp_\jobname_markboth.tex}
 \pagestyle{myheadings}
 \thispagestyle{plain}
 \markboth{\MakeUppercase{Dianne Doe, Paul T. Frank, and Jane E. Smith}}%
 {\MakeUppercase{\siampretitle\@ Guide to Using  SIAM'S \LaTeX\ Style}}
 \end{tcbverbatimwrite}
-\input{\jobname_markboth.tex}
+\input{tmp_\jobname_markboth.tex}
 %% ------------------------------------------------------------------
 %% END MARKBOTH
 %% ------------------------------------------------------------------
@@ -141,7 +144,7 @@
 %% ------------------------------------------------------------------
 %% ABSTRACT
 %% ------------------------------------------------------------------
-\begin{tcbverbatimwrite}{\jobname_abstract.tex}
+\begin{tcbverbatimwrite}{tmp_\jobname_abstract.tex}
 \begin{abstract}
   Documentation is given for use of the SIAM \LaTeX\ macros.
   Instructions and suggestions for compliance with SIAM style
@@ -156,7 +159,7 @@
 \begin{AMS}
 \end{AMS}
 \end{tcbverbatimwrite}
-\input{\jobname_abstract.tex}
+\input{tmp_\jobname_abstract.tex}
 %% ------------------------------------------------------------------
 %% END HEADER
 %% ------------------------------------------------------------------
@@ -172,13 +175,18 @@ at \url{http://www.siam.org/journals/pdf/stylemanual.pdf}.
 %
 The SIAM latex files can be found at
 \url{http://www.siam.org/journals/auth-info.php}. The files are that
-are distributed are given below. \Comment[To do]{Fix file names.}
+are distributed are given below. 
 \begin{itemize}
 \item \texttt{siamart.cls} (required): Main \LaTeX\ class file.
-\item \texttt{siamplain.bst} (required): Bibliographic style file for \BibTeX.
+\item \texttt{siamplain.bst} (required): Bibliographic style file for
+  \BibTeX.
 \item \texttt{docsiamart.tex}: Produces this documentation.
-\item \texttt{docsiambib.bib}: Example \BibTeX\ database.
-\item \texttt{docsiamsupp.tex}: Supplemental file example and documentation.
+\item \texttt{references.bib}: \BibTeX\ database for this
+  documentation and examples.
+\item \texttt{ex\_article.tex}: Template for article.
+\item \texttt{ex\_supplement.tex}: Template for supplement.
+\item \texttt{ex\_shared.tex}: Template for shared information for
+  article and supplement.
 \end{itemize}
 %
 The outline of a SIAM \LaTeX\ article is shown in \cref{ex:outline}.
@@ -203,22 +211,27 @@ The outline of a SIAM \LaTeX\ article is shown in \cref{ex:outline}.
 
 Class options can be included in the bracketed argument of the
 command, separated by commas.
-The \code{supplement} option specifies that the file is a supplement
-and not the main document, causing changes in the appearance of the title and
-numbering; see \cref{sec:supplement} for details.
-By default, lines which extend past the
-margin will have black boxes next to them to help authors identify
-lines that they need to fix, by rewriting or inserting
-breaks. Enabling the \code{final} option
-turns these boxes off, so that very small margin breaks which are not
-noticible will not cause boxes to be generated.
-Use the \code{review} option to create line numbers before submitting
-your manuscript to a SIAM journal. 
+\begin{itemize}
+\item \code{review} --- Creates line numbers using the \texttt{lineno}
+  package. Recommended for submitting your manuscript to a SIAM
+  journal.
+\item \code{final} --- By default, lines which extend past the margin
+  will have black boxes next to them to help authors identify lines
+  that they need to fix, by rewriting or inserting breaks. Enabling
+  this option turns these boxes off, so that very small margin breaks
+  which are not noticible will not cause boxes to be generated.
+\item \code{supplement} --- Specifies that the file is a supplement
+  and not the main document, causing changes in the appearance of the
+  title and numbering; see \cref{sec:supplement} for details.
+\item \code{hidelinks} --- Turns off colors on hyperlinks. The
+  hyperlinks still exist, but there is no color to differentiate
+  them.
+ The final published version with have this option on.
+\end{itemize}
 
 
 \section{Front matter}
 \label{sec:front}
-\Comment{We should change this to set pdftitle and pdfauthor, and then also use these in setting the page headers with markboth.}
 The title and author parts are formatted using the standard
 \code{\title}, \code{\author}, and \code{\maketitle} commands as
 described in Lamport \cite{La86}.
@@ -240,7 +253,7 @@ example of a shared footnote.
 listing options={style=siamlatex,%
 deletetexcs={and,thanks,title,author},%
 {moretexcs=[2]{and,thanks,title,author,maketitle}}}
-]{Title and authors}{\jobname_header.tex}
+]{Title and authors}{tmp_\jobname_header.tex}
 
 
 \Cref{ex:markboth} shows how to specify the page headings, with
@@ -250,7 +263,7 @@ the authors' names and the title (possibly shortened to fit).
 listing options={style=siamlatex,%
 deletetexcs={pagestyle,thispagestyle,markboth},%
 {moretexcs=[2]{pagestyle,thispagestyle,markboth}}}
-]{Page headers}{\jobname_markboth.tex}
+]{Page headers}{tmp_\jobname_markboth.tex}
 
 Following the author and title is the abstract, key words listing, and AMS subject
 classifications, designated using the \code{abstract}, \code{keywords}, and \code{AMS}
@@ -264,23 +277,50 @@ before upper={\preamble{\bs newcommand\{\bs BibTeX\}\{\{\bs scshape Bib\}\bs TeX
 listing only,%
 listing options={style=siamlatex,%
 {morekeywords=[2]{abstract,keywords,AMS}}}
-]{Abstract, keywords, and AMS classifications}{\jobname_abstract.tex}
+]{Abstract, keywords, and AMS classifications}{tmp_\jobname_abstract.tex}
 
 \section{Cross-references and hyperlinks}
 
 SIAM now supports cross-references and hyperlinks via the
 \texttt{cleveref} and \texttt{hyperef} packages.
+
+\subsection{Cleveref}
+\label{sec:cleveref}
+
+SIAM uses the \texttt{cleveref} package for cross-referencing, including
+customizations to adhere to SIAM's style guidelines. 
 %
+This package enhances \LaTeX's cross-referencing features, allowing
+the format of cross-references to be determined automatically
+according to the ``type" of cross-reference (equation, section, etc.)
+and the context in which the cross-reference is used.
+%
+
 To create a cross reference, use the commands \code{\cref} (inside
 sentence) and \code{\Cref} (beginning of a sentence) in place of the
 object name and \code{\ref}; examples are shown in the sections below
-for equations, tables, figures, sections, etc..
+for equations, tables, figures, sections, etc. Note that this package
+\emph{automatically} inserts the object name as well as the
+appropriate hyperlink. Hence, it is important to use
+\code{\cref{tab:a}} rather than \code{Table~\ref{tab:a}} so that
+hyperlinking will work correctly.
 %
+It may require two \LaTeX compilations for the references to show up
+correctly.
+
+
+\subsection{Hyperef}
+\label{sec:hyperef}
+
 Hyperlinks are created with the \code{\href} and \code{\url} commands,
 as shown in \cref{ex:href}.
-SIAM has also defined the \code{\email} command, as shown in \cref{ex:header}.
+SIAM has also defined the \code{\email} command, as shown in
+\cref{ex:header}.
+You can hide links (i.e., turn off link colors) with the \code{hidelinks} option.
 
-\begin{example}[label={ex:href},bicolor]{Creating hyperlinks}
+\begin{example}[label={ex:href},bicolor,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{href,url}}}]{Creating hyperlinks}
 Click \href{http://www.siam.org}{here} to go to the SIAM homepage;
 the url is \url{http://www.siam.org}.  
 \end{example}
@@ -303,7 +343,10 @@ This have the effect of rendering the item as a \texttt{mathop}.
 use many of the features of the package \code{amsmath} and examples
 from \cite{MiGo04}.
 
-\begin{example}[label={ex:bbm},bicolor,before upper={\preamble{\bs usepackage\{amsfonts\}}}]{Blackboard math}
+\begin{example}[label={ex:bbm},bicolor,before upper={\preamble{\bs
+      usepackage\{amsfonts\}}},%
+listing options={style=siamlatex,%
+{morekeywords=[2]{mathbb}}}]{Blackboard math}
 Blackboard bold characters, such as $\mathbb{C}$ and $\mathbb{R}$,
 should be created with the \texttt{amsfonts} package, although this
 is not included by default.
@@ -314,14 +357,18 @@ The following shows normal setup of math in text:
 Let $S=[s_{ij}]$ ($1\leq i,j\leq n$) be a $(0,1,-1)$-matrix of order $n$.
 \end{example}
 
-\begin{example}[label={ex:smallmatrix},bicolor]{In-line matrix}
+\begin{example}[label={ex:smallmatrix},bicolor,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{smallmatrix}}}]{In-line matrix}
 Matrices of no more than two rows appearing in text can be created
 as shown in the next example:
 $B = \bigl[ \begin{smallmatrix} B_{11} & B_{12} \\ 
   B_{21} & B_{22} \end{smallmatrix} \bigr]$.
 \end{example}
 
-\begin{example}[label={ex:matrices},bicolor]{Creating matrices}
+\begin{example}[label={ex:matrices},bicolor,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{bmatrix,pmatrix}}}]{Creating matrices}
 Display matrices can be rendered using environments from \texttt{amsmath}:
 \begin{equation}\label{eq:matrices}
   S=\begin{bmatrix}1&0\\0&0\end{bmatrix}
@@ -343,7 +390,9 @@ An example of a SIAM macro:
 \end{equation}
 \end{example}
 
-\begin{example}[label={ex:ml},bicolor]{Equation split across lines}
+\begin{example}[label={ex:ml},bicolor,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{multline}}}]{Equation split across lines}
 We claim that the projection $g(U,V)$ is given by the pair of matrices:
 \begin{multline} \label{eq:ml}
   g(U,V) = \biggl( \frac{R(U,V)V\Sigma^{T}U^{T} - 
@@ -353,7 +402,9 @@ We claim that the projection $g(U,V)$ is given by the pair of matrices:
 \end{multline}
 \end{example}
 
-\begin{example}[label={ex:aligned},bicolor]{Subequations}
+\begin{example}[label={ex:aligned},bicolor,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{subequations}}}]{Subequations}
 We calculate the Fr\'{e}chet derivative of $F$ as follows:
 \begin{subequations}
 \begin{align}
@@ -369,7 +420,9 @@ We calculate the Fr\'{e}chet derivative of $F$ as follows:
 \Cref{eq:aa} is the first line, and \cref{eq:bb} is the last line.
 \end{example}
 
-\begin{example}[label={ex:foo},bicolor]{Aligned equations}
+\begin{example}[label={ex:foo},bicolor,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{align}}}]{Aligned equations}
 \Cref{eq:a,eq:b,eq:c} show three aligned equations.
 \begin{align} 
   f &= g \label{eq:a}, \\
@@ -400,7 +453,9 @@ Some of the calculus examples were adapted from \url{http://tutorial.math.lamar.
 % with an italic body. Use the command \code{\textup} to produce Roman
 % type for numbers and parentheses.
 
-\begin{example}[label=ex:theorem,bicolor,parbox=false]{Theorem}
+\begin{example}[label=ex:theorem,bicolor,parbox=false,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{theorem}}}]{Theorem}
 \begin{theorem}[Mean Value Theorem]\label{thm:mvt}
   Suppose $f$ is a function that is continuous on the closed interval
   $[a,b]$.  and differentiable on the open interval $(a,b)$.
@@ -415,7 +470,9 @@ Some of the calculus examples were adapted from \url{http://tutorial.math.lamar.
 \end{theorem}
 \end{example}
 
-\begin{example}[label=ex:cor,bicolor,parbox=false]%
+\begin{example}[label=ex:cor,bicolor,parbox=false,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{corollary,proof}}}]%
 {Corollary and proof}
 \begin{corollary}
   Let $f(x)$ be continuous and differentiable everywhere. If $f(x)$
@@ -441,7 +498,9 @@ There are formatted as described in \cite{siam}.
 
 \begin{example}[bicolor,%
 before upper={\preamble{\bs newsiamthm\{claim\}\{Claim\}}},%
-parbox=false]{New theorem-like environment}
+parbox=false,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{claim,proof}}}]{New theorem-like environment}
 \begin{claim}\label{cl:constant}
   If $f'(x) = 0$ for all $x \in (a,b)$ then $f(x)$ is constant on $(a,b)$.
 \end{claim}
@@ -452,35 +511,40 @@ parbox=false]{New theorem-like environment}
 
 \begin{example}[bicolor,%
 before upper={\preamble{\bs newsiamdefn\{defn\}\{Definition\}}},%
-parbox=false]{New definition-like environment}
-\begin{defn}\label{defn:sym}
+parbox=false,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{defn}}}]{New definition-like environment}
+\begin{defn}\label{def:sym}
   We say a matrix $A$ is \emph{symmetric} if $a_{ij} = a_{ji}$ for all $i,j$.
 \end{defn}
 \end{example}
 
 \begin{example}[bicolor,%
-before upper={\preamble{\bs newsiamremark\{ex\}\{Example\}}},%
-parbox=false]{New remark-like environment}
-\begin{ex}[Trivial note]\label{ex:a}
+before upper={\preamble{\bs newsiamremark\{expl\}\{Example\}}},%
+parbox=false,%
+listing options={style=siamlatex,%
+{morekeywords=[2]{expl}}}]{New remark-like environment}
+\begin{expl}[Trivial note]\label{ex:a}
   Let $f(x) = 2$. Since $f'(x) = 0$ for all $x$, $f$ is constant
   everywhere.
-\end{ex}
+\end{expl}
 \end{example}
 
-\begin{example}[bicolor]{References}
+\begin{example}[bicolor,listing options={style=siamlatex,%
+{morekeywords=[2]{cref}}}]{References}
 We can reference multiple types of objects with a single reference:
-\cref{ex:a,cl:constant,thm:mvt}.
+\cref{ex:a,cl:constant,thm:mvt,def:sym}.
 \end{example}
 
 
 \section{Tables}
 \label{sec:tab}
-
+Table captions should go above the tables.
 \Cref{ex:table} shows the code to generate \cref{tab:KoMa14}. This
 example uses subfloats via the \texttt{subfig} package, as well as
 special column options from the \texttt{array} package.
 
-\begin{tcbverbatimwrite}{\jobname_table.tex}
+\begin{tcbverbatimwrite}{tmp_\jobname_table.tex}
 \newcolumntype{R}{>{$}r<{$}}  %
 \newcolumntype{V}[1]{>{[\;}*{#1}{R@{\;\;}}R<{\;]}} %
 \begin{table}[htbp]
@@ -515,23 +579,27 @@ fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
 before upper={\preamble[\scriptsize]{\bs usepackage\{array,subfig\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
-{Example table with subtables.}{\jobname_table.tex}
+{Example table with subtables.}{tmp_\jobname_table.tex}
 
-\input{\jobname_table.tex}
+\input{tmp_\jobname_table.tex}
 
 \section{Figures}
 \label{sec:fig}
 
-\Cref{ex:fig} shows the code to generate \cref{fig:testfig}.  This
-example uses the \texttt{graphicx} package for the
-\code{\includegraphics} command.  SIAM requires EPS figures for final
-production, but most people work in \texttt{pdflatex}. Therefore, we
+It is recommended that all figures be generated as encapsulated
+postscript (EPS) format, since this will be used in final production.
+%
+Since most people work in \texttt{pdflatex}, we
 recommend the package \texttt{epstopdf} to automatically convert EPS
 images to PDF for inclusion in PDF documents created by
 \texttt{pdflatex}.
+%
+\Cref{ex:fig} shows the code to generate \cref{fig:testfig}.  This
+example uses the \texttt{graphicx} package for the
+\code{\includegraphics} command. 
 
 
-\begin{tcbverbatimwrite}{\jobname_fig.tex}
+\begin{tcbverbatimwrite}{tmp_\jobname_fig.tex}
 \begin{figure}[htbp]
   \centering
   \subfloat[$\epsilon_{\max}=5$]{\label{fig:a}\includegraphics{lexample_fig1}}
@@ -545,16 +613,18 @@ images to PDF for inclusion in PDF documents created by
 before upper={\preamble[\scriptsize]{\bs usepackage\{graphicx,epstopdf,subfig\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
-{Example figure with subfigures and external files}{\jobname_fig.tex}
+{Example figure with subfigures and external files}{tmp_\jobname_fig.tex}
 
-\input{\jobname_fig.tex}
+\input{tmp_\jobname_fig.tex}
 
-PGF is a TeX macro package for generating graphics. It is platform- and format-independent and works together with the most important TeX backend drivers, including pdftex and dvips. It comes with a user-friedly syntax layer called TikZ.
+Another option is to use a graphics-generator that is platform- and
+format-independent.
+PGF is a TeX macro package for generating  such graphics and works together with the most important TeX backend drivers, including pdftex and dvips. It comes with a user-friedly syntax layer called TikZ.
 More details can be found at \url{http://sourceforge.net/projects/pgf/}, and detailed instructions are available in the manual.
 \Cref{ex:tikz} shows the code to generate \cref{fig:tikz}, which uses TikZ/PGF.
 This example was written by Henri Menke at
 \url{http://texwelt.de/wissen/fragen/4912/skizze-zur-illustration-linearer-regression}.
-\begin{tcbverbatimwrite}{\jobname_tikz.tex}
+\begin{tcbverbatimwrite}{tmp_\jobname_tikz.tex}
 \begin{figure}[htbp]
   \centering
   \begin{tikzpicture}[
@@ -601,25 +671,25 @@ This example was written by Henri Menke at
 before upper={\preamble[\scriptsize]{\bs usetikzlibrary\{arrows,intersections\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
-{Example TikZ/PGF for platform-independent graphics.}{\jobname_tikz.tex}
+{Example TikZ/PGF for platform-independent graphics.}{tmp_\jobname_tikz.tex}
 
-\input{\jobname_tikz.tex}
+\input{tmp_\jobname_tikz.tex}
 
 
 \section{Algorithms}
 \label{sec:algs}
 
-\Comment{SIAM wants the algorithm caption to be small caps (which I
-  have copied here), although I'm not sure why because this does not
-  match the table and figures.}
+SIAM automatically includes the \texttt{algorithm} package in the
+class definition. Users have the choice of \texttt{algpseudocode},
+\texttt{algorithmic}, and other packages for formatting the algorithm.
+For example, \Cref{alg:buildtree} is produced by the code in \cref{ex:alg}.
 
-\Comment{I prefer \texttt{algpseudocode} to
-  \texttt{algorithmic}. Should we include neither in the header and let
-  the user choose?}
 
-\Cref{alg:buildtree} is produced by the code in \cref{ex:alg}.
+\Comment[From TGK]{SIAM wants the algorithm caption to be small caps, but I'm
+  not sure why because this does not match the table and figures.}
 
-\begin{tcbverbatimwrite}{\jobname_alg.tex}
+
+\begin{tcbverbatimwrite}{tmp_\jobname_alg.tex}
 \begin{algorithm}
 \caption{Build tree}
 \label{alg:buildtree}
@@ -640,66 +710,135 @@ listing only, listing options={%
 before upper={\preamble[\scriptsize]{\bs usepackage\{algorithmic\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
-{Example algorithm}{\jobname_alg.tex}
+{Example algorithm}{tmp_\jobname_alg.tex}
 
-\input{\jobname_alg.tex}
+\input{tmp_\jobname_alg.tex}
 
-\section{Sections and cross-referencing}
+\section{Sections}
 \label{sec:sec}
-Sections are denoted using standard \LaTeX\ section commands, i.e., \code{\section}, \code{\subsection}, etc. The appendices are defined the same way except that the first one is preceded by the \code{\appendix} command.
-The acknowledgment section is preceeded by \code{\section*{Acknowledgments}}; it comes after any appendices and before the bibliography.
-
-SIAM uses the \texttt{cleveref} package for cross-referencing, including
-customizations to adhere to SIAM's style guidelines. 
+Sections are denoted using standard \LaTeX\ section commands, i.e.,
+\code{\section}, \code{\subsection}, etc. The appendices are defined
+the same way except that the first one is preceded by the
+\code{\appendix} command.  The acknowledgments section comes
+immediately before the references and after any appendices. It should
+be declared by \code{\section*{Acknowledgments}}.
+Any numbered, labeled sections can be referenced using \code{\cref}.
 %
-The macros automatically determine the proper way to format standard
-references, including the name of the reference and the hyperlink.
-%
-Use \code{\Cref} for a reference at the beginning of a sentence and
-\code{\cref} otherwise.
-%
-A label for a section should always begin with \texttt{sec}.
-%
-\Cref{ex:secref} shows how to reference sections.
+% \Cref{ex:secref} shows how to reference sections.
 
 
-\Comment{Hyperlinks are currently black, even though they are enabled. We may want to turn on some colors for testing purposes and/or to try different options.}
 
-\Comment{For some reason, the SIAM style does not have PDF
-  bookmarks. Let's fix that.}
+% \begin{example}[label={ex:secref},lefthand ratio=0.4,bicolor,sidebyside,%
+% listing options={style=siamlatex,basicstyle=\ttfamily\scriptsize,%
+% deletetexcs={cref,Cref},{moretexcs=[2]{cref,Cref}}}]
+% {Right and wrong ways to reference a section}
+% Inside a sentence\dots\\
+% Single: \cref{sec:intro}\\
+% Range: \cref{sec:intro,sec:front,%
+% sec:sec}\\
+% Multiple: \cref{sec:intro,sec:sec,%
+% sec:tab,sec:math,sec:thm}\\
+% Appendix: \cref{sec:changes}\\
 
-\Comment{Explain how to automatically reference sections in the supplement.}
-
-\begin{example}[label={ex:secref},lefthand ratio=0.4,bicolor,sidebyside,%
-listing options={style=siamlatex,basicstyle=\ttfamily\scriptsize,%
-deletetexcs={cref,Cref},{moretexcs=[2]{cref,Cref}}}]
-{Right and wrong ways to reference a section}
-Inside a sentence\dots\\
-Single: \cref{sec:intro}\\
-Range: \cref{sec:intro,sec:front,%
-sec:sec}\\
-Multiple: \cref{sec:intro,sec:sec,%
-sec:tab,sec:math,sec:thm}\\
-Appendix: \cref{sec:changes}\\
-
-Beginning of a sentence\dots\\
-Single: \Cref{sec:intro}\\
-Range: \Cref{sec:intro,sec:front,%
-sec:sec}\\
-Multiple: \Cref{sec:intro,sec:sec,%
-sec:tab,sec:math,sec:thm}\\
-Appendix: \Cref{sec:changes}\\
+% Beginning of a sentence\dots\\
+% Single: \Cref{sec:intro}\\
+% Range: \Cref{sec:intro,sec:front,%
+% sec:sec}\\
+% Multiple: \Cref{sec:intro,sec:sec,%
+% sec:tab,sec:math,sec:thm}\\
+% Appendix: \Cref{sec:changes}\\
 
 
-Just don't do it this way\dots\\
-Section~\ref{sec:intro}  
-\end{example}
+% Just don't do it this way\dots\\
+% Section~\ref{sec:intro}  
+% \end{example}
 
 \section{Supplemental material}
 \label{sec:supplement}
-\Comment{Explain how to do supplementary material, including \LaTeX\ files as well as multimedia.}
 
-No appendices in supplements!
+For several SIAM journals, authors are encouraged to submit
+Supplementary Materials to complement their articles. This might
+include additional figures or examples, animations, data sets used in
+the paper, computer code used to generate figures or tables, or other
+materials that are necessary to fully document the research contained
+in the paper or to facilitate the readers' ability to understand and
+extend the work.
+
+The class option \code{supplement} must be decared.
+The supplement should have the same title and authors as the main
+document.  (Note that the title is modified automatically by the SIAM
+class file so that it is preceeded by the text ``Supplementary
+Materials:''.)  A supplement does have sections but does not have an
+abstract, keywords, AMS classifications, or appendices.  The main
+document and supplement can cross-reference sections, equations,
+theorem-like declarations, figures, tables, algorithms, etc.  However,
+there is no sharing of references. The references are optional for a
+supplement.
+
+The included files, \texttt{ex\_article.tex}, \texttt{ex\_shared.tex},
+and \texttt{ex\_supplement.tex}, provide a template that can be used
+for creating a \LaTeX\@ supplement.
+
+The \code{supplement} class option changes the appearance of the title
+(preceeded by ``Supplementary Materials'') and the numbering so that
+all sections, equations, figures, tables, algorithms, %
+and so on to start with ``S''. As mentioned above, the title and
+authors should be identical to the main document.
+
+\Cref{ex:shared} (from \texttt{ex\_shared.tex}) shows how the
+``shared'' title and authors may be defined across the main document
+and a supplement. 
+%
+We have to manually capitalize the title in the \code{\title} command
+via \code{\MakeUppercase} because the automatic uppercase does not
+work with macros.
+%
+Likewise, we have to manually make the authors and title uppercase in
+the running headers that are set via the \code{\pagestyle}
+command. Note also that we manually insert \code{\siampretitle} in the
+title name. This macro is empty except for supplements, in which case
+it is set to `Supplementary Materials:''.
+%
+Optionally, we can also declare the PDF title and authors.
+
+Cross-referencing between the main document and the supplement is
+enabled using the \texttt{xr-hyperref} package (included by the
+classfile). Use \code{\externaldocument}
+to specify the external document to search for external
+references.
+
+\examplefile[float,label=ex:shared,listing only,%
+listing options={style=siamlatex,firstline=23,lastline=57,%
+{morekeywords=[2]{siampretitle,MakeUppercase}}}
+]{Example of shared title and author macros}{ex_shared.tex}
+
+
+\Cref{ex:suppoutline} shows the general outline of a supplement file
+that used a shared file for specifying the command
+\code{\TitleAndAuthorCommands} (see \cref{ex:shared}) as well as how to set up
+cross-referencing.
+
+\begin{example}[label={ex:suppoutline},listing only,%
+  listing options={style=siamlatex,%
+    {morekeywords=[2]{supplement,siampretitle,externaldocument}}}]%
+  {Supplement document outline}
+\documentclass[supplement]{siamart}
+\input{ex_shared}
+\externaldocument{ex_article}
+
+\begin{document}
+
+\thispagestyle{plain}
+\TitleAndAuthorCommands
+\maketitle
+
+% No abstract, keywords, subject classifications.
+% Main body goes here.
+% No appendices or acknowledgments.
+% Optional bibliography goes here.
+
+\end{document}
+\end{example}
 
 \section{Bibliography}
 
@@ -731,15 +870,15 @@ Do not include the full URL, i.e., \nolinkurl{http://dx.doi.org/} preceding the 
 
 \examplefile[label=ex:article,listing only,%
 listing options={style=siamlatex,firstline=1,lastline=12,{morekeywords=[2]{doi}}}
-]{Example article in \BibTeX}{docsiambib.bib}
+]{Example article in \BibTeX}{references.bib}
 
 \subsection{URL}
 There is also now support for the  \code{url} field. Generally, the DOI is preferred to the URL, since the DOIs should be a permanent references. For that reason. it is good practice to specify the last date that the URL was accessed, which is specified by the optional \code{urldate} field. Reference \cite{Hi14} produced by \cref{ex:url} shows an example of using these fields.
 
 \examplefile[label=ex:url,listing only,%
-listing options={style=siamlatex,firstline=14,lastline=22,%
+listing options={style=siamlatex,firstline=20,lastline=28,%
 {morekeywords=[2]{url,urldate}}}
-]{Example with the URL field in \BibTeX}{docsiambib.bib}
+]{Example with the URL field in \BibTeX}{references.bib}
 
 \subsection{Preprint servers such as arXiv}
 
@@ -751,9 +890,9 @@ For an arXiv paper,
 the \code{eprint} field is used to specify identifier. The optional \code{eprintclass} field specifies the class. \Cref{ex:arxiv} shows the \BibTeX for \cite{PeKoPi14}. 
 
 \examplefile[label=ex:arxiv,listing only,%
-listing options={style=siamlatex,firstline=24,lastline=32,%
+listing options={style=siamlatex,firstline=30,lastline=38,%
 {morekeywords=[2]{eprint,eprintclass}}}
-]{Example arXiv reference in \BibTeX}{docsiambib.bib}
+]{Example arXiv reference in \BibTeX}{references.bib}
 
 Other preprint servers are supported as well, but these require specification of the \code{archive} and \code{archiveprefix}. In this case, the target URL is formed by concatenating the \code{archive}, a forward slash (\texttt{/}), and the \code{eprint}; and the text for the hyperlink is formed by concatenating the \code{archiveprevix}, a color (:), and the \code{eprint}.
 %
@@ -761,9 +900,9 @@ Other preprint servers are supported as well, but these require specification of
 Note that this example has both the journal citation as well as the link for the preprint.
 
 \examplefile[label=ex:pubmed,listing only,%
-listing options={style=siamlatex,firstline=34,lastline=49,%
+listing options={style=siamlatex,firstline=40,lastline=55,%
 {morekeywords=[2]{eprint,eprintclass,archive,archiveprefix}}}
-]{Example PubMed reference in \BibTeX}{docsiambib.bib}
+]{Example PubMed reference in \BibTeX}{references.bib}
 
 \subsection{Article ID}
 Some journals use an article ID rather than page numbers. 
@@ -771,9 +910,9 @@ The field \texttt{eid} specifies the article ID. The optional field \texttt{page
 of pages in the document. An example of an article using these fields is shown in \cref{ex:eid} for citation \cite{Ne03}.
 
 \examplefile[label=ex:eid,listing only,%
-listing options={style=siamlatex,firstline=51,lastline=61,%
+listing options={style=siamlatex,firstline=57,lastline=67,%
 {morekeywords=[2]{eid,pagetotal}}}
-]{Example article ID reference in \BibTeX}{docsiambib.bib}
+]{Example article ID reference in \BibTeX}{references.bib}
 
 
 
@@ -781,20 +920,9 @@ listing options={style=siamlatex,firstline=51,lastline=61,%
 \Comment{The new siam bib file is called \texttt{siamplain.bst}. There could also be a \texttt{siamalpha.bst} for alphabetic style references per the request of David Gleich.}
 
 
-\appendix
-\section{Changes}
-\label{sec:changes}
-The new SIAM styles includes the following significant changes as compared to older versions:
-\begin{itemize}
-\item Removed uppercase on title.
-\end{itemize}
-
-\section*{Acknowledgments}
-Acknowledgements go here.
-\Comment{Something is broken. There should not be an ``Appendix'' starting this, and the title is missing.}
 
 \bibliographystyle{siamplain}
-\bibliography{docsiambib}
+\bibliography{references}
 
 \bigskip
 
