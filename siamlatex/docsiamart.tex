@@ -921,18 +921,16 @@ listing options={style=siamlatex,firstline=57,lastline=67,%
 {morekeywords=[2]{eid,pagetotal}}}
 ]{Example article ID reference in \BibTeX}{references.bib}
 
+\subsection{Software citations}
 
+SIAM encourages software citations, both related technical publications as well as the software itself. A citation to a software package may look something like what is shown in \cref{ex:clawpack} for citation \cite{clawpack}. Notice the double braces around the \texttt{author} key; else, it would appear as ``C. D. Team''.
 
-
-\Comment{The new siam bib file is called \texttt{siamplain.bst}. There could also be a \texttt{siamalpha.bst} for alphabetic style references per the request of David Gleich.}
-
-
+\examplefile[label=ex:clawpack,listing only,%
+listing options={style=siamlatex,firstline=69,lastline=76,%
+{morekeywords=[2]{key}}}
+]{Example software reference in \BibTeX}{references.bib}
 
 \bibliographystyle{siamplain}
 \bibliography{references}
-
-\bigskip
-
-\Comment{This files creates a bunch of extra files as it compiles. Not sure how to remove them.}
 
 \end{document}
