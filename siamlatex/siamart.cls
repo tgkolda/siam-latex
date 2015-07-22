@@ -1295,19 +1295,19 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 % Per SIAM Style Manual, don't say equation in front on an equation.
 \crefformat{equation}{#2(#1)#3}
-\crefrangeformat{equation}{(#3#1#4--#5#2#6)}
+\crefrangeformat{equation}{(#3#1#4)--(#5#2#6)}
 \crefmultiformat{equation}{#2(#1)#3}{ and #2(#1)#3}
 {, #2(#1)#3}{, and #2(#1)#3}
-\crefrangemultiformat{equation}{(#3#1#4--#5#2#6)}%
-{ and (#3#1#4--#5#2#6)}{, (#3#1#4--#5#2#6)}{, and (#3#1#4--#5#2#6)}
+\crefrangemultiformat{equation}{(#3#1#4)--(#5#2#6)}%
+{ and (#3#1#4)--(#5#2#6)}{, (#3#1#4)--(#5#2#6)}{, and (#3#1#4)--(#5#2#6)}
 
 % But spell it out at the beginning of a sentence.
 \Crefformat{equation}{#2Equation~(#1)#3}
-\Crefrangeformat{equation}{Equations~(#3#1#4--#5#2#6)}
+\Crefrangeformat{equation}{Equations~(#3#1#4)--(#5#2#6)}
 \Crefmultiformat{equation}{Equations~(#2#1#3)}{ and (#2#1#3)}
 {, (#2#1#3)}{, and (#2#1#3)}
-\Crefrangemultiformat{equation}{Equations~(#3#1#4--#5#2#6)}%
-{ and (#3#1#4--#5#2#6)}{, (#3#1#4--#5#2#6)}{, and (#3#1#4--#5#2#6)}
+\Crefrangemultiformat{equation}{Equations~(#3#1#4)--(#5#2#6)}%
+{ and (#3#1#4)--(#5#2#6)}{, (#3#1#4)--(#5#2#6)}{, and (#3#1#4)--(#5#2#6)}
 %% <<tgk<<
 
 %% >>tgk>> --- Added Summer 2015 ---
