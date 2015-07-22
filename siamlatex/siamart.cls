@@ -1325,8 +1325,8 @@ Vol.\ #3, No.\ #4, pp.\ #5
 % theorem and proof definitions.
 \makeatletter
 \renewtheoremstyle{plain}%
- {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ ##2\theorem@separator]}%
- {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\theorem@separator]}
+ {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ \upshape{##2}\theorem@separator]}%
+ {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ \upshape{##2}\ {\normalfont(##3)}\theorem@separator]}
 \renewtheoremstyle{nonumberplain}%
  {\item[\theorem@headerfont\hskip\labelsep\hskip\parindent ##1\theorem@separator]}%
  {\item[\theorem@headerfont\hskip\labelsep\hskip\parindent ##1\ (##3)\theorem@separator]}
