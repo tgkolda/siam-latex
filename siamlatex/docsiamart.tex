@@ -16,7 +16,6 @@
 \newsiamthm{claim}{Claim}
 \newsiamremark{rem}{Remark}
 \newsiamremark{expl}{Example}
-\newsiamdefn{defn}{Definition}
 
 %% Algorithm style, could alternatively use algpseudocode
 \usepackage{algorithmic}
@@ -174,7 +173,9 @@ material. More information
 about SIAM's editorial style can be found in the style manual, available
 at \url{http://www.siam.org/journals/pdf/stylemanual.pdf}.
 %
-The SIAM \LaTeX files can be found at
+The major changes in the SIAM class are summarized in \cref{sec:changes}.
+%
+The SIAM \LaTeX\@ files can be found at
 \url{http://www.siam.org/journals/auth-info.php}. The files are that
 are distributed are given below. 
 \begin{itemize}
@@ -189,6 +190,10 @@ are distributed are given below.
 \item \texttt{ex\_shared.tex}: Template for shared information for
   article and supplement.
 \end{itemize}
+To use these files, put \texttt{siamart.cls} and
+\texttt{siamplain.bst} in the directory with your
+paper or, alternatively, into your \LaTeX\@ and \BibTeX\@ paths,
+respectively. 
 %
 The outline of a SIAM \LaTeX\ article is shown in \cref{ex:outline}.
 
@@ -211,7 +216,7 @@ The outline of a SIAM \LaTeX\ article is shown in \cref{ex:outline}.
 \end{example}
 
 Class options can be included in the bracketed argument of the
-command, separated by commas.
+command, separated by commas. The possible class options are:
 \begin{itemize}
 \item \code{review} --- Creates line numbers using the \texttt{lineno}
   package. Recommended for submitting your manuscript to a SIAM
@@ -319,7 +324,7 @@ lot of typing: \hyperref[thm:mvt]{Theorem~\ref*{thm:mvt}}.
 The \texttt{cleveref} package gets both the name and hyperlink
 automatically using a single macro: \cref{thm:mvt}.
 It also handles multiple references with the same macro, such as
-\cref{thm:mvt,def:sym,fig:tikz,fig:testfig}.
+\cref{thm:mvt,fig:tikz,fig:testfig}.
 \end{example}
 
 %
@@ -347,26 +352,17 @@ instead by using \url{http://www.siam.org}.
 \label{sec:math}
 Here we show some example equations, with numbering, and examples of
 referencing the equations. SIAM now includes the package 
-\texttt{amsmath} by default.
-The SIAM \LaTeX\ class adds the following macros by default: 
-\code{\const},
-\code{\diag},
-\code{\grad},
-\code{\Range},
-\code{\rank},
-\code{\supp}.
+\texttt{amsmath} by default, and we include some of its features as
+well, although the reader should consult the package user manual for
+further guidance.
+ Several of the example are adapted 
+from Mittlebach and Goossen's guide to \LaTeX~\cite{MiGo04}.
 %
-This has the effect of rendering the item as a \texttt{mathop}.
-\Cref{ex:bbm,ex:textmath,ex:smallmatrix,ex:matrices,ex:range,ex:ml,ex:aligned,ex:foo}
-use many of the features of the \texttt{amsmath} package, which is
-loaded by default. Several of the example are adapted 
-from \cite{MiGo04}.
-
 \Cref{ex:textmath} is a straightforward example of in-line mathematics
 equations that does not use any special packages or features.
 
 \begin{example}[label={ex:textmath},bicolor]{In-line math}
-The following shows normal setup of math in text: 
+The following shows an example of math in text: 
 Let $S=[s_{ij}]$ ($1\leq i,j\leq n$) be a $(0,1,-1)$-matrix of order $n$.
 \end{example}
 
@@ -384,7 +380,8 @@ is not included by default.
 \end{example}
 
 \Cref{ex:smallmatrix} shows the \code{smallmatrix} environment for an
-in-line matrix from the \texttt{amsmath} package.
+in-line matrix from the \texttt{amsmath} package, which is included by
+default.
 
 \begin{example}[label={ex:smallmatrix},bicolor,%
 listing options={style=siamlatex,%
@@ -395,8 +392,10 @@ $B = \bigl[ \begin{smallmatrix} B_{11} & B_{12} \\
   B_{21} & B_{22} \end{smallmatrix} \bigr]$.
 \end{example}
 
-Bigger matrices can be rendered using a number of environments from
-the \texttt{amsmath} package, such as the two examples in
+\newpage
+Bigger matrices can be rendered environments from
+the \texttt{amsmath} package, such as \code{bmatrix} and
+\code{pmatrix} used in
 \cref{ex:matrices}.
 
 \begin{example}[label={ex:matrices},bicolor,%
@@ -411,8 +410,16 @@ Display matrices can be rendered using environments from \texttt{amsmath}:
 \Cref{eq:matrices} shows some example matrices.
 \end{example}
 
-As mentioned above, SIAM has defined some of its own
-macros. \Cref{ex:range} shows the usage of the \code{\Range} macro. 
+The SIAM \LaTeX\ class defines the following macros:
+\code{\const},
+\code{\diag},
+\code{\grad},
+\code{\Range},
+\code{\rank}, and
+\code{\supp}.
+%
+Each macro works by rendering the text as a \texttt{mathop}.
+\Cref{ex:range} shows the usage of the \code{\Range} macro. 
 (This example also uses the \texttt{braket} package for the
 \code{\set} macro, but this is not necessarily recommended by SIAM.)
 
@@ -442,8 +449,8 @@ listing options={style=siamlatex,%
 \end{align}
 \end{example}
 
-If instead of separate numbers, subnumbering is desired, use the
-\code{subequations} environment from \texttt{amsmath} instead, as shown in \cref{ex:aligned}.
+Another way to number a set of equations is the
+\code{subequations} environment from \texttt{amsmath}, as shown in \cref{ex:aligned}.
 
 \begin{example}[label={ex:aligned},bicolor,%
 listing options={style=siamlatex,%
@@ -479,15 +486,13 @@ We claim that the projection $g(U,V)$ is given by the pair of matrices:
 
 \section{Theorem-like environments}
 \label{sec:thm}
-SIAM uses the \texttt{ntheorem} package. Several theorem-like
-environments are predefined:
-\begin{itemize}
-\item \code{theorem}
-\item \code{lemma}
-\item \code{corollary}
-\item \code{definition}
-\item \code{proposition}
-\end{itemize}
+SIAM loads \texttt{ntheorem} package and uses it to define the following
+theorem-like environments:
+\code{theorem}, 
+\code{lemma}, 
+\code{corollary},
+\code{definition}, and
+\code{proposition}.
 SIAM also defines a \code{proof} environment that automatically
 inserts a $\proofbox$ at the end of any proof, even if it ends in an
 equation environment. \emph{Note that the document may need to be
@@ -501,7 +506,10 @@ Some of the calculus examples were adapted from \cite{CalcI}.
 
 \Cref{ex:theorem} shows usage of the \code{theorem} environment. Note
 that SIAM now numbers theorems in sequence,
-independent of the section number
+independent of the section number.
+An optional argument can be used to name the theorem.
+\Cref{ex:cor} illustrates show a corollary, without a name, and the
+proof environment.
 
 \begin{example}[label=ex:theorem,bicolor,parbox=false,%
 listing options={style=siamlatex,%
@@ -537,16 +545,16 @@ listing options={style=siamlatex,%
 \end{proof}
 \end{example}
 
-SIAM provides commands to create your own theorem-, definition-, and
+SIAM also defines commands to create your own theorem-, definition-, and
 remark-like environments:
 \begin{itemize}
-\item \code{newsiamthm} - Small caps header, italized body.
-\item \code{newsiamdefn} - Small caps header, normal body.
-\item \code{newsiamremark} - Italics header, normal body.
+\item \code{newsiamthm} - Small caps header, italized body. 
+\item \code{newsiamremark} - Italics header, roman body.
 \end{itemize}
-There are formatted as described in \cite{siam}.
-\Cref{ex:claim} shows how to create a new theorem-like environment and
-also the \code{proof} environment.
+There are formatted as described in \cite{siam}. These commands should
+be used instead of \code{\newtheorem}.
+\Cref{ex:claim,ex:remark,ex:ref} shows how to use the commands above.
+
 \begin{example}[label=ex:claim,bicolor,%
 before upper={\preamble{\bs newsiamthm\{claim\}\{Claim\}}},%
 parbox=false,%
@@ -560,17 +568,7 @@ listing options={style=siamlatex,%
 \end{proof}
 \end{example}
 
-\begin{example}[bicolor,%
-before upper={\preamble{\bs newsiamdefn\{defn\}\{Definition\}}},%
-parbox=false,%
-listing options={style=siamlatex,%
-{morekeywords=[2]{defn}}}]{New definition-like environment}
-\begin{defn}\label{def:sym}
-  We say a matrix $A$ is \emph{symmetric} if $a_{ij} = a_{ji}$ for all $i,j$.
-\end{defn}
-\end{example}
-
-\begin{example}[bicolor,%
+\begin{example}[label=ex:remark,bicolor,%
 before upper={\preamble{\bs newsiamremark\{expl\}\{Example\}}},%
 parbox=false,%
 listing options={style=siamlatex,%
@@ -581,10 +579,10 @@ listing options={style=siamlatex,%
 \end{expl}
 \end{example}
 
-\begin{example}[bicolor,listing options={style=siamlatex,%
+\begin{example}[label=ex:ref,bicolor,listing options={style=siamlatex,%
 {morekeywords=[2]{cref}}}]{References}
 We can reference multiple types of objects with a single reference:
-\cref{ex:a,cl:constant,thm:mvt,def:sym}.
+\cref{ex:a,cl:constant,thm:mvt}.
 \end{example}
 
 
@@ -626,7 +624,7 @@ fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
 \end{table}
 \end{tcbverbatimwrite}
 
-\examplefile[float=htpb,label={ex:table},%
+\examplefile[label={ex:table},%
 before upper={\preamble[\scriptsize]{\bs usepackage\{array,subfig\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
@@ -897,6 +895,7 @@ cross-referencing.
 
 \newpage % so the first two lines of the next section aren't orphaned.
 \section{Bibliography}
+\label{sec:bib}
 
 The SIAM \BibTeX style file, now called \texttt{siamplain.bst}, has been updated to include the new keys listed below:
 \begin{itemize}
@@ -978,6 +977,42 @@ SIAM encourages software citations, both related technical publications as well 
 listing options={style=siamlatex,firstline=69,lastline=76,%
 {morekeywords=[2]{key}}}
 ]{Example software reference in \BibTeX}{references.bib}
+
+\appendix
+\section{Summary of Major Changes}
+\label{sec:changes}
+
+Here we briefly summarize the major changes in the latest version of
+the SIAM \LaTeX\@ and \BibTeX\ classes:
+\begin{itemize}
+\item Hyperlinking in cross references via the
+  \texttt{cleveref} package, including customizations to adhere to
+  SIAM conventions.
+\item  Support for supplemental PDF files, including
+  cross-references between the supplement and the main document.
+\item New fields for \BibTeX, as listed in \cref{sec:bib}.
+\item Colored hyperlinks (red for external, green for internal)
+\item Change in file names: \texttt{siamltex.cls} is replaced by
+  \texttt{siamart.cls}, and \texttt{siam} is replaced by \texttt{siamplain.bst}.
+\end{itemize}
+
+\section{Special Modifications}
+
+To number theorem-like environments by section, e.g., Theorem 5.1
+would indicate the first theorem in Section 5, put the code from
+\cref{ex:thmnum} into the document preamble.
+
+\begin{example}[label=ex:thmnum,listing only,%
+listing options={style=siamlatex,{morekeywords=[2]{renewtheorem,section}},}]%
+  {Labeling theorems by section}
+\theoremstyle{plain}
+\theoremheaderfont{\normalfont\sc}
+\theorembodyfont{\normalfont\itshape}
+\theoremseparator{.}
+\theoremsymbol{}
+\renewtheorem{theorem}{Theorem}[section]
+\end{example}
+
 
 \bibliographystyle{siamplain}
 \bibliography{references}

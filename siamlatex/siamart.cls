@@ -878,7 +878,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newcommand\appendix{%
   \setcounter{section}{0}
   \setcounter{subsection}{0}
-  \renewcommand\thesection{Appendix \Alph{section}}
+  \renewcommand\thesection{\Alph{section}}
 }
 
 % \newcommand\appendix{%
@@ -1230,10 +1230,12 @@ Vol.\ #3, No.\ #4, pp.\ #5
 }
 \else
 \RequirePackage{xcolor}
-\colorlet{siamlinkcolor}{green!50!black}
+\colorlet{siaminlinkcolor}{green!50!black}
+\colorlet{siamexlinkcolor}{red!50!black}
 \hypersetup{
   colorlinks = true,
-  allcolors = siamlinkcolor,
+  allcolors = siaminlinkcolor,
+  urlcolor = siamexlinkcolor,
 }
 \fi
 %% <<tgk<<
@@ -1371,17 +1373,6 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newsiamthm{definition}{Definition}
 
 % [[[TODO: Add appropriate cleveref names]]]
-
-% Command to create definition-like environments, to be numbered
-% along with the theorems.
-\newcommand{\newsiamdefn}[2]{
-  \theoremstyle{plain}
-  \theoremheaderfont{\normalfont\sc}
-  \theorembodyfont{\normalfont}
-  \theoremseparator{.}
-  \theoremsymbol{}
-  \newtheorem{#1}[theorem]{#2}
-}
 
 % Command to create remark-like environments, to be numbered
 % along with the theorems.
