@@ -1308,6 +1308,10 @@ Vol.\ #3, No.\ #4, pp.\ #5
 {, (#2#1#3)}{, and (#2#1#3)}
 \Crefrangemultiformat{equation}{Equations~(#3#1#4)--(#5#2#6)}%
 { and (#3#1#4)--(#5#2#6)}{, (#3#1#4)--(#5#2#6)}{, and (#3#1#4)--(#5#2#6)}
+
+% Make number non-italic in any environment.
+\crefdefaultlabelformat{\upshape#2#1#3}
+
 %% <<tgk<<
 
 %% >>tgk>> --- Added Summer 2015 ---
