@@ -97,8 +97,6 @@
 %% End of macros for in-document examples. 
 %% ------------------------------------------------------------------
 
-\begin{document}
-
 %% ------------------------------------------------------------------
 %% HEADER
 %% ------------------------------------------------------------------
@@ -116,11 +114,9 @@
   Jane E. Smith%
   \footnotemark[3]
 }
-
-\maketitle
-
 \end{tcbverbatimwrite}
 \input{tmp_\jobname_header.tex}
+
 %% ------------------------------------------------------------------
 %% END HEADER
 %% ------------------------------------------------------------------
@@ -129,16 +125,16 @@
 %% MARKBOTH
 %% ------------------------------------------------------------------
 \begin{tcbverbatimwrite}{tmp_\jobname_markboth.tex}
-\pagestyle{myheadings}
-\thispagestyle{plain}
-\markboth{\MakeUppercase{Dianne Doe, Paul T. Frank, and Jane E. Smith}}%
-{\MakeUppercase{\siampretitle\@ Guide to Using  SIAM'S \LaTeX\ Style}}
+\siammetadata{Guide to Using  SIAM'S \LaTeX\ Style}
+{Dianne Doe, Paul T. Frank, and Jane E. Smith}
 \end{tcbverbatimwrite}
 \input{tmp_\jobname_markboth.tex}
 %% ------------------------------------------------------------------
 %% END MARKBOTH
 %% ------------------------------------------------------------------
 
+\begin{document}
+\maketitle
 
 
 %% ------------------------------------------------------------------
@@ -203,10 +199,11 @@ The outline of a SIAM \LaTeX\ article is shown in \cref{ex:outline}.
 \documentclass{siamart}
 
 % Packages and macros definitions go here.
+% Define title, authors, metadata
 
 \begin{document}
-
-% Front matter goes here: title, authors, abstract, etc.
+\maketitle
+% Other front matter goes here: abstract, etc.
 % Main body goes here.
 % Appendices goes here (optional).
 % Acknowledgements go here (optional).
@@ -219,7 +216,9 @@ Class options can be included in the bracketed argument of the
 command, separated by commas. The possible class options are:
 \begin{itemize}
 \item \code{review} --- Creates line numbers using the \texttt{lineno}
-  package. Recommended for submitting your manuscript to a SIAM
+  package and adds a note in red at the bottom of each page that says
+  ``This manuscript is for review purposes only.''
+  Recommended for submitting your manuscript to a SIAM
   journal.
 \item \code{final} --- By default, lines which extend past the margin
   will have black boxes next to them to help authors identify lines
@@ -240,7 +239,8 @@ command, separated by commas. The possible class options are:
 \label{sec:front}
 The title and author parts are formatted using the standard
 \code{\title}, \code{\author}, and \code{\maketitle} commands as
-described in Lamport \cite{La86}.
+described in Lamport \cite{La86}. The title and author should be
+declared in the preamble.
 %
 If there is more than one author, the authors should be separated by
 the \code{\and} command.  
@@ -259,17 +259,19 @@ example of a shared footnote.
 listing options={style=siamlatex,%
 deletetexcs={and,thanks,title,author},%
 {moretexcs=[2]{and,thanks,title,author,maketitle}}}
-]{Title and authors}{tmp_\jobname_header.tex}
+]{Title and authors in preamble}{tmp_\jobname_header.tex}
 
 
-\Cref{ex:markboth} shows how to specify the page headings, with
-the authors' names and the title (possibly shortened to fit).
+\Cref{ex:markboth} shows how to specify the page headings and the PDF
+title and authors via the
+\code{\siammetadata{title}{authors}} command, with
+the title (possibly shortened to fit) and the authors names.
 
 \examplefile[label={ex:markboth},listing only,%
 listing options={style=siamlatex,%
 deletetexcs={pagestyle,thispagestyle,markboth},%
-{moretexcs=[2]{pagestyle,thispagestyle,markboth}}}
-]{Page headers}{tmp_\jobname_markboth.tex}
+{moretexcs=[2]{pagestyle,thispagestyle,markboth,siammetadata}}}
+]{Page headers in preamble}{tmp_\jobname_markboth.tex}
 
 Following the author and title is the abstract, key words listing, and AMS subject
 classifications, designated using the \code{abstract}, \code{keywords}, and \code{AMS}
@@ -284,6 +286,8 @@ listing only,%
 listing options={style=siamlatex,%
 {morekeywords=[2]{abstract,keywords,AMS}}}
 ]{Abstract, keywords, and AMS classifications}{tmp_\jobname_abstract.tex}
+
+The example template is discussed in \cref{sec:template}.
 
 \section{Cross-references and hyperlinks}
 
@@ -347,6 +351,11 @@ information. Note that the link  will \emph{not} appear in the print
 version, so the writer may want to specify the location explicitly 
 instead by using \url{http://www.siam.org}.  
 \end{example}
+
+Note that homepage links in the \code{\thanks} environment require
+special formatting for the tilde (\string~) character. The formatting should
+be as shown in \cref{ex:shared}.
+
 
 \section{Math and equations}
 \label{sec:math}
@@ -545,7 +554,7 @@ listing options={style=siamlatex,%
 \end{proof}
 \end{example}
 
-SIAM also defines commands to create your own theorem-, definition-, and
+SIAM also defines commands to create your own theorem- and
 remark-like environments:
 \begin{itemize}
 \item \code{newsiamthm} - Small caps header, italized body. 
@@ -827,32 +836,18 @@ document and supplement can cross-reference sections, equations,
 theorem-like declarations, figures, tables, algorithms, etc.  However,
 there is no sharing of references. The references are optional for a
 supplement.
+An template is provide, as discussed in \cref{sec:template}.
+
+\section{Template}
+\label{sec:template}
 
 The included files, \texttt{ex\_article.tex}, \texttt{ex\_shared.tex},
 and \texttt{ex\_supplement.tex}, provide a template that can be used
-for creating a \LaTeX\ supplement.
+for creating a \LaTeX\ document with an optional supplement.
 
-The \code{supplement} class option changes the appearance of the title
-(preceeded by ``Supplementary Materials'') and the numbering so that
-all sections, equations, figures, tables, algorithms, %
-and so on to start with ``S''. As mentioned above, the title and
-authors should be identical to the main document.
-
-\Cref{ex:shared} (from \texttt{ex\_shared.tex}) shows how the
-``shared'' title and authors may be defined across the main document
-and a supplement. 
-%
-We have to manually capitalize the title in the \code{\title} command
-via \code{\MakeUppercase} because the automatic uppercase does not
-work with macros.
-%
-Likewise, we have to manually make the authors and title uppercase in
-the running headers that are set via the \code{\pagestyle}
-command. Note also that we manually insert \code{\siampretitle} in the
-title name. This macro is empty except for supplements, in which case
-it is set to `Supplementary Materials:''.
-%
-Optionally, we can also declare the PDF title and authors.
+\Cref{ex:artoutline} gives the outline of an article. In this case we
+assume that the title and authors are defined in the
+\texttt{ex\_shared.tex} file. 
 
 Cross-referencing between the main document and the supplement is
 enabled using the \texttt{xr-hyperref} package (included by the
@@ -860,36 +855,64 @@ classfile). Use \code{\externaldocument}
 to specify the external document to search for external
 references.
 
-\examplefile[float,label=ex:shared,listing only,%
-listing options={style=siamlatex,firstline=23,lastline=57,%
-{morekeywords=[2]{siampretitle,MakeUppercase}}}
+\begin{example}[label={ex:artoutline},listing only,%
+  listing options={style=siamlatex,%
+    {morekeywords=[2]{externaldocument}}}]%
+  {Document outline with supplement}
+\documentclass{siamart}
+
+\input{ex_shared}
+\externaldocument{ex_supplement}
+
+\begin{document}
+\maketitle
+% Other front matter: abstract, keywords, subject classifications.
+% Main body goes here.
+% Appendices and/or acknowledgments.
+% Bibliography
+\end{document}
+\end{example}
+
+\Cref{ex:shared} (from \texttt{ex\_shared.tex}) shows how the
+``shared'' title and authors may be defined across the main document
+and a supplement. 
+%
+Note the use of the \code{\string} command in the URL for the tilde;
+this is only necessary inside the \code{\thanks} command.
+%
+
+\examplefile[label=ex:shared,listing only,%
+listing options={style=siamlatex,firstline=23,lastline=44,%
+{morekeywords=[2]{siampretitle,MakeUppercase,string}}}
 ]{Example of shared title and author macros}{ex_shared.tex}
 
 
 \Cref{ex:suppoutline} shows the general outline of a supplement file
-that used a shared file for specifying the command
-\code{\TitleAndAuthorCommands} (see \cref{ex:shared}) as well as how to set up
-cross-referencing.
+that used a shared file for defining the title and authors
+(see \cref{ex:shared}).
+The \code{supplement} class option changes the appearance of the title
+(preceeded by ``Supplementary Materials'') and the numbering so that
+all sections, equations, figures, tables, algorithms, %
+and so on to start with ``S''. As mentioned above, the title and
+authors should be identical to the main document, which is assured by
+using the shared file.
+
 
 \begin{example}[label={ex:suppoutline},listing only,%
   listing options={style=siamlatex,%
     {morekeywords=[2]{supplement,siampretitle,externaldocument}}}]%
   {Supplement document outline}
 \documentclass[supplement]{siamart}
+
 \input{ex_shared}
 \externaldocument{ex_article}
 
 \begin{document}
-
-\thispagestyle{plain}
-\TitleAndAuthorCommands
 \maketitle
-
 % No abstract, keywords, subject classifications.
 % Main body goes here.
 % No appendices or acknowledgments.
 % Optional bibliography goes here.
-
 \end{document}
 \end{example}
 

@@ -20,41 +20,29 @@
 \newcolumntype{R}{>{$}r<{$}}  %
 \newcolumntype{V}[1]{>{[\;}*{#1}{R@{\;\;}}R<{\;]}} %
 
-% Full title for title and pdftitle
+% Declare title and authors, without \thanks
 \newcommand{\TheTitle}{An Example Article} 
-% Short title for running head
-\newcommand{\TheShortTitle}{An Example Article} 
-% Full author list, but not thanks, for  pdfauthor
-\newcommand{\TheAuthors}{Dianne Doe, Paul T. Frank, and Jane E. Smith}
-% Short author list for running head
-\newcommand{\TheShortAuthors}{D. Doe, P. T. Frank, and J. E. Smith}
+\newcommand{\TheAuthors}{D. Doe, P. T. Frank, and J. E. Smith}
 
-% Title and Author. If the supplement option is on, then
-% "Supplementary Material" is automatically inserted before the title.
-\newcommand{\TitleAndAuthorCommands}{%
-\title{\MakeUppercase{\TheTitle}\thanks{This work was funded by the Frog Research Institute under contract no.~FRI-454.}}
-\author{Dianne Doe%
-  \thanks{Imagination Corp., Chicago, IL (\email{ddoe@imag.com}).}%
+% Sets running headers as well as PDF title and authors
+\siammetadata{\TheTitle}{\TheAuthors}
+
+% Title. If the supplement option is on, then "Supplementary Material"
+% is automatically inserted before the title.
+\title{{\TheTitle}\thanks{This work was funded by the Fog Research Institute under contract no.~FRI-454.}}
+
+% Authors: full names plus addresses.
+\author{
+  Dianne Doe\thanks{Imagination Corp., Chicago, IL
+    (\email{ddoe@imag.com}, \url{http://www.imag.com/\string~ddoe/}).}
   \and
-  Paul T. Frank%
-  \thanks{Department of Applied Mathematics, Fictional University, Boise, ID
-    (\email{ptfrank@fictional.edu}, \email{jesmith@fictional.edu}).}
+  Paul T. Frank\thanks{Department of Applied Mathematics, Fictional
+    University, Boise, ID (\email{ptfrank@fictional.edu},
+    \email{jesmith@fictional.edu}).}
   \and
-  Jane E. Smith%
-  \footnotemark[3]}
+  Jane E. Smith\footnotemark[3]
 }
 
-% Declare page headings - use the \siampretitle command, which inserts
-% "Supplementary Material" when appropriate.
-\pagestyle{myheadings}
-\markboth{\MakeUppercase{\TheAuthors}}%
-{\MakeUppercase{\siampretitle\TheShortTitle}}
-
-% Optional: Set up PDF title and authors
-\hypersetup{%
-  pdftitle={\siampretitle\TheTitle},
-  pdfauthor={\TheAuthors}
-}
 
 %%% Local Variables: 
 %%% mode:latex

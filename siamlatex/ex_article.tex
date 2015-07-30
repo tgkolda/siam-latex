@@ -1,11 +1,6 @@
 % SIAM Article Template
 \documentclass[review]{siamart}
 
-\usepackage{draftwatermark}
-\SetWatermarkText{For Review Only}
-\SetWatermarkScale{3}
-\SetWatermarkAngle{60}
-
 % Information that is shared between the article and the supplement
 % (title and author information, macros, packages, etc.) goes into
 % ex_shared.tex. If there is no supplement, this file can be included
@@ -20,17 +15,11 @@
 
 \begin{document}
 
-% The first page should be "plain style"
-\thispagestyle{plain}
-
-% Defined in the file: ex_shared.tex.
-\TitleAndAuthorCommands
-
 \maketitle
 
 % REQUIRED
 \begin{abstract}
-  This is an example SIAM \LaTeX article. This can be used as a
+  This is an example SIAM \LaTeX\ article. This can be used as a
   template for new articles.  Abstracts must be able to stand alone
   and so cannot contain citations to the paper's references,
   equations, etc.  An abstract must consist of a single paragraph and
@@ -168,12 +157,11 @@ Our analysis leads to the algorithm in \cref{alg:buildtree}.
 \lipsum[50]
 
 \Cref{fig:testfig} shows some example results. Additional results are
-available in the supplement in \cref{tab:KoMa14}.
+available in the supplement in \cref{tab:foo}.
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[$\epsilon_{\max}=5$]{\label{fig:a}\includegraphics{lexample_fig1}}
-  \subfloat[$\epsilon_{\max}=0.5$]{\label{fig:b}\includegraphics{lexample_fig2}}
+  \label{fig:a}\includegraphics{lexample_fig1}
   \caption{Example figure using external image files.}
   \label{fig:testfig}
 \end{figure}

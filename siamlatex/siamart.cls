@@ -286,8 +286,9 @@
 %% packages do not play well together.
 %%
 \if@review
-  \RequirePackage[displaymath,mathlines]{lineno}
+  \RequirePackage[mathlines]{lineno}
   \linenumbers
+  \renewcommand{\linenumberfont}{\normalfont\footnotesize\color{red}}
   % The \linenumbers command does not play nice with amsmath, so we
   % have added some patches to fix it. See   
   % http://phaseportrait.blogspot.com/2007/08/lineno-and-amsmath-compatibility.html
@@ -513,14 +514,8 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \def\siampretitle{}
 \def\siamprelabel{}
 \if@supplement
-%\makeatletter
 \def\siampretitle{Supplementary Materials: }
 \def\siamprelabel{S}
-% \let\svbibcite\bibcite
-% \def\bibcite#1#2{\svbibcite{#1}{\siamprelabel#2}}
-% \let\svbiblabel\@biblabel
-% \def\@biblabel#1{\svbiblabel{\siamprelabel#1}}
-%\makeatother
 \fi
 
 
@@ -543,7 +538,10 @@ Vol.\ #3, No.\ #4, pp.\ #5
   \par
   \vskip .11in}
 \def\@ucnothanks#1{\expandafter\@ucnt#1\thanks\relax}
-\def\@ucnt#1\thanks{\uppercase{#1}\futurelet\@tempa\@ucnta}
+%% >>tgk>> --- Modified Summer 2015 ---
+%% Fixed capitalization to work with macro for title
+\def\@ucnt#1\thanks{\uppercase\expandafter{#1}\futurelet\@tempa\@ucnta}
+%% <<tgk<< 
 \def\@ucnta{\ifx\@tempa\relax\else\@ucntb\fi}
 \def\@ucntb#1\thanks\relax{\thanks{#1}}
 \def\@doauth#1\and{\let\@nextdoa=\@doauth
@@ -1271,10 +1269,8 @@ Vol.\ #3, No.\ #4, pp.\ #5
 % This needs to be loaded *before* cleveref
 \usepackage{algorithm}
 
-\makeatletter
 \renewcommand{\ALG@name}{Algorithm}
 \renewcommand\thealgorithm{\siamprelabel\@arabic\c@algorithm}
-\makeatother
 
 %% <<tgk<<
 
@@ -1294,23 +1290,23 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \Crefname{figure}{Figure}{Figures}
 
 % Per SIAM Style Manual, don't say equation in front on an equation.
-\crefformat{equation}{#2(#1)#3}
-\crefrangeformat{equation}{(#3#1#4)--(#5#2#6)}
-\crefmultiformat{equation}{#2(#1)#3}{ and #2(#1)#3}
-{, #2(#1)#3}{, and #2(#1)#3}
-\crefrangemultiformat{equation}{(#3#1#4)--(#5#2#6)}%
-{ and (#3#1#4)--(#5#2#6)}{, (#3#1#4)--(#5#2#6)}{, and (#3#1#4)--(#5#2#6)}
+\crefformat{equation}{#2\textup{(#1)}#3}
+\crefrangeformat{equation}{\textup{(#3#1#4)--(#5#2#6)}}
+\crefmultiformat{equation}{#2\textup{(#1)}#3}{ and #2\textup{(#1)}#3}
+{, #2\textup{(#1)}#3}{, and #2\textup{(#1)}#3}
+\crefrangemultiformat{equation}{\textup{(#3#1#4)--(#5#2#6)}}%
+{ and \textup{(#3#1#4)--(#5#2#6)}}{, \textup{(#3#1#4)--(#5#2#6)}}{, and \textup{(#3#1#4)--(#5#2#6)}}
 
 % But spell it out at the beginning of a sentence.
-\Crefformat{equation}{#2Equation~(#1)#3}
-\Crefrangeformat{equation}{Equations~(#3#1#4)--(#5#2#6)}
-\Crefmultiformat{equation}{Equations~(#2#1#3)}{ and (#2#1#3)}
-{, (#2#1#3)}{, and (#2#1#3)}
-\Crefrangemultiformat{equation}{Equations~(#3#1#4)--(#5#2#6)}%
-{ and (#3#1#4)--(#5#2#6)}{, (#3#1#4)--(#5#2#6)}{, and (#3#1#4)--(#5#2#6)}
+\Crefformat{equation}{#2Equation~\textup{(#1)}#3}
+\Crefrangeformat{equation}{Equations~\textup{(#3#1#4)--(#5#2#6)}}
+\Crefmultiformat{equation}{Equations~\textup{(#2#1#3)}}{ and \textup{(#2#1#3)}}
+{, \textup{(#2#1#3)}}{, and \textup{(#2#1#3)}}
+\Crefrangemultiformat{equation}{Equations~\textup{(#3#1#4)--(#5#2#6)}}%
+{ and \textup{(#3#1#4)--(#5#2#6)}}{, \textup{(#3#1#4)--(#5#2#6)}}{, and \textup{(#3#1#4)--(#5#2#6)}}
 
 % Make number non-italic in any environment.
-\crefdefaultlabelformat{\upshape#2#1#3}
+\crefdefaultlabelformat{#2\textup{#1}#3}
 
 %% <<tgk<<
 
@@ -1327,14 +1323,12 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 % We fix the default style to have the indents that SIAM wants before
 % theorem and proof definitions.
-\makeatletter
 \renewtheoremstyle{plain}%
- {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ \upshape{##2}\theorem@separator]}%
- {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ \upshape{##2}\ {\normalfont(##3)}\theorem@separator]}
+ {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ \textup{##2\theorem@separator}]}%
+ {\item[\hskip\labelsep\hskip\parindent \theorem@headerfont ##1\ \textup{##2\ (##3)\theorem@separator}]}
 \renewtheoremstyle{nonumberplain}%
  {\item[\theorem@headerfont\hskip\labelsep\hskip\parindent ##1\theorem@separator]}%
  {\item[\theorem@headerfont\hskip\labelsep\hskip\parindent ##1\ (##3)\theorem@separator]}
-\makeatother
 
 % Retained from old style file
 \newcommand{\proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
@@ -1447,7 +1441,32 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \renewcommand{\thetheorem}{\siamprelabel\arabic{theorem}}
 \let\svbibcite\bibcite
 \def\bibcite#1#2{\svbibcite{#1}{\siamprelabel#2}}
+
+% Adding a footnote in support of the review option. Earlier, the line
+% numbers are enabled.
+\if@review
+\renewcommand{\footercopyright}{\textcolor{red}{\textit{--- This manuscript is for review purposes only. ---}}}
+\fi
+
+% Adding a command to do running heads and PDF options
+\newcommand{\siammetadata}[2]{
+% Declare page headings - use the \siampretitle command, which inserts
+% "Supplementary Material" when appropriate.
+\pagestyle{myheadings}
+\markboth{\uppercase\expandafter{#2}}
+{\uppercase\expandafter{\siampretitle{#1}}}
+
+% Optional: Set up PDF title and authors
+\ifpdf
+\hypersetup{
+  pdftitle={\siampretitle#1},
+  pdfauthor={#2}
+}
+\fi
+}
 %% <<tgk<<
+
+
 
 \endinput
 %% 

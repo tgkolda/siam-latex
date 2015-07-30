@@ -1035,8 +1035,8 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \definecolor{strip}{cmyk}{0,0,0,1}
 
 
-\RequirePackage[dvips]{graphics,graphicx}
-\RequirePackage[colorlinks,pdfmark,dvips,naturalnames=false,hypertexnames=false,breaklinks]{hyperref}%new
+\RequirePackage[]{graphics,graphicx}
+\RequirePackage[colorlinks,naturalnames=false,hypertexnames=false,breaklinks]{hyperref}%new
 \urlstyle{same}
 \usepackage{breakurl}%new
 \def\wwwbrowser{C:\string\Program\space
