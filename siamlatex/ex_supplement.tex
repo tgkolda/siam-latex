@@ -1,7 +1,13 @@
 \documentclass[review,supplement]{siamart}
 \input{ex_shared}
 \externaldocument{ex_article}
-
+% Optional PDF information
+\ifpdf
+\hypersetup{
+  pdftitle={Supplementary Materials: \TheTitle},
+  pdfauthor={\TheAuthors}
+}
+\fi
 \begin{document}
 
 \maketitle

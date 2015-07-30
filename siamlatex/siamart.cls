@@ -1454,20 +1454,12 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \fi
 
 % Adding a command to do running heads and PDF options
-\newcommand{\siammetadata}[2]{
+\newcommand{\headers}[2]{
 % Declare page headings - use the \siampretitle command, which inserts
 % "Supplementary Material" when appropriate.
 \pagestyle{myheadings}
 \markboth{\uppercase\expandafter{#2}}
 {\uppercase\expandafter{\siampretitle{#1}}}
-
-% Optional: Set up PDF title and authors
-\ifpdf
-\hypersetup{
-  pdftitle={\siampretitle#1},
-  pdfauthor={#2}
-}
-\fi
 }
 %% <<tgk<<
 

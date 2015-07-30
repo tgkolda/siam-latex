@@ -125,13 +125,20 @@
 %% MARKBOTH
 %% ------------------------------------------------------------------
 \begin{tcbverbatimwrite}{tmp_\jobname_markboth.tex}
-\siammetadata{Guide to Using  SIAM'S \LaTeX\ Style}
+\headers{Guide to Using  SIAM'S \LaTeX\ Style}
 {Dianne Doe, Paul T. Frank, and Jane E. Smith}
 \end{tcbverbatimwrite}
 \input{tmp_\jobname_markboth.tex}
 %% ------------------------------------------------------------------
 %% END MARKBOTH
 %% ------------------------------------------------------------------
+
+% Optional: Set up PDF title and authors
+\ifpdf
+\hypersetup{
+  pdftitle={Guide to Using  SIAM'S \LaTeX\ Style}
+}
+\fi
 
 \begin{document}
 \maketitle
@@ -199,7 +206,7 @@ The outline of a SIAM \LaTeX\ article is shown in \cref{ex:outline}.
 \documentclass{siamart}
 
 % Packages and macros definitions go here.
-% Define title, authors, metadata
+% Define title, authors, headers
 
 \begin{document}
 \maketitle
@@ -262,15 +269,14 @@ deletetexcs={and,thanks,title,author},%
 ]{Title and authors in preamble}{tmp_\jobname_header.tex}
 
 
-\Cref{ex:markboth} shows how to specify the page headings and the PDF
-title and authors via the
-\code{\siammetadata{title}{authors}} command, with
+\Cref{ex:markboth} shows how to specify the page headings and via the
+\code{\headers{title}{authors}} command, with
 the title (possibly shortened to fit) and the authors names.
 
 \examplefile[label={ex:markboth},listing only,%
 listing options={style=siamlatex,%
 deletetexcs={pagestyle,thispagestyle,markboth},%
-{moretexcs=[2]{pagestyle,thispagestyle,markboth,siammetadata}}}
+{moretexcs=[2]{pagestyle,thispagestyle,markboth,headers}}}
 ]{Page headers in preamble}{tmp_\jobname_markboth.tex}
 
 Following the author and title is the abstract, key words listing, and AMS subject

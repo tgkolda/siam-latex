@@ -8,6 +8,14 @@
 
 \input{ex_shared}
 
+% Optional PDF information
+\ifpdf
+\hypersetup{
+  pdftitle={\TheTitle},
+  pdfauthor={\TheAuthors}
+}
+\fi
+
 % The next statement enables references to information in the
 % supplement. See the xr-hyperref package for details.
 
