@@ -356,7 +356,10 @@
 \setlength\lineskip{1\p@}
 \setlength\normallineskip{1\p@}
 \renewcommand\baselinestretch{}
-\setlength\parskip{0\p@ \@plus \p@}
+%>>>tgk>>> Removed Summer 2015
+%Modifying per Issue #33, recommended changes by Steve
+%\setlength\parskip{0\p@ \@plus \p@}
+%<<<tgk<<<
 \@lowpenalty   51
 \@medpenalty  151
 \@highpenalty 301
@@ -1239,9 +1242,11 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% <<tgk<<
 
 \newcommand{\email}[1]{\protect\href{mailto:#1}{#1}}
-\newcommand{\mref}[2]{\href{mailto:#1}{#2}}
-\renewcommand{\mref}[1]{\burlalt{mailto:#1}{#1}}%new
-
+%>>>tgk>>> Modified Summer 2015
+% Modified per Issue #33, suggestions by Steve
+%\newcommand{\mref}[2]{\href{mailto:#1}{#2}}
+\newcommand{\mref}[1]{\burlalt{mailto:#1}{#1}}
+%<<<tgk<<<
 
 %% >>tgk>> --- Removed Summer 2015 ---
 %%
