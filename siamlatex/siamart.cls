@@ -39,16 +39,22 @@
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
 \NeedsTeXFormat{LaTeX2e}[1995/06/01]
+%%
 %% >>tgk>> --- Modified Summer 2015 ---
+%%
 % [[[TODO: Update date and version in next line]]]
 \ProvidesClass{siamart}[2015/02/20 v1.0 LaTeX document e-class]
+%%
 %% <<tgk<<
+%%
 \RequirePackage[leqno]{amsmath}
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@titlepage
 \@titlepagefalse
+%%
 %% >>tgk>> --- Removed Summer 2015 ---
+%%
 % \newif\if@oneeqnum
 % \@oneeqnumfalse
 % \newif\if@onetabnum
@@ -57,29 +63,35 @@
 % \@onefignumfalse
 % \newif\if@onethmnum
 % \@onethmnumfalse
+%%
 %% <<tgk<<
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
-%% Support for "review" class option to turn on linenumbers
-%%
+%% Support for "review" class option to turn on features like line
+%% numbers for paper under review.
 \newif\if@review
 \@reviewfalse
+%%
 %% <<tgk<<
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Support for "supplement" class option to change title and labels
 %% appropriately for supplemental materials.
-%%
 \newif\if@supplement
 \@supplementfalse
+%%
 %% <<tgk<<
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
-%% Hide links
-%%
+%% Support for "hidelinks" class option to hide hyperlinks.
 \newif\if@hidelinks
 \@hidelinksfalse
+%%
 %% <<tgk<<
+%%
 %_%_%_%_%
 \newif\if@translated
 \@translatedfalse
@@ -113,30 +125,32 @@
 \DeclareOption{12pt}{\renewcommand\@ptsize{2}}
 \DeclareOption{twoside}{\@twosidetrue  \@mparswitchtrue}
 \DeclareOption{draft}{\setlength\overfullrule{5pt}}
-%% >>tgk>> --- Added 2015 ---
-%% Support for "review" class option to turn on linenumbers
+%%
+%% >>tgk>> --- Added Summer 2015 ---
+%%
+%% Support for new class options
 \DeclareOption{review}{\@reviewtrue}
-%% <<tgk<<
-%% >>tgk>> --- Added 2015 ---
-%% Support for "supplement" class option (more below).
 \DeclareOption{supplement}{\@supplementtrue}
-%% <<tgk<<
-%% >>tgk>> --- Added 2015 ---
-%% Support for "hidelinks" class option (more below).
 \DeclareOption{hidelinks}{\@hidelinkstrue}
+%%
 %% <<tgk<<
+%%
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
 \DeclareOption{notitlepage}{\@titlepagefalse}
 \DeclareOption{onecolumn}{\@twocolumnfalse}
 \DeclareOption{twocolumn}{\@twocolumntrue}
+%%
 %% >>tgk>> --- Removed Summer 2015 ---
+%%
 % \DeclareOption{leqno}{\input{leqno.clo}}
 % \DeclareOption{subeqn}{\input{subeqn.clo}}
 % \DeclareOption{oneeqnum}{\@oneeqnumtrue} % added 7.19.96
 % \DeclareOption{onetabnum}{\@onetabnumtrue} % added 7.19.96
 % \DeclareOption{onefignum}{\@onefignumtrue} % added 7.19.96
 % \DeclareOption{onethmnum}{\@onethmnumtrue} % added 7.29.96
+%%
 %% <<tgk<<
+%%
 \DeclareOption{translated}{\@translatedtrue} % jan 7 2004
 %\DeclareOption{openbib}{\@openbibtrue}
 \ExecuteOptions{letterpaper,10pt,twoside,onecolumn,leqno,draft,notitlepage}
@@ -259,26 +273,22 @@
 %  \@settopoint\topmargin
 \fi
 
-
-%% <<tgk<<
-
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Fix to make bookmarks show up when using pdflatex (+hypertex).
-%%
 \setcounter{tocdepth}{3}
+%%
 %% <<tgk<<
-
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% First step to adding the ntheorem package for theorems, etc. Second
-%% step is further down below. Need to split them because of the way
-%% that cleveref works.
-%%
-% This needs to be loaded *before* cleveref and lineno
+%% step is further down below. Need to split them because this needs
+%% to be loaded *before* cleveref and lineno.
 \usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+%%
 %% <<tgk<<
-
+%%
 
 \setlength\footnotesep{6.65\p@}
 \skip\footins 13\p@ \@plus 4\p@ \@minus 2\p@
@@ -326,10 +336,13 @@
 \setlength\lineskip{1\p@}
 \setlength\normallineskip{1\p@}
 \renewcommand\baselinestretch{}
-%>>>tgk>>> Removed Summer 2015
-%Modifying per Issue #33, recommended changes by Steve
-%\setlength\parskip{0\p@ \@plus \p@}
-%<<<tgk<<<
+%%
+%% >>tgk>> Modified Summer 2015
+%%
+\setlength\parskip{0\p@}
+%%
+%% <<tgk<<
+%%
 \@lowpenalty   51
 \@medpenalty  151
 \@highpenalty 301
@@ -480,27 +493,32 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %_%_%_%_%
 %_%_%_%_%
 %_%_%_%_%
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
-%% Support for "supp" class option, to change the title and labels.
-%%
+%% Support for "supplement" class option, to change the title and labels.
 \def\siampretitle{}
 \def\siamprelabel{}
 \if@supplement
 \def\siampretitle{Supplementary Materials: }
 \def\siamprelabel{S}
 \fi
-
-
+%%
+%% <<tgk<<
+%%
 \def\@maketitle{%
   \null
 \@slugger
   \begin{center}%
 \@supertitle%
+%%
 %% >>tgk>> --- Modified Summer 2015 ---
+%%
 %% Support for supplementary materials
     {\bfseries\MakeUppercase{\siampretitle}\@ucnothanks{\@title}\par}%
+%%
 %% <<tgk<< 
+%%
     \vskip .075in%
     {\footnotesize
       \spaceskip=1.5\fontdimen2\the\font
@@ -511,10 +529,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
   \par
   \vskip .11in}
 \def\@ucnothanks#1{\expandafter\@ucnt#1\thanks\relax}
+%%
 %% >>tgk>> --- Modified Summer 2015 ---
+%%
 %% Fixed capitalization to work with macro for title
 \def\@ucnt#1\thanks{\uppercase\expandafter{#1}\futurelet\@tempa\@ucnta}
+%%
 %% <<tgk<< 
+%%
 \def\@ucnta{\ifx\@tempa\relax\else\@ucntb\fi}
 \def\@ucntb#1\thanks\relax{\thanks{#1}}
 \def\@doauth#1\and{\let\@nextdoa=\@doauth
@@ -557,10 +579,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newcounter {subsubsection}[subsection]
 \newcounter {paragraph}[subsubsection]
 \newcounter {subparagraph}[paragraph]
+%%
 %% >>tgk>> --- Modified Summer 2015 ---
-%% Adding supplement support
+%%
+%% Adding supplement support.
 \renewcommand\thesection       {\siamprelabel\arabic{section}}
+%%
 %% <<tgk<<
+%%
 \renewcommand\thesubsection    {\thesection.\arabic{subsection}}
 \renewcommand\thesubsubsection {\thesubsection.\arabic{subsubsection}}
 \renewcommand\theparagraph     {\thesubsubsection.\arabic{paragraph}}
@@ -743,11 +769,9 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newcommand{\insertsectionspace}{\addvspace{\@sectionspace}}
 \newcommand{\removesectionspace}{\vspace{\@negsectionspace}} %I didn't end up needing these, but they might be needed somewhere
 
+%%
 %% >>tgk>> --- Removed Summer 2015 ---
 %% 
-%% This is entirely replaced with the ntheorem environment and
-%% specializations later on.
-%%
 % \def\@begintheorem#1#2{\par\addvspace{\@sectionspace}{\scshape #1\ #2. }\itshape\ignorespaces}
 %
 % \def\@opargbegintheorem#1#2#3{\par\addvspace{\@sectionspace}{\scshape #1\ #2\ ({\upshape #3}). }\itshape\ignorespaces}
@@ -773,7 +797,9 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %   \newtheorem{proposition}[theorem]{Proposition}
 %   \newtheorem{definition}[theorem]{Definition}
 % \fi
+%%
 %% <<tgk<<
+%%
 
 % FROM FIXUP.STY
 % We now redefine the eqnarray environment to correct the space around
@@ -836,6 +862,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newcommand\rank{\mathop{\operator@font rank}\nolimits}
 \newcommand\supp{\mathop{\operator@font supp}\nolimits}
 
+%%
 %% >>tgk>> --- Modified Summer 2015 ---
 %%
 %% The original changes to introduce the appendix didn't work
@@ -885,7 +912,9 @@ Vol.\ #3, No.\ #4, pp.\ #5
 % \refstepcounter{section}
 % {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
 % \reset@font\normalsize\bfseries\appendixname.}}
+%%
 %% <<tgk<<
+%%
 
 \setlength\arraycolsep{5\p@}
 \setlength\tabcolsep{6\p@}
@@ -898,12 +927,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 
 \newcounter{figure}
+%%
 %% >>tgk>> --- Modified Summer 2015 ---
 %%
 %% Added \siamprelabel for supplement.
-%%
 \renewcommand\thefigure{\siamprelabel\@arabic\c@figure}
+%%
 %% <<tgk<<
+%%
 \def\fps@figure{tp}
 \def\ftype@figure{1}
 \def\ext@figure{lof}
@@ -915,7 +946,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
                {\@dblfloat{figure}}
                {\end@dblfloat}
 \newcounter{table}
+%%
+%% >>tgk>>  Modified Summer 2015
+%%
+%% Adding support for supplement
 \renewcommand{\thetable}{\siamprelabel\@arabic\c@table}
+%%
+%% <<tgk<<
+%%
 \def\fps@table{tp}
 \def\ftype@table{2}
 \def\ext@table{lot}
@@ -976,12 +1014,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
      \end{center}
      \@mkboth{\uppercase\expandafter{\refname}}{\uppercase\expandafter{\refname}}
      \addvspace{.15in}\nopagebreak%
+%%
 %% >>tgk>> --- Modified Summer 2015
 %%
 %% Adding supplement support by inserting \siamprelabel
-%%
       \list{\@biblabel{\siamprelabel\arabic{enumi}}}%
+%%
 %% <<tgk<<
+%%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
             \advance\leftmargin\labelsep
@@ -1060,7 +1100,9 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \pagestyle{plain}
 \pagenumbering{arabic}      % Arabic page numbers
 
+%%
 %% >>tgk>> --- Removed Summer 2015 ---
+%%
 % \if@compatibility%
 % \else
 %   \if@oneeqnum
@@ -1087,7 +1129,9 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %     \renewcommand{\thetheorem}{\thesection.\arabic{theorem}}
 %   \fi
 % \fi
+%%
 %% <<tgk<<
+%%
 
 \onecolumn
 
@@ -1123,11 +1167,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %%%
 
 
-%% >>tgk>> --- Removed Summer 2015 ---
 
 % \def\newarticle{\input{newart.tex}}
 
 % \RequirePackage[dvips]{color}
+%%
+%% >>tgk>> --- Removed Summer 2015 ---
+%%
+
 % %\definecolor{header1}{cmyk}{.9,.5,0,.35}
 % %\definecolor{blue1}{cmyk}{.9,.7,0,0}
 % %\definecolor{blue2}{cmyk}{.93,.95,.2,.07}
@@ -1173,59 +1220,78 @@ Vol.\ #3, No.\ #4, pp.\ #5
 % \def\@filecolor{cyan}
 % \def\@urlcolor{extlink}
 % \def\@menucolor{red}
+%%
 %% <<tgk<<
+%%
 %%%\def\@pagecolor{softpage}
 
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
-%% Support for cross-reference (xr-hyper) and hyperlinks
+%% Support for cross-reference (xr-hyper).
+\RequirePackage{xr-hyper}
+%%
+%% <<tgk<<
+%%
+%% >>tgk>> --- Added Summer 2015 ---
+%%
+\RequirePackage{ifpdf}
+%%
+%% <<tgk<<
+%%
+%% >>tgk>> --- Added Summer 2015 ---
+%%
+%% Support for cross-reference hyperlinks
 %% (hyperref). Made it so that it works for both dvi/ps and pdf
 %% (ifpdf, breakurl).
 %%
-\RequirePackage{xr-hyper}
 \RequirePackage[colorlinks=false,frenchlinks=false,pdfborder={0 0 0},naturalnames=false,hypertexnames=false,breaklinks]{hyperref}
-\RequirePackage{ifpdf}
 \ifpdf
 \else
    \RequirePackage{breakurl}
 \fi
+%%
 %% <<tgk<<
-
+%%
+%% >>tgk>> --- Added Summer 2015 ---
+%% 
+\RequirePackage{xcolor}
+\colorlet{siaminlinkcolor}{green!50!black}
+\colorlet{siamexlinkcolor}{red!50!black}
+\colorlet{siamreviewcolor}{black!50}
+%%
+%% <<tgk<<
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %% 
 %% Add support for color in order to color the hyperlinks.
 %% 
 \if@hidelinks
-\hypersetup{
-  hidelinks = true
-}
+\hypersetup{ hidelinks = true }
 \else
-\RequirePackage{xcolor}
-\colorlet{siaminlinkcolor}{green!50!black}
-\colorlet{siamexlinkcolor}{red!50!black}
-\colorlet{siamreviewcolor}{black!50}
 \hypersetup{
   colorlinks = true,
   allcolors = siaminlinkcolor,
   urlcolor = siamexlinkcolor,
 }
 \fi
+%%
 %% <<tgk<<
-
+%%
 \newcommand{\email}[1]{\protect\href{mailto:#1}{#1}}
-%>>>tgk>>> Modified Summer 2015
-% Modified per Issue #33, suggestions by Steve
-%\newcommand{\mref}[2]{\href{mailto:#1}{#2}}
+%%
+%% >>tgk>> --- Modified Summer 2015 ---
+%% 
 \newcommand{\mref}[1]{\burlalt{mailto:#1}{#1}}
-%<<<tgk<<<
-
+%%
+%% <<tgk<<
+%%
 %% >>tgk>> --- Removed Summer 2015 ---
-%%
-%% Not sure why a web command was added since \url already does
-%% exactly the same thing.
-%%
 %\newcommand{\web}[1]{\href{#1}{#1}}
+%%
 %% <<tgk<< 
+%%
+
 %%%\pagecolor{softpage}
 
 
@@ -1234,28 +1300,20 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 \setlength{\parskip}{1\parskip}
 
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
-%% Adding algorithm support, including modifying the name.
-%% Note that the SIAM style manual wants the "Algorithm" title to be
-%% in smallcaps, but it's not clear why. It's not consistent with
-%% figure and table.
-%%
-
 % This needs to be loaded *before* cleveref
 \usepackage{algorithm}
-
 \renewcommand{\ALG@name}{Algorithm}
 \renewcommand\thealgorithm{\siamprelabel\@arabic\c@algorithm}
-
+%%
 %% <<tgk<<
-
-
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Adding cleveref package for smart citations, with customizations to
 %% make it act like SIAM expects.
-%%
 \usepackage[capitalize,nameinlink]{cleveref}
 
 % Per SIAM Style Manual, "section" should be lowercase
@@ -1283,19 +1341,16 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 % Make number non-italic in any environment.
 \crefdefaultlabelformat{#2\textup{#1}#3}
-
+%%
 %% <<tgk<<
-
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Setting up theorems using ntheorem package, customizing to do the
 %% indentations and other features that SIAM likes. Also, adding
 %% macros that can be use to declare additional theorem-like
-%% environments. 
-%%
-
-% The \newtheorem calls have to happen /after/ loading cleverref when
-% using ntheorem and sharing the same numbering.
+%% environments. The \newtheorem calls have to happen /after/ loading
+%% cleverref when using ntheorem and sharing the same numbering.
 
 % We fix the default style to have the indents that SIAM wants before
 % theorem and proof definitions.
@@ -1358,11 +1413,15 @@ Vol.\ #3, No.\ #4, pp.\ #5
   \theoremsymbol{}
   \newtheorem{#1}[theorem]{#2}
 }
+%%
 %% <<tgk<<
+%%
 
 %new: make new head for assumptions, remarks, etc. Numbered? Unnumbered?
-%% >>tgk>> --- Removed Summer 2015 ---
 
+%%
+%% >>tgk>> --- Removed Summer 2015 ---
+%%
 % %%% create theorems, etc. with upright font, no italic
 % \def\newheading#1{%
 %   \@ifnextchar[{\@othmup{#1}}{\@nthmup{#1}}}
@@ -1402,44 +1461,49 @@ Vol.\ #3, No.\ #4, pp.\ #5
 % \def\@opargbegintheoremup#1#2#3{\trivlist
 %       \item[\hskip \labelsep{\bfseries #1\ #2\ (#3).}]\upshape}
 % \def\@endtheoremup{\endtrivlist}
+%%
 %% <<tgk<<
+%%
 
-
-%% >>tgk>> --- Moved earlier, to review option ---
+%%
+%% >>tgk>> --- Moved elsewhere, Summer 2015
+%%
 %\usepackage{lineno}
+%%
 %% <<tgk<<
+%%
 
 \setlength{\textheight}{598pt} %{598.2275pt}
 
+%%
 %% >>tgk>> --- Added Summer 2015 ---
+%%
+% Support for supplement numbering
 \renewcommand{\theequation}{\siamprelabel\arabic{equation}}
 \renewcommand{\thepage}{\siamprelabel\arabic{page}}
 \renewcommand{\thetheorem}{\siamprelabel\arabic{theorem}}
 \let\svbibcite\bibcite
 \def\bibcite#1#2{\svbibcite{#1}{\siamprelabel#2}}
-
-% Adding a footnote in support of the review option. Earlier, the line
-% numbers are enabled.
-\if@review
-\renewcommand{\footercopyright}{\textcolor{siamreviewcolor}{\textit{--- This manuscript is for review purposes only. ---}}}
-\fi
-
-% Adding a command to do running heads 
+%%
+%% <<tgk<<
+%%
+%% >>tgk>> --- Added Summer 2015 ---
+%%
+% Adding a command to do running heads with uppercase and supplement support.
 \newcommand{\headers}[2]{
 % Declare page headings - use the \siampretitle command, which inserts
 % "Supplementary Material" when appropriate.
 \pagestyle{myheadings}
 \markboth{\uppercase\expandafter{#2}}
-{\uppercase\expandafter{\siampretitle{#1}}}
-}
+{\uppercase\expandafter{\siampretitle{#1}}}}
+%%
 %% <<tgk<<
-
+%%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Support for "review" class option to turn on linenumbers via the
 %% lineno package. Slightly complicated because the lineno and amsmath
 %% packages do not play well together.
-%%
 \if@review
   \RequirePackage[mathlines]{lineno}
   \linenumbers
@@ -1462,9 +1526,12 @@ Vol.\ #3, No.\ #4, pp.\ #5
   \patchBothAmsMathEnvironmentsForLineno{alignat}%
   \patchBothAmsMathEnvironmentsForLineno{gather}%
   \patchBothAmsMathEnvironmentsForLineno{multline}%
+  \renewcommand{\footercopyright}{\textcolor{siamreviewcolor}%
+    {\textit{This manuscript is for review purposes only.}}}
 \fi
+%%
 %% <<tgk<<
-
+%%
 
 \endinput
 %% 
