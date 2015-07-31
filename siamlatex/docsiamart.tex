@@ -7,7 +7,8 @@
 \usepackage{braket,amsfonts}
 
 %% Used in table example below
-\usepackage{array,subfig}
+\usepackage{array}
+\usepackage[caption=false]{subfig}
 
 %% Used for TIKZ example, shown in the "Figures" section below.
 \usepackage{tikz}
@@ -54,7 +55,7 @@
 \colorlet{codebackground}{black!25!white!25}
 
 \newcommand\bs{\symbol{'134}} % print backslash in typewriter OT1/T1
-\newcommand{\preamble}[2][\small]{\textcolor{texpreamble}{#1\texttt{#2 \emph{\% <- Preamble}}}\par}
+\newcommand{\preamble}[2][\small]{\textcolor{texpreamble}{#1\texttt{#2 \emph{\% <- Preamble}}}}
 
 \lstdefinestyle{siamlatex}{%
   style=tcblatex,
@@ -567,8 +568,8 @@ be used instead of \code{\newtheorem}.
 specify the plural version if it is unusual.
 
 \begin{example}[label=ex:claim,bicolor,%
-before upper={\preamble{\bs newsiamthm\{claim\}\{Claim\}}%
-\noindent\preamble{\bs newsiamremark\{hypothesis\}\{Hypothesis\}}%
+before upper={\preamble{\bs newsiamthm\{claim\}\{Claim\}}\\
+\noindent\preamble{\bs newsiamremark\{hypothesis\}\{Hypothesis\}}\\
 \noindent\preamble{\bs crefname\{hypothesis\}\{Hypothesis\}\{Hypotheses\}}},%
 parbox=false,%
 listing options={style=siamlatex,%
@@ -577,10 +578,10 @@ listing options={style=siamlatex,%
   If $f'(x) = 0$ for all $x \in (a,b)$ then $f(x)$ is constant on $(a,b)$.
 \end{claim}
 \begin{hypothesis}\label{hyp1}
-A short hypothesis.
+The function $f$ is continuously differentiable.
 \end{hypothesis}
 \begin{hypothesis}\label{hyp2}
-Another short hypothesis.
+The random variable is normally distributed.
 \end{hypothesis}
 \end{example}
 
@@ -612,7 +613,7 @@ special column options from the \texttt{array} package.
 \begin{tcbverbatimwrite}{tmp_\jobname_table.tex}
 \newcolumntype{R}{>{$}r<{$}}  %
 \newcolumntype{V}[1]{>{[\;}*{#1}{R@{\;\;}}R<{\;]}} %
-\begin{table}[htbp]
+\begin{table}[phtb]
   \caption{Example table adapted from Kolda and Mayo \cite{KoMa14}.}
   \label{tab:KoMa14}
   \centering
@@ -641,7 +642,8 @@ fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
 \end{tcbverbatimwrite}
 
 \examplefile[label={ex:table},%
-before upper={\preamble[\scriptsize]{\bs usepackage\{array,subfig\}}},%
+before upper={\preamble[\scriptsize]{\bs usepackage\{array\}}\\[-0.4em]
+\noindent\preamble[\scriptsize]{\bs usepackage[caption=false]\{subfig\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
 {Example table with subtables.}{tmp_\jobname_table.tex}
@@ -665,7 +667,7 @@ example uses the \texttt{graphicx} package for the
 
 
 \begin{tcbverbatimwrite}{tmp_\jobname_fig.tex}
-\begin{figure}[htbp]
+\begin{figure}[phtb]
   \centering
   \subfloat[$\epsilon_{\max}=5$]{\label{fig:a}\includegraphics{lexample_fig1}}
   \subfloat[$\epsilon_{\max}=0.5$]{\label{fig:b}\includegraphics{lexample_fig2}}
@@ -675,13 +677,15 @@ example uses the \texttt{graphicx} package for the
 \end{tcbverbatimwrite}
 
 \examplefile[label={ex:fig},%
-before upper={\preamble[\scriptsize]{\bs usepackage\{graphicx,epstopdf,subfig\}}},%
+before upper={\preamble[\scriptsize]{\bs usepackage\{graphicx,epstopdf\}}\\[-0.4em]
+\noindent\preamble[\scriptsize]{\bs usepackage[caption=false]\{subfig\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
 {Example figure with subfigures and external files}{tmp_\jobname_fig.tex}
 
 \input{tmp_\jobname_fig.tex}
 
+\newpage
 Another option is to use a graphics-generator that is platform- and
 format-independent.
 PGF is a TeX macro package for generating  such graphics and works together with the most important TeX backend drivers, including pdftex and dvips. It comes with a user-friedly syntax layer called TikZ.
@@ -740,7 +744,7 @@ listing only, listing options={%
 
 \input{tmp_\jobname_tikz.tex}
 
-
+\newpage
 \section{Algorithms}
 \label{sec:algs}
 
@@ -771,8 +775,8 @@ second line of \cref{ex:alg}. Then we can use the code
 \end{tcbverbatimwrite}
 
 \examplefile[float=htpb,label={ex:alg},%
-before upper={\preamble[\scriptsize]{\bs usepackage\{algorithmic\}}%
-\vspace{-1.0ex}\preamble[\scriptsize]{\bs Crefname\{ALC@unique\}\{Line\}\{Lines\}}},%
+before upper={\preamble[\scriptsize]{\bs usepackage\{algorithmic\}}\\[-0.4em]
+\preamble[\scriptsize]{\bs Crefname\{ALC@unique\}\{Line\}\{Lines\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
 {Example algorithm}{tmp_\jobname_alg.tex}
@@ -913,7 +917,7 @@ this is only necessary inside the \code{\thanks} command.
 %
 
 \examplefile[label=ex:shared,listing only,%
-listing options={style=siamlatex,firstline=23,lastline=44,%
+listing options={style=siamlatex,firstline=18,lastline=40,%
 {morekeywords=[2]{siampretitle,MakeUppercase,string}}}
 ]{Example of shared title and author macros}{ex_shared.tex}
 
@@ -945,6 +949,7 @@ Additionally, the \code{article} entry now supports an Article ID,
 To use this, include the following code in your \LaTeX\ source code:
 \code{\bibliographystyle{siamplain}}.
 
+\newpage
 \subsection{DOI}
 
 A digital object identifier (DOI) is a unique alphanumeric string that provides a persistent link to its location on the Internet. The publisher assigns a DOI when your article is published and made available electronically. Using the \code{doi} field in \BibTeX to specify it, as shown for \cite{KoMa14} in \cref{ex:article}; observe the new \code{doi} field which produces a hyperlink in the citation.
@@ -962,6 +967,7 @@ listing options={style=siamlatex,firstline=20,lastline=28,%
 {morekeywords=[2]{url,urldate}}}
 ]{Example with the URL field in \BibTeX}{references.bib}
 
+\newpage
 \subsection{Preprint servers such as arXiv}
 
 More and more manuscripts are available on preprint servers. In fact,
@@ -986,6 +992,7 @@ listing options={style=siamlatex,firstline=40,lastline=55,%
 {morekeywords=[2]{eprint,eprintclass,archive,archiveprefix}}}
 ]{Example PubMed reference in \BibTeX}{references.bib}
 
+\newpage
 \subsection{Article ID}
 Some journals use an article ID rather than page numbers. 
 The field \texttt{eid} specifies the article ID. The optional field \texttt{pagetotal} can say the number
@@ -1023,9 +1030,11 @@ the SIAM \LaTeX\@ and \BibTeX\ classes:
 \item Colored hyperlinks (red for external, green for internal).
 \item New command for setting headers: \code{\headings}.
 \item Change in file names: \texttt{siamltex.cls} is replaced by
-  \texttt{siamart.cls}, and \texttt{siam.bst} bibliography style is replaced by \texttt{siamplain.bst}.
+  \texttt{siamart.cls}, and the \texttt{siam.bst} bibliography style
+  file is replaced by \texttt{siamplain.bst}.
 \end{itemize}
 
+\newpage
 \section{Special modifications}
 
 To number theorem-like environments by section, e.g., Theorem 5.1
