@@ -279,36 +279,6 @@
 \usepackage[amsmath,thmmarks,hyperref]{ntheorem}
 %% <<tgk<<
 
-%% >>tgk>> --- Added Summer 2015 ---
-%%
-%% Support for "review" class option to turn on linenumbers via the
-%% lineno package. Slightly complicated because the lineno and amsmath
-%% packages do not play well together.
-%%
-\if@review
-  \RequirePackage[mathlines]{lineno}
-  \linenumbers
-  \renewcommand{\linenumberfont}{\normalfont\footnotesize\color{red}}
-  % The \linenumbers command does not play nice with amsmath, so we
-  % have added some patches to fix it. See   
-  % http://phaseportrait.blogspot.com/2007/08/lineno-and-amsmath-compatibility.html
-  \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
-    \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
-    \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
-    \renewenvironment{#1}%
-    {\linenomath\csname old#1\endcsname}%
-    {\csname oldend#1\endcsname\endlinenomath}}% 
-  \newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
-    \patchAmsMathEnvironmentForLineno{#1}%
-    \patchAmsMathEnvironmentForLineno{#1*}}%
-  \patchBothAmsMathEnvironmentsForLineno{equation}%
-  \patchBothAmsMathEnvironmentsForLineno{align}%
-  \patchBothAmsMathEnvironmentsForLineno{flalign}%
-  \patchBothAmsMathEnvironmentsForLineno{alignat}%
-  \patchBothAmsMathEnvironmentsForLineno{gather}%
-  \patchBothAmsMathEnvironmentsForLineno{multline}%
-\fi
-%% <<tgk<<
 
 \setlength\footnotesep{6.65\p@}
 \skip\footins 13\p@ \@plus 4\p@ \@minus 2\p@
@@ -1233,6 +1203,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \RequirePackage{xcolor}
 \colorlet{siaminlinkcolor}{green!50!black}
 \colorlet{siamexlinkcolor}{red!50!black}
+\colorlet{siamreviewcolor}{black!50}
 \hypersetup{
   colorlinks = true,
   allcolors = siaminlinkcolor,
@@ -1450,10 +1421,10 @@ Vol.\ #3, No.\ #4, pp.\ #5
 % Adding a footnote in support of the review option. Earlier, the line
 % numbers are enabled.
 \if@review
-\renewcommand{\footercopyright}{\textcolor{red}{\textit{--- This manuscript is for review purposes only. ---}}}
+\renewcommand{\footercopyright}{\textcolor{siamreviewcolor}{\textit{--- This manuscript is for review purposes only. ---}}}
 \fi
 
-% Adding a command to do running heads and PDF options
+% Adding a command to do running heads 
 \newcommand{\headers}[2]{
 % Declare page headings - use the \siampretitle command, which inserts
 % "Supplementary Material" when appropriate.
@@ -1463,6 +1434,36 @@ Vol.\ #3, No.\ #4, pp.\ #5
 }
 %% <<tgk<<
 
+%% >>tgk>> --- Added Summer 2015 ---
+%%
+%% Support for "review" class option to turn on linenumbers via the
+%% lineno package. Slightly complicated because the lineno and amsmath
+%% packages do not play well together.
+%%
+\if@review
+  \RequirePackage[mathlines]{lineno}
+  \linenumbers
+  \renewcommand{\linenumberfont}{\normalfont\footnotesize\color{siamreviewcolor}}
+  % The \linenumbers command does not play nice with amsmath, so we
+  % have added some patches to fix it. See   
+  % http://phaseportrait.blogspot.com/2007/08/lineno-and-amsmath-compatibility.html
+  \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+    \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+    \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+    \renewenvironment{#1}%
+    {\linenomath\csname old#1\endcsname}%
+    {\csname oldend#1\endcsname\endlinenomath}}% 
+  \newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+    \patchAmsMathEnvironmentForLineno{#1}%
+    \patchAmsMathEnvironmentForLineno{#1*}}%
+  \patchBothAmsMathEnvironmentsForLineno{equation}%
+  \patchBothAmsMathEnvironmentsForLineno{align}%
+  \patchBothAmsMathEnvironmentsForLineno{flalign}%
+  \patchBothAmsMathEnvironmentsForLineno{alignat}%
+  \patchBothAmsMathEnvironmentsForLineno{gather}%
+  \patchBothAmsMathEnvironmentsForLineno{multline}%
+\fi
+%% <<tgk<<
 
 
 \endinput
