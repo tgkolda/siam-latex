@@ -97,6 +97,7 @@
 \newcommand{\Comment}[2][To do]{\textcolor{red!60!yellow}{\textbf{#1:} #2}}
 \patchcmd\newpage{\vfil}{}{}{}
 \flushbottom
+\newcommand{\Exclude}[1]{}
 %% ------------------------------------------------------------------
 %% End of macros for in-document examples. 
 %% ------------------------------------------------------------------
@@ -252,7 +253,7 @@ described in Lamport \cite{La86}. The title and author should be
 declared in the preamble. The title and names are automatically
 converted to uppercase.
 %
-If there is more than one author, each additional author should be preceeded by
+If there is more than one author, each additional author should be preceded by
 the \code{\and} command.  
 %
 The addresses and support acknowledgments are added via
@@ -606,36 +607,54 @@ We can reference multiple types of objects with a single reference:
 \section{Tables}
 \label{sec:tab}
 Table captions should go above the tables.
-\Cref{ex:table} shows the code to generate \cref{tab:KoMa14}. This
+\Cref{ex:simpletable} shows the code to generate a
+\cref{tab:simpletable}.
+A more complicated example is shown in 
+\cref{ex:table}, which generates \cref{tab:KoMa14}. This
 example uses subfloats via the \texttt{subfig} package, as well as
 special column options from the \texttt{array} package.
+
+\begin{tcbverbatimwrite}{tmp_\jobname_simpletable.tex}
+\begin{table}[tbhp]
+  \caption{Example table}
+  \label{tab:simpletable}
+  \centering
+  \begin{tabular}{|c|c|c|} \hline
+   Species & \bf Mean & \bf Std.~Dev. \\ \hline
+    1 & 3.4 & 1.2 \\
+    2 & 5.4 & 0.6 \\ \hline
+  \end{tabular}
+\end{table}
+\end{tcbverbatimwrite}
+
+\examplefile[label={ex:simpletable},%
+listing only, listing options={style=siamlatex}]%
+{Example table.}{tmp_\jobname_simpletable.tex}
+
+\input{tmp_\jobname_simpletable.tex}
 
 \begin{tcbverbatimwrite}{tmp_\jobname_table.tex}
 \newcolumntype{R}{>{$}r<{$}}  %
 \newcolumntype{V}[1]{>{[\;}*{#1}{R@{\;\;}}R<{\;]}} %
-\begin{table}[phtb]
+\begin{table}[tbhp]
   \caption{Example table adapted from Kolda and Mayo \cite{KoMa14}.}
   \label{tab:KoMa14}
   \centering
   \subfloat[$\beta=1$]{
-    \begin{tabular}{|c|R|V{3}|c|r@{\,$\pm$\,}l|} \hline
+    \begin{tabular}{|r|R|V{3}|c|r@{\,$\pm$\,}l|} \hline
 occ. & \multicolumn{1}{c|}{$\lambda$} & \multicolumn{4}{c|}{$\mathbf{x}$} & 
 fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
  718 & 11.3476 &  0.5544 &  0.3155 &  1.2018 &  0.0977 &   45 & 0.17 & 0.06 \\ \hline 
  134 &  3.7394 &  0.2642 & -1.1056 &  0.2657 & -0.3160 &   31 & 0.12 & 0.05 \\ \hline 
- 144 &  2.9979 &  1.0008 &  0.4969 & -0.0212 & -0.4817 &   31 & 0.12 & 0.05 \\ \hline 
    4 & \multicolumn{6}{c|}{\emph{--- Failed to converge ---}} & 0.21 & 0.10 \\ \hline 
  \end{tabular}}
 
   \subfloat[$\beta=-1$]{
-    \begin{tabular}{|c|R|V{3}|c|r@{\,$\pm$\,}l|} \hline
+    \begin{tabular}{|r|R|V{3}|c|r@{\,$\pm$\,}l|} \hline
 occ. & \multicolumn{1}{c|}{$\lambda$} & \multicolumn{4}{c|}{$\mathbf{x}$} & 
 fevals &  \multicolumn{2}{c|}{time (sec.)}\\ \hline
   72 & -1.1507 &  0.2291 &  0.6444 &  0.3540 & -0.8990 &   34 & 0.14 & 0.06 \\ \hline 
- 150 & -3.2777 &  0.8349 & -0.7603 & -0.3532 & -0.2635 &   33 & 0.14 & 0.07 \\ \hline 
- 148 & -3.5998 &  1.0486 &  0.6046 &  0.3736 &  0.3971 &   41 & 0.16 & 0.08 \\ \hline 
  624 & -6.3985 &  0.1003 &  0.1840 &  0.5305 &  1.2438 &   48 & 0.19 & 0.08 \\ \hline 
-   4 & \multicolumn{6}{c|}{\emph{--- Converged to wrong solution ---}} & 0.10 & 0.11 \\ \hline 
    2 & \multicolumn{6}{c|}{\emph{--- Failed to converge ---}} & 0.23 & 0.02 \\ \hline 
  \end{tabular}}
 \end{table}
@@ -653,8 +672,11 @@ listing only, listing options={%
 \section{Figures}
 \label{sec:fig}
 
-It is recommended that all figures be generated as encapsulated
-postscript (EPS) format, since this will be used in final production.
+It is recommended that all figures be generated in high resolution.
+In the past, SIAM has required encapsulated
+postscript (EPS) format for final production. This is still an
+acceptable format, but SIAM also now allows JPEG and PNG. Please be
+sure to produce high-resolution images.
 %
 Since most people work in \texttt{pdflatex}, we
 recommend the package \texttt{epstopdf} to automatically convert EPS
@@ -667,7 +689,7 @@ example uses the \texttt{graphicx} package for the
 
 
 \begin{tcbverbatimwrite}{tmp_\jobname_fig.tex}
-\begin{figure}[phtb]
+\begin{figure}[tbhp]
   \centering
   \subfloat[$\epsilon_{\max}=5$]{\label{fig:a}\includegraphics{lexample_fig1}}
   \subfloat[$\epsilon_{\max}=0.5$]{\label{fig:b}\includegraphics{lexample_fig2}}
@@ -694,19 +716,9 @@ More details can be found at \url{http://sourceforge.net/projects/pgf/}, and det
 This example was written by Henri Menke at
 \url{http://texwelt.de/wissen/fragen/4912/skizze-zur-illustration-linearer-regression}.
 \begin{tcbverbatimwrite}{tmp_\jobname_tikz.tex}
-\begin{figure}[htbp]
-  \centering
-  \begin{tikzpicture}[
-    thick,
-    >=stealth',
-    dot/.style = {
-      draw,
-      fill = white,
-      circle,
-      inner sep = 0pt,
-      minimum size = 4pt
-    }
-    ]
+\begin{figure}[tbhp]  \centering
+  \begin{tikzpicture}[thick, >=stealth', dot/.style = {draw,fill = white,
+      circle, inner sep = 0pt, minimum size = 4pt}]
     \coordinate (O) at (0,0);
     \draw[->] (-0.3,0) -- (8,0) coordinate[label = {below:$x$}] (xmax);
     \draw[->] (0,-0.3) -- (0,5) coordinate[label = {right:$f(x)$}] (ymax);
@@ -714,7 +726,7 @@ This example was written by Henri Menke at
     \path[name path=y] plot[smooth] coordinates {(-0.3,2) (2,1.5) (4,2.8) (6,5)};
     \scope[name intersections = {of = x and y, name = i}]
     \fill[gray!20] (i-1) -- (i-2 |- i-1) -- (i-2) -- cycle;
-    \draw      (0.3,0.5) -- (6.7,4.7) node[pos=0.8, below right] {Sekante};
+    \draw      (0.3,0.5) -- (6.7,4.7) node[pos=0.8, below right] {};
     \draw[red] plot[smooth] coordinates {(-0.3,2) (2,1.5) (4,2.8) (6,5)};
     \draw (i-1) node[dot, label = {above:$P$}] (i-1) {} -- node[left]
     {$f(x_0)$} (i-1 |- O) node[dot, label = {below:$x_0$}] {};
@@ -743,14 +755,15 @@ listing only, listing options={%
 {Example TikZ/PGF for platform-independent graphics.}{tmp_\jobname_tikz.tex}
 
 \input{tmp_\jobname_tikz.tex}
-
+  
 \newpage
 \section{Algorithms}
 \label{sec:algs}
 
 SIAM automatically includes the \texttt{algorithm} package in the
-class definition. Users have the choice of \texttt{algpseudocode},
-\texttt{algorithmic}, and other packages for formatting the algorithm.
+class definition. This provides the float environment.
+Users have the choice of \texttt{algpseudocode},
+\texttt{algorithmic}, and other packages for actually formatting the algorithm.
 For example, \cref{alg:buildtree} is produced by the code in \cref{ex:alg}.
 In order to reference lines within the algorithm, we need to tell the
 \texttt{cleveref} package how to do the referencing, which is the
@@ -837,7 +850,7 @@ The class option \code{supplement} should be used in the
 supplemental \LaTeX\ file.
 The supplement should have the same title and authors as the main
 document.  The title is modified automatically by the SIAM
-class file so that it is preceeded by the text ``Supplementary
+class file so that it is preceded by the text ``Supplementary
 Materials:''.  
 %
 The numbering is modified so that
@@ -975,14 +988,15 @@ SIAM's publication policy explicitly allows the final accepted version
 of any article to be posted on a preprint server such as arXiv.
 
 For an arXiv paper,
-the \code{eprint} field is used to specify identifier. The optional \code{eprintclass} field specifies the class. \Cref{ex:arxiv} shows the \BibTeX for \cite{PeKoPi14}. 
+the \code{eprint} field is used to specify the identifier. The optional \code{eprintclass} field specifies the class. \Cref{ex:arxiv} shows the \BibTeX for \cite{PeKoPi14}. 
 
 \examplefile[label=ex:arxiv,listing only,%
 listing options={style=siamlatex,firstline=30,lastline=38,%
 {morekeywords=[2]{eprint,eprintclass}}}
 ]{Example arXiv reference in \BibTeX}{references.bib}
 
-Other preprint servers are supported as well, but these require specification of the \code{archive} and \code{archiveprefix}. In this case, the target URL is formed by concatenating the \code{archive}, a forward slash (\texttt{/}), and the \code{eprint}; and the text for the hyperlink is formed by concatenating the \code{archiveprevix}, a color (:), and the \code{eprint}.
+Other preprint servers are supported as well, but these require
+specification of the fields \code{archive} and \code{archiveprefix}. In this case, the target URL is formed by concatenating the \code{archive}, a forward slash (\texttt{/}), and the \code{eprint}; and the text for the hyperlink is formed by concatenating the \code{archiveprevix}, a colon (:), and the \code{eprint}.
 %
 \Cref{ex:pubmed} shows the code to generate \cite{WoZhMeSh05}, including the preprint from PubMed.
 Note that this example has both the journal citation as well as the link for the preprint.
