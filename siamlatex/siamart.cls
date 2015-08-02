@@ -2,7 +2,7 @@
 %% This is file `siamart.cls', based on article.cls
 %% Revision of siam macros for use with LaTeX 2e
 %% 
-%% [[[TODO: DATE GOES HERE]]]
+%% August 2015
 %%
 %% Major overhaul including hyperlinks, clever cross-references, and
 %% supplemental file support.
@@ -13,9 +13,14 @@
 %% it is distributed together with all of the files in the siam macro 
 %% distribution. These are:
 %%
-%%  siamart.cls      (this file)
-%%  siamplain.bst    (bibliographic style file for BibTeX)
-%%  [[[TODO: Rest of file list goes here.]]]
+%% * siamart.cls: Main LaTeX class file (this file)
+%% * siamplain.bst: Bibliographic style file for BibTeX
+%% * docsiamart.tex: Produces documentation
+%% * docsiamart.pdf: Documentation
+%% * references.bib: BibTeX database for documentation and examples
+%% * ex_article.tex: Template for article
+%% * ex_supplement.tex: Template for supplement
+%% * ex_shared.tex: Template for article/supplement shared info
 %%
 %% If you receive only some of these files from someone, complain! 
 %% 
@@ -43,7 +48,7 @@
 %% >>tgk>> --- Modified Summer 2015 ---
 %%
 % [[[TODO: Update date and version in next line]]]
-\ProvidesClass{siamart}[2015/02/20 v1.0 LaTeX document e-class]
+\ProvidesClass{siamart}[2015/09/01 v1.0 LaTeX document e-class]
 %%
 %% <<tgk<<
 %%
@@ -285,7 +290,7 @@
 %% First step to adding the ntheorem package for theorems, etc. Second
 %% step is further down below. Need to split them because this needs
 %% to be loaded *before* cleveref and lineno.
-\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\RequirePackage[amsmath,thmmarks,hyperref]{ntheorem}
 %%
 %% <<tgk<<
 %%
@@ -870,13 +875,21 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% declaring \appendix produced an appendix with a letter (i.e.,
 %% Appendix B) but no title --- exactly the reverse of what we would
 %% expect. Now, using \section* produces what you would expect, i.e.,
-%% just the title "Acknowledgments".
+%% just the title "Acknowledgments". The SIAM style guide also allows
+%% a numbered but untitled section, so the command \appendixnotitle is
+%% defined to facilitate that. Not sure it should be explicitly
+%% documented??
 %%
 
 \newcommand\appendix{%
   \setcounter{section}{0}
   \setcounter{subsection}{0}
   \renewcommand\thesection{\Alph{section}}
+  \renewcommand{\section}{\secdef\append\sappend}
+  \newcommand{\appendixnotitle}{%
+    \refstepcounter{section}%
+    {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
+      \reset@font\normalsize\bfseries\appendixname\ \thesection. }}%
 }
 
 % \newcommand\appendix{%
@@ -893,15 +906,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %  \setcounter{subsection}{0}%
 %  \renewcommand\thesection{\Alph{section}}} 
 
-% \newcommand\append[2][?]{%
-% \refstepcounter{section}%
-% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-% \reset@font\normalsize\bfseries\appendixname\ \thesection\@. #2.}}
+\newcommand\append[2][?]{%
+\refstepcounter{section}%
+{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
+\reset@font\normalsize\bfseries\appendixname\ \thesection. #2.}}
 
-% \newcommand\sappend[1]{%
-% \refstepcounter{section}
-% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-% \reset@font\normalsize\bfseries\appendixname\ \thesection\@.}}
+\newcommand\sappend[1]{%
+{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
+\reset@font\normalsize\bfseries#1.}}
 
 % \newcommand\Append[2][?]{%
 % \refstepcounter{section}%
@@ -1296,7 +1308,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 
 %%%%to fix link jump to "bottom" of float
-\usepackage[all]{hypcap} 
+\RequirePackage[all]{hypcap} 
 
 \setlength{\parskip}{1\parskip}
 
@@ -1304,7 +1316,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 % This needs to be loaded *before* cleveref
-\usepackage{algorithm}
+\RequirePackage{algorithm}
 \renewcommand{\ALG@name}{Algorithm}
 \renewcommand\thealgorithm{\siamprelabel\@arabic\c@algorithm}
 %%
@@ -1314,7 +1326,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %%
 %% Adding cleveref package for smart citations, with customizations to
 %% make it act like SIAM expects.
-\usepackage[capitalize,nameinlink]{cleveref}
+\RequirePackage[capitalize,nameinlink]{cleveref}
 
 % Per SIAM Style Manual, "section" should be lowercase
 \crefname{section}{section}{sections}
@@ -1400,8 +1412,6 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newsiamthm{corollary}{Corollary}
 \newsiamthm{proposition}{Proposition}
 \newsiamthm{definition}{Definition}
-
-% [[[TODO: Add appropriate cleveref names]]]
 
 % Command to create remark-like environments, to be numbered
 % along with the theorems.

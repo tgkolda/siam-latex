@@ -8,6 +8,8 @@
 
 %% Used in table example below
 \usepackage{array}
+
+%% Used in table and figure examples below
 \usepackage[caption=false]{subfig}
 
 %% Used for TIKZ example, shown in the "Figures" section below.
@@ -24,14 +26,13 @@
 \usepackage{algorithmic}
 
 %% For figures
-\usepackage{graphicx,epstopdf,subfig}
+\usepackage{graphicx,epstopdf}
 
 %% For TikZ
 \usetikzlibrary{arrows,intersections}
 
 %% For referencing line numbers
 \Crefname{ALC@unique}{Line}{Lines}
-
 
 %% ------------------------------------------------------------------
 %% End Code used in examples, needed to reproduce 
@@ -42,7 +43,6 @@
 %% Macros for in-document examples. These are not meant to reused for
 %% SIAM journal papers.
 %% ------------------------------------------------------------------
-%\usepackage{environ}
 \usepackage{xspace}
 \usepackage{bold-extra}
 \usepackage[most]{tcolorbox}
@@ -50,7 +50,6 @@
 \newcounter{example}
 \colorlet{texcscolor}{blue!50!black}
 \colorlet{texemcolor}{red!70!black}
-%\colorlet{texpreamble}{black!75}
 \colorlet{texpreamble}{red!70!black}
 \colorlet{codebackground}{black!25!white!25}
 
@@ -62,7 +61,7 @@
   texcsstyle=*\color{texcscolor},
   texcsstyle=[2]\color{texemcolor},
   keywordstyle=[2]\color{texemcolor},
-  moretexcs={cref,Cref},
+  moretexcs={cref,Cref,maketitle,mathcal,text,headers,email,url},
 }
 
 \tcbset{%
@@ -94,10 +93,10 @@
   boxsep=0.5mm,
   #2}{#1}
 
-\newcommand{\Comment}[2][To do]{\textcolor{red!60!yellow}{\textbf{#1:} #2}}
+% Stretch the pages
 \patchcmd\newpage{\vfil}{}{}{}
 \flushbottom
-\newcommand{\Exclude}[1]{}
+
 %% ------------------------------------------------------------------
 %% End of macros for in-document examples. 
 %% ------------------------------------------------------------------
@@ -126,28 +125,28 @@
 \end{tcbverbatimwrite}
 \input{tmp_\jobname_header.tex}
 
+% Optional: Set up PDF title and authors
+\ifpdf
+\hypersetup{ pdftitle={Guide to Using  SIAM'S \LaTeX\ Style} }
+\fi
+
 %% ------------------------------------------------------------------
 %% END HEADER
 %% ------------------------------------------------------------------
 
-% Optional: Set up PDF title and authors
-\ifpdf
-\hypersetup{
-  pdftitle={Guide to Using  SIAM'S \LaTeX\ Style}
-}
-\fi
-
+%% ------------------------------------------------------------------
+%% MAIN Document
+%% ------------------------------------------------------------------
 \begin{document}
 \maketitle
-
 
 %% ------------------------------------------------------------------
 %% ABSTRACT
 %% ------------------------------------------------------------------
 \begin{tcbverbatimwrite}{tmp_\jobname_abstract.tex}
 \begin{abstract}
-  Documentation is given for use of the SIAM \LaTeX\ and \BibTeX\ macros.
-  Instructions and suggestions for compliance with SIAM style
+  Documentation is given for use of the SIAM \LaTeX\ and \BibTeX\
+  macros.  Instructions and suggestions for compliance with SIAM style
   standards are also included. Familiarity with standard \LaTeX\
   commands is assumed.
 \end{abstract}
@@ -201,11 +200,12 @@ The outline of a SIAM \LaTeX\ article is shown in
 in \cref{sec:template}.
 
 \begin{example}[label={ex:outline},listing only,%
-  listing options={style=siamlatex,{morekeywords=[2]{siamart}},}]%
+  listing options={style=siamlatex,{morekeywords=[1]{maketitle},
+      morekeywords=[2]{siamart}},}]%
   {Document outline}
 \documentclass{siamart}
 
-% Packages and macros definitions go here.
+% Packages and macro definitions go here.
 % Define title, authors, headers
 
 \begin{document}
@@ -225,16 +225,12 @@ in \cref{sec:template}.
 Class options can be included in the bracketed argument of the
 command, separated by commas. The possible class options are:
 \begin{itemize}
-\item \code{review} --- Creates line numbers using the \texttt{lineno}
-  package and adds a note in red at the bottom of each page that says
-  ``This manuscript is for review purposes only.''
-  Recommended for submitting your manuscript to a SIAM
-  journal.
-\item \code{final} --- By default, lines which extend past the margin
-  will have black boxes next to them to help authors identify lines
-  that they need to fix, by rewriting or inserting breaks. Enabling
-  this option turns these boxes off, so that very small margin breaks
-  which are not noticible will not cause boxes to be generated.
+\item \code{review} --- Recommended for submitting your manuscript to
+  a SIAM journal.  Adds line numbers as well as the statement ``This
+  manuscript is for review purposes only'' to the bottom of each page.
+\item \code{final} --- Turns off the black boxes that help authors
+  identify lines that are too long. The final published version will
+  have this option on.
 \item \code{supplement} --- Specifies that the file is a supplement
   and not the main document, causing changes in the appearance of the
   title and numbering; see \cref{sec:supplement} for details.
@@ -250,20 +246,21 @@ command, separated by commas. The possible class options are:
 The title and author parts are formatted using the standard
 \code{\title}, \code{\author}, and \code{\maketitle} commands as
 described in Lamport \cite{La86}. The title and author should be
-declared in the preamble. The title and names are automatically
-converted to uppercase.
+declared in the preamble. The title and author names are automatically
+converted to uppercase in the document.
 %
 If there is more than one author, each additional author should be preceded by
 the \code{\and} command.  
 %
 The addresses and support acknowledgments are added via
 \code{\thanks}. Each author's thanks should specify their address.
-The support acknowledgment should be put in a thanks for the title,
+The support acknowledgment should be put in the title thanks,
 unless specific support needs to be specified for individual authors,
 in which case it should follow the author address.  
 %
 The header for this file was produced by the code in \cref{ex:header}, including an
-example of a shared footnote.
+example of a shared footnote. Each thanks produces a footnote, so the
+footnote of the second author is \#3.
 %
 The command
 \code{\headers{title}{authors}} command, with
@@ -273,12 +270,10 @@ the page headers, automatically converted to uppercase.
 \examplefile[label={ex:header},listing only,%
 listing options={style=siamlatex,%
 deletetexcs={and,thanks,title,author},%
-{moretexcs=[2]{and,thanks,title,author,maketitle,headers}}}
+{moretexcs=[2]{and,thanks,title,author,maketitle,headers,email}}}
 ]{Title and authors in preamble}{tmp_\jobname_header.tex}
 
 
-
-\newpage
 Following the author and title is the abstract, key words listing, and AMS subject
 classifications, designated using the \code{abstract}, \code{keywords}, and \code{AMS}
 environments. 
@@ -293,9 +288,15 @@ listing options={style=siamlatex,%
 {morekeywords=[2]{abstract,keywords,AMS}}}
 ]{Abstract, keywords, and AMS classifications}{tmp_\jobname_abstract.tex}
 
-\section{Cross-references and hyperlinks}
+A more complete example, including a PDF supplement, that uses the
+included files \texttt{ex\_article.tex}, \texttt{ex\_supplement.tex},
+and \texttt{ex\_shared.tex} is discussed in
+\cref{sec:template}. The example files can be used as a starting point
+for producing a document.
 
-SIAM now supports cross-references and hyperlinks via the
+\section{Cross references and hyperlinks}
+
+SIAM now supports cross references and hyperlinks via the
 \texttt{cleveref} and \texttt{hyperef} packages, which are loaded by
 the class file.
 
@@ -303,19 +304,19 @@ the class file.
 \label{sec:cleveref}
 
 SIAM strongly recommends using the commands provided by 
-the \texttt{cleveref} package for cross-referencing.
+the \texttt{cleveref} package for cross referencing.
 The package is automatically loaded and already customized
 to adhere to SIAM's style guidelines. 
 %
-To create a cross reference, use the commands \code{\cref} (inside
-sentence) and \code{\Cref} (beginning of a sentence) in place of the
+To create a cross reference, use the command \code{\cref} (inside
+sentence) or \code{\Cref} (beginning of a sentence) in place of the
 object name and \code{\ref}. 
 %
 The \texttt{cleveref}
 package enhances \LaTeX's cross-referencing features, allowing
-the format of cross-references to be determined automatically
-according to the ``type" of cross-reference (equation, section, etc.)
-and the context in which the cross-reference is used.
+the format of cross references to be determined automatically
+according to the ``type" of cross reference (equation, section, etc.)
+and the context in which the cross reference is used.
 %
 So, the package
 \emph{automatically} inserts the object name as well as the
@@ -327,7 +328,7 @@ for equations, tables, figures, sections, etc.
 
 \begin{example}[label=ex:cref,bicolor,listing options={style=siamlatex,%
 {morekeywords=[2]{cref,ref}}}]{Advantage of using cleveref}
-The normal way to get a cross-reference with a hyperlink requires a
+The normal way to get a cross reference with a hyperlink requires a
 lot of typing: \hyperref[thm:mvt]{Theorem~\ref*{thm:mvt}}.
 The \texttt{cleveref} package gets both the name and hyperlink
 automatically using a single macro: \cref{thm:mvt}.
@@ -337,7 +338,7 @@ It also handles multiple references with the same macro, such as
 
 %
 
-
+\newpage
 \subsection{Hyperef}
 \label{sec:hyperef}
 
@@ -350,13 +351,13 @@ You can hide links (i.e., turn off link colors) with the \code{hidelinks} option
 \begin{example}[label={ex:href},bicolor,%
 listing options={style=siamlatex,%
 {morekeywords=[2]{href,url}}}]{Creating hyperlinks}
-The \href{http://www.siam.org}{SIAM homepage} has general
-information. Note that the link  will \emph{not} appear in the print
-version, so the writer may want to specify the location explicitly 
-instead by using \url{http://www.siam.org}.  
+The \href{http://www.siam.org}{SIAM homepage} has general information.
+Note that the colored text will \emph{not} appear in the print version
+nor will the hyperlink be active, so the writer may want to specify
+the location explicitly instead by using \url{http://www.siam.org}.
 \end{example}
 
-Note that homepage links in the \code{\thanks} environment require
+Note that homepage links via \code{\url} in the \code{\thanks} environment require
 special formatting for the tilde (\string~) character. The formatting
 is used in the template and shown in \cref{ex:shared}.
 
@@ -370,7 +371,7 @@ well, although the reader should consult the package user manual for
 further guidance \cite{amsmath,shortmath}.
  Several of the example are adapted 
 from Mittlebach and Goossen's guide to \LaTeX~\cite{MiGo04}.
-%
+
 \Cref{ex:textmath} is a straightforward example of inline mathematics
 equations that does not use any special packages or features.
 
@@ -559,14 +560,14 @@ listing options={style=siamlatex,%
 SIAM also defines commands to create your own theorem- and
 remark-like environments:
 \begin{itemize}
-\item \code{newsiamthm} - Small caps header, italized body. 
-\item \code{newsiamremark} - Italics header, roman body.
+\item \code{newsiamthm} --- Small caps header, italized body. 
+\item \code{newsiamremark} --- Italics header, roman body.
 \end{itemize}
 Each command takes two arguments. The first is the environment name,
-and the second is the named to show. These commands should
+and the second is the name to show in the document. These commands should
 be used instead of \code{\newtheorem}.
 \Cref{ex:claim,ex:ref} shows how to use the commands above, including how to
-specify the plural version if it is unusual.
+specify the plural version for \texttt{cleveref} if it is unusual.
 
 \begin{example}[label=ex:claim,bicolor,%
 before upper={\preamble{\bs newsiamthm\{claim\}\{Claim\}}\\
@@ -675,10 +676,10 @@ listing only, listing options={%
 It is recommended that all figures be generated in high resolution.
 In the past, SIAM has required encapsulated
 postscript (EPS) format for final production. This is still an
-acceptable format, but SIAM also now allows JPEG and PNG. Please be
-sure to produce high-resolution images.
+acceptable format, but SIAM also now allows high-resolution 
+PDF, JPEG, and PNG figures. 
 %
-Since most people work in \texttt{pdflatex}, we
+If working with EPS images and using \texttt{pdflatex}, we
 recommend the package \texttt{epstopdf} to automatically convert EPS
 images to PDF for inclusion in PDF documents created by
 \texttt{pdflatex}.
@@ -708,7 +709,7 @@ listing only, listing options={%
 \input{tmp_\jobname_fig.tex}
 
 \newpage
-Another option is to use a graphics-generator that is platform- and
+Another option for figures is a graphics-generator that is platform- and
 format-independent.
 PGF is a TeX macro package for generating  such graphics and works together with the most important TeX backend drivers, including pdftex and dvips. It comes with a user-friedly syntax layer called TikZ.
 More details can be found at \url{http://sourceforge.net/projects/pgf/}, and detailed instructions are available in the manual.
@@ -799,12 +800,28 @@ listing only, listing options={%
 \section{Sections}
 \label{sec:sec}
 Sections are denoted using standard \LaTeX\ section commands, i.e.,
-\code{\section}, \code{\subsection}, etc. The appendices are defined
-the same way except that the first one is preceded by the
-\code{\appendix} command.  The acknowledgments section comes
+\code{\section}, \code{\subsection}, etc. 
+%
+
+Appendices are created with the normal sectioning commands, following
+the command \code{\appendix}. 
+%
+Titles of appendices created with
+\code{\section} are preceded by the word ``Appendix,'' but not the
+subsections or appendices created with \code{\section*}.
+%
+Unlike normal sections, appendix sections cannot have any blank lines
+following the declaration or else the text will start a new paragraph
+rather than immediately following the appendix title.
+%
+Any numbered, labeled sections can be referenced using \code{\cref},
+including those without a title.
+
+
+The acknowledgments section comes
 immediately before the references and after any appendices. It should
 be declared by \code{\section*{Acknowledgments}}.
-Any numbered, labeled sections can be referenced using \code{\cref}.
+
 %
 % \Cref{ex:secref} shows how to reference sections.
 
@@ -851,7 +868,7 @@ supplemental \LaTeX\ file.
 The supplement should have the same title and authors as the main
 document.  The title is modified automatically by the SIAM
 class file so that it is preceded by the text ``Supplementary
-Materials:''.  
+Materials'', followed by a colon.  
 %
 The numbering is modified so that
 all sections, equations, figures, tables, algorithms, %
@@ -859,7 +876,7 @@ and so on to start with ``S''.
 %
 A supplement does have sections but does not have an
 abstract, keywords, AMS classifications, or appendices.  The main
-document and supplement can cross-reference sections, equations,
+document and supplement can cross reference sections, equations,
 theorem-like declarations, figures, tables, algorithms, etc.  However,
 there is no sharing of references. The references are optional for a
 supplement.
@@ -877,7 +894,7 @@ the supplement. In this case we
 assume that the title and authors are defined in the
 \texttt{ex\_shared.tex} file, shown in \cref{ex:shared}.
 %
-Cross-referencing between the main document and the supplement is
+Cross referencing between the main document and the supplement is
 enabled using the \texttt{xr-hyperref} package (included by the
 SIAM class file). Use \code{\externaldocument}
 to specify the external document to search for external
@@ -930,7 +947,7 @@ this is only necessary inside the \code{\thanks} command.
 %
 
 \examplefile[label=ex:shared,listing only,%
-listing options={style=siamlatex,firstline=18,lastline=40,%
+listing options={style=siamlatex,firstline=19,lastline=40,%
 {morekeywords=[2]{siampretitle,MakeUppercase,string}}}
 ]{Example of shared title and author macros}{ex_shared.tex}
 
@@ -1033,38 +1050,66 @@ listing options={style=siamlatex,firstline=69,lastline=76,%
 Here we summarize the major changes in the latest version of
 the SIAM \LaTeX\@ and \BibTeX\ classes:
 \begin{itemize}
-\item Includes \texttt{amsmath}, \texttt{cleveref}, \texttt{hyperef},
-  and \texttt{ntheorem}, \texttt{xr-hyperef}, \texttt{ifpdf}, \texttt{xcolor} packages by default.
 \item Hyperlinking in cross references via the
   \texttt{cleveref} package, including customizations to adhere to
   SIAM conventions.
-\item  Support for supplemental PDF files, including
-  cross-references between the supplement and the main document.
+\item Colored hyperlinks (red for external, green for internal). Can
+  be disabled with class options \code{hidelinks}.
 \item New fields for \BibTeX, as listed in \cref{sec:bib}.
-\item Colored hyperlinks (red for external, green for internal).
+\item  Support for supplemental PDF files, including
+  cross references between the supplement and the main document.
 \item New command for setting headers: \code{\headings}.
+\item Updated theorem-like and proof environments using
+  \texttt{ntheorem} package.
+\item PDF bookmarks enabled.
+\item Fixed handling of appendices to adhere to SIAM style guidelines.
+\item Added \code{review} class option.
 \item Change in file names: \texttt{siamltex.cls} is replaced by
   \texttt{siamart.cls}, and the \texttt{siam.bst} bibliography style
   file is replaced by \texttt{siamplain.bst}.
+\item Includes the following packages by default:
+  \texttt{algorithm}
+  \texttt{amsmath}, 
+  \texttt{breakurl}, 
+  \texttt{cleveref}, 
+  \texttt{hypcap}, 
+  \texttt{hyperef},
+  \texttt{ifpdf},
+  \texttt{ntheorem}, 
+  \texttt{xcolor}, and
+  \texttt{xr-hyperef}.
+  Adds the \texttt{lineno}
+  package if the \code{review} class option is enabled.
 \end{itemize}
 
 \newpage
 \section{Special modifications}
 
-To number theorem-like environments by section, e.g., Theorem 5.1
+\subsection{Labeling objects according to the section number}
+SIAM recommends numbering  objects sequentially. 
+However,
+if you prefer 
+to number objects by section, e.g., Theorem 5.1
 would indicate the first theorem in Section 5, put the code from
-\cref{ex:thmnum} into the document preamble.
+\cref{ex:numbering} into the document preamble.
 
-\begin{example}[label=ex:thmnum,listing only,%
-listing options={style=siamlatex,{morekeywords=[2]{renewtheorem,section}},}]%
+\begin{example}[label=ex:numbering,listing only,%
+listing options={style=siamlatex,{morekeywords=[2]{makeatletter,makeatother}},}]%
   {Labeling theorems by section}
-\theoremstyle{plain}
-\theoremheaderfont{\normalfont\sc}
-\theorembodyfont{\normalfont\itshape}
-\theoremseparator{.}
-\theoremsymbol{}
-\renewtheorem{theorem}{Theorem}[section]
+\renewcommand{\thetheorem}{\thesection.\arabic{theorem}} \renewcommand{\theequation}{\thesection.\arabic{equation}} 
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\renewcommand{\thealgorithm}{\thesection.\arabic{algorithm}}
 \end{example}
+
+
+\subsection{Appendices with no title}
+The SIAM style manual \cite{siam} allows for an appendix that is
+numbered (by a letter) but has no title. We have a special command to
+create such an appendix: \code{\appendixnotitle}. This is equivalent
+to a \code{\section} command in the appendix except that it has no
+arguments.
+
 
 
 \bibliographystyle{siamplain}
