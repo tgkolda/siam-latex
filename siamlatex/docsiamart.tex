@@ -808,12 +808,17 @@ Titles of appendices created with
 \code{\section} are preceded by the word ``Appendix,'' but not the
 subsections or appendices created with \code{\section*}.
 %
-Unlike normal sections, appendix sections cannot have any blank lines
-following the declaration or else the text will start a new paragraph
-rather than immediately following the appendix title.
+Unlike normal sections, appendix sections me be sensitive to blank lines
+following the declaration, causing a new paragraph rather than the
+text immediately following the appendix title. This can be corrected
+by removing and blank lines.
 %
 Any numbered, labeled sections can be referenced using \code{\cref},
 including those without a title.
+%
+Section titles are automatically inserted into the table of contents
+and converted to bookmarks; see \cref{sec:spec-instr-pdf} for handling
+special characters.
 
 
 The acknowledgments section comes
@@ -1159,6 +1164,22 @@ listing options={style=siamlatex}]{Altered proof environment}
 \newtheorem{proofofmaintheorem}{Proof of main theorem}
 \end{example}
 
+\newpage
+\subsection{Special instructions for PDF bookmarks}
+\label{sec:spec-instr-pdf}
+
+Section titles are automatically inserted into the table of contents
+and therefore used as PDF bookmarks. Some special symbols may not
+correctly render. In that case, you can define alternate text as shown
+in \cref{ex:specialtitle}, using the \code{\texorpdfstring} command
+provided by the \texttt{hypertex} package. In this example, the
+default bookmark would be ``Discussion of Z = X Y''; instead, it is
+replaced by ``Discussion of Z = X union Y.''
+
+\begin{example}[label=ex:specialtitle,listing only,%
+listing options={style=siamlatex}]{PDF bookmarks for symbols in section titles}
+\section{Discussion of \texorpdfstring{{\boldmath$Z=X \cup Y$}}{Z = X union Y}}
+\end{example}
 
 
 \bibliographystyle{siamplain}
