@@ -1129,6 +1129,20 @@ create such an appendix: \code{\appendixnotitle}. This is equivalent
 to a \code{\section} command in the appendix except that it has no
 arguments.
 
+\subsection{Changing the font of algorithm titles}
+\label{sec:chang-font-algor}
+
+Currently, the algorithm title font matches the figure and table title
+fonts. To make the algorithm title font appear as small caps, insert
+the code in \cref{ex:algfont} into the preamble.
+
+\begin{example}[label=ex:algfont,listing only,%
+list options={style=siamlatex}]{Changing algorithm title font}
+\makeatletter
+\renewcommand{\ALG@name}{\sc Algorithm}
+\makeatother
+\end{example}
+
 
 
 \bibliographystyle{siamplain}
