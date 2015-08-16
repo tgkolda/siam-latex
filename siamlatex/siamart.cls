@@ -887,6 +887,11 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% documented??
 %%
 
+\newcommand\gobblepars{%
+    \@ifnextchar\par%
+        {\expandafter\gobblepars\@gobble}%
+        {}}
+
 \newcommand\appendix{%
   \setcounter{section}{0}
   \setcounter{subsection}{0}
@@ -895,24 +900,24 @@ Vol.\ #3, No.\ #4, pp.\ #5
   \newcommand{\appendixnotitle}{%
     \refstepcounter{section}%
     {\par\addvspace{\@sectionspace} 
-      \reset@font\normalsize\bfseries\appendixname\ \thesection. }%
+      \reset@font\normalsize\bfseries\appendixname\ \thesection. \gobblepars}%
     \addcontentsline{toc}{section}{\appendixname~\thesection}%
-    \nopagebreak}
+    }
 }
 
 \newcommand\append[2][?]{%
   \refstepcounter{section}%
   {\par\addvspace{\@sectionspace} 
-    \reset@font\normalsize\bfseries\appendixname\ \thesection. #2.}%
+    \reset@font\normalsize\bfseries\appendixname\ \thesection. #2. }%
   \addcontentsline{toc}{section}{\appendixname~\thesection. #2}%
-  \nopagebreak
+  \gobblepars
 }
 
 \newcommand\sappend[1]{%
   {\par\addvspace{\@sectionspace} 
-    \reset@font\normalsize\bfseries#1.}%
+    \reset@font\normalsize\bfseries#1. }%
   \addcontentsline{toc}{section}{#1}%
-  \nopagebreak
+  \gobblepars
 }
 %% 
 %% <<tgk<<
