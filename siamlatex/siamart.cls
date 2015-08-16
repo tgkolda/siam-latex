@@ -771,12 +771,13 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newlength{\@negsectionspace}
 \setlength{\@negsectionspace}{-1.3ex \@plus -.5ex \@minus -.2ex} %its negation
 
-\newcommand{\insertsectionspace}{\addvspace{\@sectionspace}}
-\newcommand{\removesectionspace}{\vspace{\@negsectionspace}} %I didn't end up needing these, but they might be needed somewhere
 
 %%
 %% >>tgk>> --- Removed Summer 2015 ---
 %% 
+%\newcommand{\insertsectionspace}{\addvspace{\@sectionspace}}
+%\newcommand{\removesectionspace}{\vspace{\@negsectionspace}} %I didn't end up needing these, but they might be needed somewhere
+%
 % \def\@begintheorem#1#2{\par\addvspace{\@sectionspace}{\scshape #1\ #2. }\itshape\ignorespaces}
 %
 % \def\@opargbegintheorem#1#2#3{\par\addvspace{\@sectionspace}{\scshape #1\ #2\ ({\upshape #3}). }\itshape\ignorespaces}
