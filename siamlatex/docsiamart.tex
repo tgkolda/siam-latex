@@ -1114,8 +1114,9 @@ would indicate the first theorem in Section 5, put the code from
 
 \begin{example}[label=ex:numbering,listing only,%
 listing options={style=siamlatex,{morekeywords=[2]{makeatletter,makeatother}},}]%
-  {Labeling theorems by section}
-\renewcommand{\thetheorem}{\thesection.\arabic{theorem}} \renewcommand{\theequation}{\thesection.\arabic{equation}} 
+{Labeling theorems by section}
+\renewcommand{\thetheorem}{\thesection.\arabic{theorem}}
+\renewcommand{\theequation}{\thesection.\arabic{equation}} 
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 \renewcommand{\thetable}{\thesection.\arabic{table}}
 \renewcommand{\thealgorithm}{\thesection.\arabic{algorithm}}
@@ -1141,6 +1142,21 @@ listing options={style=siamlatex}]{Changing algorithm title font}
 \makeatletter
 \renewcommand{\ALG@name}{\sc Algorithm}
 \makeatother
+\end{example}
+
+\subsection{Changing title of proof}
+To change the title of a proof to, say, ``Proof of main theorem,''
+define a new proof environment by inserting the code in
+\cref{ex:newproof} into the document preamble.
+
+\begin{example}[label=ex:newproof,listing only,%
+listing options={style=siamlatex}]{Altered proof environment}
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\normalfont\itshape}
+\theorembodyfont{\normalfont}
+\theoremseparator{.}
+\theoremsymbol{\proofbox}
+\newtheorem{proofofmaintheorem}{Proof of main theorem}
 \end{example}
 
 
