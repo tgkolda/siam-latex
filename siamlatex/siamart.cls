@@ -857,15 +857,20 @@ Vol.\ #3, No.\ #4, pp.\ #5
  
 \def\@tempb{}
 
-
+%%
+%% >>tgk>> --- Removed Summer 2015 ---
+%%
 %% New Mathops.
 
-\newcommand\const{\mathop{\operator@font const}\nolimits}
-\newcommand\diag{\mathop{\operator@font diag}\nolimits}
-\newcommand\grad{\mathop{\operator@font grad}\nolimits}
-\newcommand\Range{\mathop{\operator@font Range}\nolimits}
-\newcommand\rank{\mathop{\operator@font rank}\nolimits}
-\newcommand\supp{\mathop{\operator@font supp}\nolimits}
+% \newcommand\const{\mathop{\operator@font const}\nolimits}
+% \newcommand\diag{\mathop{\operator@font diag}\nolimits}
+% \newcommand\grad{\mathop{\operator@font grad}\nolimits}
+% \newcommand\Range{\mathop{\operator@font Range}\nolimits}
+% \newcommand\rank{\mathop{\operator@font rank}\nolimits}
+% \newcommand\supp{\mathop{\operator@font supp}\nolimits}
+%%
+%% <<tgk<<
+%%
 
 %%
 %% >>tgk>> --- Modified Summer 2015 ---
@@ -888,43 +893,27 @@ Vol.\ #3, No.\ #4, pp.\ #5
   \renewcommand{\section}{\secdef\append\sappend}
   \newcommand{\appendixnotitle}{%
     \refstepcounter{section}%
-    {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-      \reset@font\normalsize\bfseries\appendixname\ \thesection. }}%
+    {\par\addvspace{\@sectionspace} 
+      \reset@font\normalsize\bfseries\appendixname\ \thesection. }%
+    \addcontentsline{toc}{section}{\appendixname~\thesection}%
+    \nopagebreak}
 }
 
-% \newcommand\appendix{%
-% \renewcommand{\section}{%
-% \secdef\append\sappend}%
-%  \setcounter{section}{0}%
-%  \setcounter{subsection}{0}%
-%  \renewcommand\thesection{\Alph{section}}}
-
-% \newcommand\Appendix{%
-% \renewcommand{\section}{%
-% \secdef\Append\sAppend}%
-%  \setcounter{section}{0}%
-%  \setcounter{subsection}{0}%
-%  \renewcommand\thesection{\Alph{section}}} 
-
 \newcommand\append[2][?]{%
-\refstepcounter{section}%
-{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-\reset@font\normalsize\bfseries\appendixname\ \thesection. #2.}}
+  \refstepcounter{section}%
+  {\par\addvspace{\@sectionspace} 
+    \reset@font\normalsize\bfseries\appendixname\ \thesection. #2.}%
+  \addcontentsline{toc}{section}{\appendixname~\thesection. #2}%
+  \nopagebreak
+}
 
 \newcommand\sappend[1]{%
-{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-\reset@font\normalsize\bfseries#1.}}
-
-% \newcommand\Append[2][?]{%
-% \refstepcounter{section}%
-% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-% \reset@font\normalsize\bfseries\appendixname. #2.}}
-
-% \newcommand\sAppend[1]{%
-% \refstepcounter{section}
-% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-% \reset@font\normalsize\bfseries\appendixname.}}
-%%
+  {\par\addvspace{\@sectionspace} 
+    \reset@font\normalsize\bfseries#1.}%
+  \addcontentsline{toc}{section}{#1}%
+  \nopagebreak
+}
+%% 
 %% <<tgk<<
 %%
 
@@ -1022,7 +1011,8 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newenvironment{thebibliography}[1]
      {\par\addvspace{.25in}
      \begin{center}
-     \footnotesize\uppercase\expandafter{\refname}
+     \footnotesize\uppercase\expandafter{\refname}%
+     \addcontentsline{toc}{section}{References}
      \end{center}
      \@mkboth{\uppercase\expandafter{\refname}}{\uppercase\expandafter{\refname}}
      \addvspace{.15in}\nopagebreak%

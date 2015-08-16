@@ -34,6 +34,10 @@
 %% For referencing line numbers
 \Crefname{ALC@unique}{Line}{Lines}
 
+%% For creating math operators
+\usepackage{amsopn}
+\DeclareMathOperator{\Range}{Range}
+
 %% ------------------------------------------------------------------
 %% End Code used in examples, needed to reproduce 
 %% ------------------------------------------------------------------
@@ -424,26 +428,19 @@ Display matrices can be rendered using environments from \texttt{amsmath}:
 \Cref{eq:matrices} shows some example matrices.
 \end{example}
 
-The SIAM \LaTeX\ class defines the following macros:
-\code{\const},
-\code{\diag},
-\code{\grad},
-\code{\Range},
-\code{\rank}, and
-\code{\supp}.
-%
-Each macro works by rendering the text as a \texttt{mathop}.
-\Cref{ex:range} shows the usage of the \code{\Range} macro. 
+\Cref{ex:dmo} shows how to use the \code{\DeclareMathOperator} command
+from the \texttt{amsopn} package to declare the \code{\Range} macro. 
 (This example also uses the \texttt{braket} package for the
 \code{\set} macro, but this is not necessarily recommended by SIAM.)
-
-\begin{example}[label={ex:range},%
-before upper={\preamble{\bs usepackage\{braket,amsfonts\}}},%
+%
+\begin{example}[label={ex:dmo},%
+before upper={\preamble{\bs usepackage\{braket,amsfonts,amsopn\}}\\
+\noindent\preamble{\bs DeclareMathOperator\{\bs Range\}\{Range\}}},%
 bicolor,%
 listing options={style=siamlatex,%
 {moretexcs=[2]{Range}}}
-]{Using SIAM-defined macros}
-An example of a SIAM macro:
+]{Declaring math operators}
+An example of a math operator:
 \begin{equation}\label{eq:range}
   \Range(A) = \set{ y \in \mathbb{R}^n | y = Ax }.
 \end{equation}
@@ -756,8 +753,8 @@ listing only, listing options={%
 {Example TikZ/PGF for platform-independent graphics.}{tmp_\jobname_tikz.tex}
 
 \input{tmp_\jobname_tikz.tex}
-  
-\newpage
+
+\newpage  
 \section{Algorithms}
 \label{sec:algs}
 
@@ -1044,7 +1041,7 @@ listing options={style=siamlatex,firstline=69,lastline=76,%
 ]{Example software reference in \BibTeX}{references.bib}
 
 \appendix
-\section{Summary of `major changes}
+\section{Summary of major changes}
 \label{sec:changes}
 
 Here we summarize the major changes in the latest version of
@@ -1084,6 +1081,21 @@ the SIAM \LaTeX\@ and \BibTeX\ classes:
 
 \newpage
 \section{Special modifications}
+
+\subsection{Special macros}
+In past versions, 
+the SIAM \LaTeX\ class defined the following macros:
+\code{\const},
+\code{\diag},
+\code{\grad},
+\code{\Range},
+\code{\rank}, and
+\code{\supp}.
+These are no longer declared; however, they can be redefined using the
+\code{\DeclareMathOperator} command from the \texttt{amsopn}
+package as demonstrated in \cref{ex:dmo}.
+
+
 
 \subsection{Labeling objects according to the section number}
 SIAM recommends numbering  objects sequentially. 
