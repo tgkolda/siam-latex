@@ -238,10 +238,10 @@ command, separated by commas. The possible class options are:
 \item \code{supplement} --- Specifies that the file is a supplement
   and not the main document, causing changes in the appearance of the
   title and numbering; see \cref{sec:supplement} for details.
-\item \code{hidelinks} --- Turns off colors on hyperlinks. The
-  hyperlinks still exist, but there is no color to differentiate
-  them.
- The final published version will have this option on.
+\item \code{hidelinks} --- Turns off colors on hyperlinks; see
+  \cref{sec:cr+hyp}. The hyperlinks still exist, but there is no color
+  to differentiate them.
+  The final published version will have this option on.
 \end{itemize}
 
 
@@ -299,6 +299,7 @@ and \texttt{ex\_shared.tex} is discussed in
 for producing a document.
 
 \section{Cross references and hyperlinks}
+\label{sec:cr+hyp}
 
 SIAM now supports cross references and hyperlinks via the
 \texttt{cleveref} and \texttt{hyperef} packages, which are loaded by
@@ -981,6 +982,8 @@ To use this, include the following code in your \LaTeX\ source code:
 
 A digital object identifier (DOI) is a unique alphanumeric string that provides a persistent link to its location on the Internet. The publisher assigns a DOI when your article is published and made available electronically. Using the \code{doi} field in \BibTeX to specify it, as shown for \cite{KoMa14} in \cref{ex:article}; observe the new \code{doi} field which produces a hyperlink in the citation.
 Do not include the full URL, i.e., \nolinkurl{http://dx.doi.org/} preceding the DOI.
+Authors are required to provide DOIs; if they are not provided, they
+will be requested during the copyediting process. 
 
 \examplefile[label=ex:article,listing only,%
 listing options={style=siamlatex,firstline=1,lastline=12,{morekeywords=[2]{doi}}}
@@ -1047,23 +1050,27 @@ listing options={style=siamlatex,firstline=69,lastline=76,%
 Here we summarize the major changes in the latest version of
 the SIAM \LaTeX\@ and \BibTeX\ classes:
 \begin{itemize}
-\item Hyperlinking in cross references via the
-  \texttt{cleveref} package, including customizations to adhere to
-  SIAM conventions.
-\item Colored hyperlinks (red for external, green for internal). Can
-  be disabled with class options \code{hidelinks}.
-\item New fields for \BibTeX, as listed in \cref{sec:bib}.
-\item  Support for supplemental PDF files, including
-  cross references between the supplement and the main document.
-\item New command for setting headers: \code{\headings}.
-\item Updated theorem-like and proof environments using
-  \texttt{ntheorem} package.
-\item PDF bookmarks enabled.
-\item Fixed handling of appendices to adhere to SIAM style guidelines.
-\item Added \code{review} class option.
 \item Change in file names: \texttt{siamltex.cls} is replaced by
   \texttt{siamart.cls}, and the \texttt{siam.bst} bibliography style
-  file is replaced by \texttt{siamplain.bst}.
+  file is replaced by \texttt{siamplain.bst}; see \cref{sec:intro}.
+\item Hyperlinking in cross references via the
+  \texttt{cleveref} package, including customizations to adhere to
+  SIAM conventions. Automatic PDF bookmarks enabled for sections,
+  appendices, and references.
+  See \cref{sec:cleveref}.
+\item Colored hyperlinks (red for external, green for internal). Can
+  be disabled with class options \code{hidelinks}; see \cref{sec:hyperef}.
+\item New fields for \BibTeX, as listed in \cref{sec:bib}.
+\item  Support for supplemental PDF files, including
+  cross references between the supplement and the main document; see
+  \cref{sec:supplement}. 
+\item New command for setting headers: \code{\headings}; see
+  \cref{sec:front}. 
+\item Updated theorem-like and proof environments using
+  \texttt{ntheorem} package; see \cref{sec:thm}.
+\item Fixed handling of appendices to adhere to SIAM style guidelines;
+  see \cref{sec:sec}.
+\item Added \code{review} class option; see \cref{sec:class-options}.
 \item Includes the following packages by default:
   \texttt{algorithm}
   \texttt{amsmath}, 
