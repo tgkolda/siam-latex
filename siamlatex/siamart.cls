@@ -52,7 +52,7 @@
 %%
 %% <<tgk<<
 %%
-\RequirePackage[leqno]{amsmath}
+\RequirePackage[leqno]{amsmath}[2.14]
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@titlepage
@@ -290,7 +290,7 @@
 %% First step to adding the ntheorem package for theorems, etc. Second
 %% step is further down below. Need to split them because this needs
 %% to be loaded *before* cleveref and lineno.
-\RequirePackage[amsmath,thmmarks,hyperref]{ntheorem}
+\RequirePackage[amsmath,thmmarks,hyperref]{ntheorem}[1.33]
 %%
 %% <<tgk<<
 %%
@@ -1237,13 +1237,13 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Support for cross-reference (xr-hyper).
-\RequirePackage{xr-hyper}
+\RequirePackage{xr-hyper}[6.00]
 %%
 %% <<tgk<<
 %%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
-\RequirePackage{ifpdf}
+\RequirePackage{ifpdf}[2.3]
 %%
 %% <<tgk<<
 %%
@@ -1253,17 +1253,25 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% (hyperref). Made it so that it works for both dvi/ps and pdf
 %% (ifpdf, breakurl).
 %%
-\RequirePackage[colorlinks=false,frenchlinks=false,pdfborder={0 0 0},naturalnames=false,hypertexnames=false,breaklinks]{hyperref}
+\RequirePackage{hyperref}[6.83]
+\hypersetup{
+  colorlinks=false,
+  frenchlinks=false,
+  pdfborder={0 0 0},
+  naturalnames=false,
+  hypertexnames=false,
+  breaklinks
+}
 \ifpdf
 \else
-   \RequirePackage{breakurl}
+   \RequirePackage{breakurl}[1.40]
 \fi
 %%
 %% <<tgk<<
 %%
 %% >>tgk>> --- Added Summer 2015 ---
 %% 
-\RequirePackage{xcolor}
+\RequirePackage{xcolor}[2.11]
 \colorlet{siaminlinkcolor}{green!50!black}
 \colorlet{siamexlinkcolor}{red!50!black}
 \colorlet{siamreviewcolor}{black!50}
@@ -1304,7 +1312,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 
 %%%%to fix link jump to "bottom" of float
-\RequirePackage[all]{hypcap} 
+\RequirePackage[all]{hypcap} [1.11]
 
 \setlength{\parskip}{1\parskip}
 
@@ -1312,7 +1320,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 % This needs to be loaded *before* cleveref
-\RequirePackage{algorithm}
+\RequirePackage{algorithm}[0.1]
 \renewcommand{\ALG@name}{Algorithm}
 \renewcommand\thealgorithm{\siamprelabel\@arabic\c@algorithm}
 %%
@@ -1322,7 +1330,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %%
 %% Adding cleveref package for smart citations, with customizations to
 %% make it act like SIAM expects.
-\RequirePackage[capitalize,nameinlink]{cleveref}
+\RequirePackage[capitalize,nameinlink]{cleveref}[0.19]
 
 % Per SIAM Style Manual, "section" should be lowercase
 \crefname{section}{section}{sections}
@@ -1511,7 +1519,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% lineno package. Slightly complicated because the lineno and amsmath
 %% packages do not play well together.
 \if@review
-  \RequirePackage[mathlines]{lineno}
+  \RequirePackage[mathlines]{lineno}[4.41]
   \linenumbers
   \renewcommand{\linenumberfont}{\normalfont\footnotesize\color{siamreviewcolor}}
   % The \linenumbers command does not play nice with amsmath, so we
