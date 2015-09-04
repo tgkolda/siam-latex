@@ -52,7 +52,7 @@
 %%
 %% <<tgk<<
 %%
-\RequirePackage[leqno]{amsmath}
+\RequirePackage[leqno]{amsmath}[2.14]
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@titlepage
@@ -290,7 +290,7 @@
 %% First step to adding the ntheorem package for theorems, etc. Second
 %% step is further down below. Need to split them because this needs
 %% to be loaded *before* cleveref and lineno.
-\RequirePackage[amsmath,thmmarks,hyperref]{ntheorem}
+\RequirePackage[amsmath,thmmarks,hyperref]{ntheorem}[1.33]
 %%
 %% <<tgk<<
 %%
@@ -771,12 +771,13 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newlength{\@negsectionspace}
 \setlength{\@negsectionspace}{-1.3ex \@plus -.5ex \@minus -.2ex} %its negation
 
-\newcommand{\insertsectionspace}{\addvspace{\@sectionspace}}
-\newcommand{\removesectionspace}{\vspace{\@negsectionspace}} %I didn't end up needing these, but they might be needed somewhere
 
 %%
 %% >>tgk>> --- Removed Summer 2015 ---
 %% 
+%\newcommand{\insertsectionspace}{\addvspace{\@sectionspace}}
+%\newcommand{\removesectionspace}{\vspace{\@negsectionspace}} %I didn't end up needing these, but they might be needed somewhere
+%
 % \def\@begintheorem#1#2{\par\addvspace{\@sectionspace}{\scshape #1\ #2. }\itshape\ignorespaces}
 %
 % \def\@opargbegintheorem#1#2#3{\par\addvspace{\@sectionspace}{\scshape #1\ #2\ ({\upshape #3}). }\itshape\ignorespaces}
@@ -857,15 +858,20 @@ Vol.\ #3, No.\ #4, pp.\ #5
  
 \def\@tempb{}
 
-
+%%
+%% >>tgk>> --- Removed Summer 2015 ---
+%%
 %% New Mathops.
 
-\newcommand\const{\mathop{\operator@font const}\nolimits}
-\newcommand\diag{\mathop{\operator@font diag}\nolimits}
-\newcommand\grad{\mathop{\operator@font grad}\nolimits}
-\newcommand\Range{\mathop{\operator@font Range}\nolimits}
-\newcommand\rank{\mathop{\operator@font rank}\nolimits}
-\newcommand\supp{\mathop{\operator@font supp}\nolimits}
+% \newcommand\const{\mathop{\operator@font const}\nolimits}
+% \newcommand\diag{\mathop{\operator@font diag}\nolimits}
+% \newcommand\grad{\mathop{\operator@font grad}\nolimits}
+% \newcommand\Range{\mathop{\operator@font Range}\nolimits}
+% \newcommand\rank{\mathop{\operator@font rank}\nolimits}
+% \newcommand\supp{\mathop{\operator@font supp}\nolimits}
+%%
+%% <<tgk<<
+%%
 
 %%
 %% >>tgk>> --- Modified Summer 2015 ---
@@ -881,6 +887,11 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% documented??
 %%
 
+\newcommand\gobblepars{%
+    \@ifnextchar\par%
+        {\expandafter\gobblepars\@gobble}%
+        {}}
+
 \newcommand\appendix{%
   \setcounter{section}{0}
   \setcounter{subsection}{0}
@@ -888,43 +899,27 @@ Vol.\ #3, No.\ #4, pp.\ #5
   \renewcommand{\section}{\secdef\append\sappend}
   \newcommand{\appendixnotitle}{%
     \refstepcounter{section}%
-    {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-      \reset@font\normalsize\bfseries\appendixname\ \thesection. }}%
+    {\par\addvspace{\@sectionspace} 
+      \reset@font\normalsize\bfseries\appendixname\ \thesection. \gobblepars}%
+    \addcontentsline{toc}{section}{\appendixname~\thesection}%
+    }
 }
 
-% \newcommand\appendix{%
-% \renewcommand{\section}{%
-% \secdef\append\sappend}%
-%  \setcounter{section}{0}%
-%  \setcounter{subsection}{0}%
-%  \renewcommand\thesection{\Alph{section}}}
-
-% \newcommand\Appendix{%
-% \renewcommand{\section}{%
-% \secdef\Append\sAppend}%
-%  \setcounter{section}{0}%
-%  \setcounter{subsection}{0}%
-%  \renewcommand\thesection{\Alph{section}}} 
-
 \newcommand\append[2][?]{%
-\refstepcounter{section}%
-{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-\reset@font\normalsize\bfseries\appendixname\ \thesection. #2.}}
+  \refstepcounter{section}%
+  {\par\addvspace{\@sectionspace} 
+    \reset@font\normalsize\bfseries\appendixname\ \thesection. #2. }%
+  \addcontentsline{toc}{section}{\appendixname~\thesection. #2}%
+  \gobblepars
+}
 
 \newcommand\sappend[1]{%
-{\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-\reset@font\normalsize\bfseries#1.}}
-
-% \newcommand\Append[2][?]{%
-% \refstepcounter{section}%
-% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-% \reset@font\normalsize\bfseries\appendixname. #2.}}
-
-% \newcommand\sAppend[1]{%
-% \refstepcounter{section}
-% {\par\addvspace{\@sectionspace} %\vskip 1.3ex \@plus .5ex \@minus .2ex
-% \reset@font\normalsize\bfseries\appendixname.}}
-%%
+  {\par\addvspace{\@sectionspace} 
+    \reset@font\normalsize\bfseries#1. }%
+  \addcontentsline{toc}{section}{#1}%
+  \gobblepars
+}
+%% 
 %% <<tgk<<
 %%
 
@@ -1022,7 +1017,8 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newenvironment{thebibliography}[1]
      {\par\addvspace{.25in}
      \begin{center}
-     \footnotesize\uppercase\expandafter{\refname}
+     \footnotesize\uppercase\expandafter{\refname}%
+     \addcontentsline{toc}{section}{References}
      \end{center}
      \@mkboth{\uppercase\expandafter{\refname}}{\uppercase\expandafter{\refname}}
      \addvspace{.15in}\nopagebreak%
@@ -1241,13 +1237,13 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 %% Support for cross-reference (xr-hyper).
-\RequirePackage{xr-hyper}
+\RequirePackage{xr-hyper}[6.00]
 %%
 %% <<tgk<<
 %%
 %% >>tgk>> --- Added Summer 2015 ---
 %%
-\RequirePackage{ifpdf}
+\RequirePackage{ifpdf}[2.3]
 %%
 %% <<tgk<<
 %%
@@ -1257,17 +1253,25 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% (hyperref). Made it so that it works for both dvi/ps and pdf
 %% (ifpdf, breakurl).
 %%
-\RequirePackage[colorlinks=false,frenchlinks=false,pdfborder={0 0 0},naturalnames=false,hypertexnames=false,breaklinks]{hyperref}
+\RequirePackage{hyperref}[6.83]
+\hypersetup{
+  colorlinks=false,
+  frenchlinks=false,
+  pdfborder={0 0 0},
+  naturalnames=false,
+  hypertexnames=false,
+  breaklinks
+}
 \ifpdf
 \else
-   \RequirePackage{breakurl}
+   \RequirePackage{breakurl}[1.40]
 \fi
 %%
 %% <<tgk<<
 %%
 %% >>tgk>> --- Added Summer 2015 ---
 %% 
-\RequirePackage{xcolor}
+\RequirePackage{xcolor}[2.11]
 \colorlet{siaminlinkcolor}{green!50!black}
 \colorlet{siamexlinkcolor}{red!50!black}
 \colorlet{siamreviewcolor}{black!50}
@@ -1308,7 +1312,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 
 
 %%%%to fix link jump to "bottom" of float
-\RequirePackage[all]{hypcap} 
+\RequirePackage[all]{hypcap} [1.11]
 
 \setlength{\parskip}{1\parskip}
 
@@ -1316,7 +1320,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% >>tgk>> --- Added Summer 2015 ---
 %%
 % This needs to be loaded *before* cleveref
-\RequirePackage{algorithm}
+\RequirePackage{algorithm}[0.1]
 \renewcommand{\ALG@name}{Algorithm}
 \renewcommand\thealgorithm{\siamprelabel\@arabic\c@algorithm}
 %%
@@ -1326,7 +1330,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %%
 %% Adding cleveref package for smart citations, with customizations to
 %% make it act like SIAM expects.
-\RequirePackage[capitalize,nameinlink]{cleveref}
+\RequirePackage[capitalize,nameinlink]{cleveref}[0.19]
 
 % Per SIAM Style Manual, "section" should be lowercase
 \crefname{section}{section}{sections}
@@ -1377,8 +1381,8 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newcommand{\proofbox}{\vbox{\hrule height0.6pt\hbox{\vrule height1.3ex width0.6pt\hskip0.8ex\vrule width0.6pt}\hrule height0.6pt}}
 
 % Extra space around theorem-like environments
-\theorempreskip{1ex}
-\theorempostskip{1ex}
+\theorempreskip{1ex plus .25ex minus .1ex}
+\theorempostskip{1ex plus .25ex minus .1ex}
 
 % Proof environment: No number, italic header, normal body, ends with proofbox.
 \theoremstyle{nonumberplain}
@@ -1515,7 +1519,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% lineno package. Slightly complicated because the lineno and amsmath
 %% packages do not play well together.
 \if@review
-  \RequirePackage[mathlines]{lineno}
+  \RequirePackage[mathlines]{lineno}[4.41]
   \linenumbers
   \renewcommand{\linenumberfont}{\normalfont\footnotesize\color{siamreviewcolor}}
   % The \linenumbers command does not play nice with amsmath, so we

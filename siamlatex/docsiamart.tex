@@ -34,6 +34,10 @@
 %% For referencing line numbers
 \Crefname{ALC@unique}{Line}{Lines}
 
+%% For creating math operators
+\usepackage{amsopn}
+\DeclareMathOperator{\Range}{Range}
+
 %% ------------------------------------------------------------------
 %% End Code used in examples, needed to reproduce 
 %% ------------------------------------------------------------------
@@ -234,10 +238,10 @@ command, separated by commas. The possible class options are:
 \item \code{supplement} --- Specifies that the file is a supplement
   and not the main document, causing changes in the appearance of the
   title and numbering; see \cref{sec:supplement} for details.
-\item \code{hidelinks} --- Turns off colors on hyperlinks. The
-  hyperlinks still exist, but there is no color to differentiate
-  them.
- The final published version will have this option on.
+\item \code{hidelinks} --- Turns off colors on hyperlinks; see
+  \cref{sec:cr+hyp}. The hyperlinks still exist, but there is no color
+  to differentiate them.
+  The final published version will have this option on.
 \end{itemize}
 
 
@@ -295,6 +299,7 @@ and \texttt{ex\_shared.tex} is discussed in
 for producing a document.
 
 \section{Cross references and hyperlinks}
+\label{sec:cr+hyp}
 
 SIAM now supports cross references and hyperlinks via the
 \texttt{cleveref} and \texttt{hyperef} packages, which are loaded by
@@ -424,26 +429,19 @@ Display matrices can be rendered using environments from \texttt{amsmath}:
 \Cref{eq:matrices} shows some example matrices.
 \end{example}
 
-The SIAM \LaTeX\ class defines the following macros:
-\code{\const},
-\code{\diag},
-\code{\grad},
-\code{\Range},
-\code{\rank}, and
-\code{\supp}.
-%
-Each macro works by rendering the text as a \texttt{mathop}.
-\Cref{ex:range} shows the usage of the \code{\Range} macro. 
+\Cref{ex:dmo} shows how to use the \code{\DeclareMathOperator} command
+from the \texttt{amsopn} package to declare the \code{\Range} macro. 
 (This example also uses the \texttt{braket} package for the
 \code{\set} macro, but this is not necessarily recommended by SIAM.)
-
-\begin{example}[label={ex:range},%
-before upper={\preamble{\bs usepackage\{braket,amsfonts\}}},%
+%
+\begin{example}[label={ex:dmo},%
+before upper={\preamble{\bs usepackage\{braket,amsfonts,amsopn\}}\\
+\noindent\preamble{\bs DeclareMathOperator\{\bs Range\}\{Range\}}},%
 bicolor,%
 listing options={style=siamlatex,%
 {moretexcs=[2]{Range}}}
-]{Using SIAM-defined macros}
-An example of a SIAM macro:
+]{Declaring math operators}
+An example of a math operator:
 \begin{equation}\label{eq:range}
   \Range(A) = \set{ y \in \mathbb{R}^n | y = Ax }.
 \end{equation}
@@ -756,8 +754,8 @@ listing only, listing options={%
 {Example TikZ/PGF for platform-independent graphics.}{tmp_\jobname_tikz.tex}
 
 \input{tmp_\jobname_tikz.tex}
-  
-\newpage
+
+\newpage  
 \section{Algorithms}
 \label{sec:algs}
 
@@ -810,12 +808,17 @@ Titles of appendices created with
 \code{\section} are preceded by the word ``Appendix,'' but not the
 subsections or appendices created with \code{\section*}.
 %
-Unlike normal sections, appendix sections cannot have any blank lines
-following the declaration or else the text will start a new paragraph
-rather than immediately following the appendix title.
+Unlike normal sections, appendix sections me be sensitive to blank lines
+following the declaration, causing a new paragraph rather than the
+text immediately following the appendix title. This can be corrected
+by removing and blank lines.
 %
 Any numbered, labeled sections can be referenced using \code{\cref},
 including those without a title.
+%
+Section titles are automatically inserted into the table of contents
+and converted to bookmarks; see \cref{sec:spec-instr-pdf} for handling
+special characters.
 
 
 The acknowledgments section comes
@@ -984,6 +987,8 @@ To use this, include the following code in your \LaTeX\ source code:
 
 A digital object identifier (DOI) is a unique alphanumeric string that provides a persistent link to its location on the Internet. The publisher assigns a DOI when your article is published and made available electronically. Using the \code{doi} field in \BibTeX to specify it, as shown for \cite{KoMa14} in \cref{ex:article}; observe the new \code{doi} field which produces a hyperlink in the citation.
 Do not include the full URL, i.e., \nolinkurl{http://dx.doi.org/} preceding the DOI.
+Authors are required to provide DOIs; if they are not provided, they
+will be requested during the copyediting process. 
 
 \examplefile[label=ex:article,listing only,%
 listing options={style=siamlatex,firstline=1,lastline=12,{morekeywords=[2]{doi}}}
@@ -1044,29 +1049,33 @@ listing options={style=siamlatex,firstline=69,lastline=76,%
 ]{Example software reference in \BibTeX}{references.bib}
 
 \appendix
-\section{Summary of `major changes}
+\section{Summary of major changes}
 \label{sec:changes}
 
 Here we summarize the major changes in the latest version of
 the SIAM \LaTeX\@ and \BibTeX\ classes:
 \begin{itemize}
-\item Hyperlinking in cross references via the
-  \texttt{cleveref} package, including customizations to adhere to
-  SIAM conventions.
-\item Colored hyperlinks (red for external, green for internal). Can
-  be disabled with class options \code{hidelinks}.
-\item New fields for \BibTeX, as listed in \cref{sec:bib}.
-\item  Support for supplemental PDF files, including
-  cross references between the supplement and the main document.
-\item New command for setting headers: \code{\headings}.
-\item Updated theorem-like and proof environments using
-  \texttt{ntheorem} package.
-\item PDF bookmarks enabled.
-\item Fixed handling of appendices to adhere to SIAM style guidelines.
-\item Added \code{review} class option.
 \item Change in file names: \texttt{siamltex.cls} is replaced by
   \texttt{siamart.cls}, and the \texttt{siam.bst} bibliography style
-  file is replaced by \texttt{siamplain.bst}.
+  file is replaced by \texttt{siamplain.bst}; see \cref{sec:intro}.
+\item Hyperlinking in cross references via the
+  \texttt{cleveref} package, including customizations to adhere to
+  SIAM conventions. Automatic PDF bookmarks enabled for sections,
+  appendices, and references.
+  See \cref{sec:cleveref}.
+\item Colored hyperlinks (red for external, green for internal). Can
+  be disabled with class options \code{hidelinks}; see \cref{sec:hyperef}.
+\item New fields for \BibTeX, as listed in \cref{sec:bib}.
+\item  Support for supplemental PDF files, including
+  cross references between the supplement and the main document; see
+  \cref{sec:supplement}. 
+\item New command for setting headers: \code{\headings}; see
+  \cref{sec:front}. 
+\item Updated theorem-like and proof environments using
+  \texttt{ntheorem} package; see \cref{sec:thm}.
+\item Fixed handling of appendices to adhere to SIAM style guidelines;
+  see \cref{sec:sec}.
+\item Added \code{review} class option; see \cref{sec:class-options}.
 \item Includes the following packages by default:
   \texttt{algorithm}
   \texttt{amsmath}, 
@@ -1085,6 +1094,21 @@ the SIAM \LaTeX\@ and \BibTeX\ classes:
 \newpage
 \section{Special modifications}
 
+\subsection{Special macros}
+In past versions, 
+the SIAM \LaTeX\ class defined the following macros:
+\code{\const},
+\code{\diag},
+\code{\grad},
+\code{\Range},
+\code{\rank}, and
+\code{\supp}.
+These are no longer declared; however, they can be redefined using the
+\code{\DeclareMathOperator} command from the \texttt{amsopn}
+package as demonstrated in \cref{ex:dmo}.
+
+
+
 \subsection{Labeling objects according to the section number}
 SIAM recommends numbering  objects sequentially. 
 However,
@@ -1095,8 +1119,9 @@ would indicate the first theorem in Section 5, put the code from
 
 \begin{example}[label=ex:numbering,listing only,%
 listing options={style=siamlatex,{morekeywords=[2]{makeatletter,makeatother}},}]%
-  {Labeling theorems by section}
-\renewcommand{\thetheorem}{\thesection.\arabic{theorem}} \renewcommand{\theequation}{\thesection.\arabic{equation}} 
+{Labeling theorems by section}
+\renewcommand{\thetheorem}{\thesection.\arabic{theorem}}
+\renewcommand{\theequation}{\thesection.\arabic{equation}} 
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 \renewcommand{\thetable}{\thesection.\arabic{table}}
 \renewcommand{\thealgorithm}{\thesection.\arabic{algorithm}}
@@ -1110,6 +1135,51 @@ create such an appendix: \code{\appendixnotitle}. This is equivalent
 to a \code{\section} command in the appendix except that it has no
 arguments.
 
+\subsection{Changing the font of algorithm titles}
+\label{sec:chang-font-algor}
+
+Currently, the algorithm title font matches the figure and table title
+fonts. To make the algorithm title font appear as small caps, insert
+the code in \cref{ex:algfont} into the preamble.
+
+\begin{example}[label=ex:algfont,listing only,%
+listing options={style=siamlatex}]{Changing algorithm title font}
+\makeatletter
+\renewcommand{\ALG@name}{\sc Algorithm}
+\makeatother
+\end{example}
+
+\subsection{Changing title of proof}
+To change the title of a proof to, say, ``Proof of main theorem,''
+define a new proof environment by inserting the code in
+\cref{ex:newproof} into the document preamble.
+
+\begin{example}[label=ex:newproof,listing only,%
+listing options={style=siamlatex}]{Altered proof environment}
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\normalfont\itshape}
+\theorembodyfont{\normalfont}
+\theoremseparator{.}
+\theoremsymbol{\proofbox}
+\newtheorem{proofofmaintheorem}{Proof of main theorem}
+\end{example}
+
+\newpage
+\subsection{Special instructions for PDF bookmarks}
+\label{sec:spec-instr-pdf}
+
+Section titles are automatically inserted into the table of contents
+and therefore used as PDF bookmarks. Some special symbols may not
+correctly render. In that case, you can define alternate text as shown
+in \cref{ex:specialtitle}, using the \code{\texorpdfstring} command
+provided by the \texttt{hypertex} package. In this example, the
+default bookmark would be ``Discussion of Z = X Y''; instead, it is
+replaced by ``Discussion of Z = X union Y.''
+
+\begin{example}[label=ex:specialtitle,listing only,%
+listing options={style=siamlatex}]{PDF bookmarks for symbols in section titles}
+\section{Discussion of \texorpdfstring{{\boldmath$Z=X \cup Y$}}{Z = X union Y}}
+\end{example}
 
 
 \bibliographystyle{siamplain}
