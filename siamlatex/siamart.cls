@@ -1362,7 +1362,7 @@ Vol.\ #3, No.\ #4, pp.\ #5
 %% indentations and other features that SIAM likes. Also, adding
 %% macros that can be use to declare additional theorem-like
 %% environments. The \newtheorem calls have to happen /after/ loading
-%% cleverref when using ntheorem and sharing the same numbering.
+%% cleveref when using ntheorem and sharing the same numbering.
 
 % We fix the default style to have the indents that SIAM wants before
 % theorem and proof definitions.
