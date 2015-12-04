@@ -721,7 +721,7 @@ listing options={style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
 \begin{figure}[tbhp]
   \centering
   \begin{tikzpicture}
-    \begin{loglogaxis}[grid=major, title=Convergence Plot,
+    \begin{loglogaxis}[height=2.75in, grid=major
       xlabel={Degrees of Freedom}, ylabel={$L_2$ Error},
       legend entries={$d=2$,$d=3$}]
       \addplot table [x=d2_dof,y=d2_l2_err] {data.dat};
@@ -736,7 +736,7 @@ listing options={style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
 \examplefile[label={ex:pgfplots},%
 before upper={\preamble[\scriptsize]{\bs usepackage\{pgfplots\}}},%
 listing only, listing options={%
-  style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
+  style=siamlatex}]%
 {Example TikZ/PGF for platform-independent graphics.}{tmp_\jobname_tikz.tex}
 
 \input{tmp_\jobname_tikz.tex}
@@ -897,10 +897,8 @@ references.
     {morekeywords=[2]{externaldocument}}}]%
   {Document outline with supplement}
 \documentclass{siamart}
-
 \input{ex_shared}
 \externaldocument{ex_supplement}
-
 \begin{document}
 \maketitle
 % Other front matter: abstract, keywords, subject classifications.
@@ -915,10 +913,8 @@ references.
     {morekeywords=[2]{supplement,siampretitle,externaldocument}}}]%
   {Supplement document outline}
 \documentclass[supplement]{siamart}
-
 \input{ex_shared}
 \externaldocument{ex_article}
-
 \begin{document}
 \maketitle
 % No abstract, keywords, subject classifications.
@@ -970,7 +966,6 @@ Additionally, the \code{article} entry now supports an Article ID,
 To use this, include the following code in your \LaTeX\ source code:
 \code{\bibliographystyle{siamplain}}.
 
-\newpage
 \subsection{DOI}
 
 A digital object identifier (DOI) is a unique alphanumeric string that provides a persistent link to its location on the Internet. The publisher assigns a DOI when your article is published and made available electronically. Using the \code{doi} field in \BibTeX to specify it, as shown for \cite{KoMa14} in \cref{ex:article}; observe the new \code{doi} field which produces a hyperlink in the citation.
@@ -990,7 +985,6 @@ listing options={style=siamlatex,firstline=20,lastline=28,%
 {morekeywords=[2]{url,urldate}}}
 ]{Example with the URL field in \BibTeX}{references.bib}
 
-\newpage
 \subsection{Preprint servers such as arXiv}
 
 More and more manuscripts are available on preprint servers. In fact,
@@ -1016,7 +1010,6 @@ listing options={style=siamlatex,firstline=40,lastline=55,%
 {morekeywords=[2]{eprint,eprintclass,archive,archiveprefix}}}
 ]{Example PubMed reference in \BibTeX}{references.bib}
 
-\newpage
 \subsection{Article ID}
 Some journals use an article ID rather than page numbers. 
 The field \texttt{eid} specifies the article ID. The optional field \texttt{pagetotal} can say the number
@@ -1079,7 +1072,6 @@ the SIAM \LaTeX\@ and \BibTeX\ classes:
   package if the \code{review} class option is enabled.
 \end{itemize}
 
-\newpage
 \section{Special modifications}
 
 \subsection{Special macros}
@@ -1152,7 +1144,6 @@ listing options={style=siamlatex}]{Altered proof environment}
 \newtheorem{proofofmaintheorem}{Proof of main theorem}
 \end{example}
 
-\newpage
 \subsection{Special instructions for PDF bookmarks}
 \label{sec:spec-instr-pdf}
 
