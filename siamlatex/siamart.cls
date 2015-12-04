@@ -1340,20 +1340,20 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \Crefname{figure}{Figure}{Figures}
 
 % Per SIAM Style Manual, don't say equation in front on an equation.
-\crefformat{equation}{#2\textup{(#1)}#3}
-\crefrangeformat{equation}{\textup{(#3#1#4)--(#5#2#6)}}
-\crefmultiformat{equation}{#2\textup{(#1)}#3}{ and #2\textup{(#1)}#3}
-{, #2\textup{(#1)}#3}{, and #2\textup{(#1)}#3}
-\crefrangemultiformat{equation}{\textup{(#3#1#4)--(#5#2#6)}}%
-{ and \textup{(#3#1#4)--(#5#2#6)}}{, \textup{(#3#1#4)--(#5#2#6)}}{, and \textup{(#3#1#4)--(#5#2#6)}}
+\crefformat{equation}{\textup{#2(#1)#3}}
+\crefrangeformat{equation}{\textup{#3(#1)#4--#5(#2)#6}}
+\crefmultiformat{equation}{\textup{#2(#1)#3}}{ and \textup{#2(#1)#3}}
+{, \textup{#2(#1)#3}}{, and \textup{#2(#1)#3}}
+\crefrangemultiformat{equation}{\textup{#3(#1)#4--#5(#2)#6}}%
+{ and \textup{#3(#1)#4--#5(#2)#6}}{, \textup{#3(#1)#4--#5(#2)#6}}{, and \textup{#3(#1)#4--#5(#2)#6}}
 
 % But spell it out at the beginning of a sentence.
 \Crefformat{equation}{#2Equation~\textup{(#1)}#3}
-\Crefrangeformat{equation}{Equations~\textup{(#3#1#4)--(#5#2#6)}}
-\Crefmultiformat{equation}{Equations~\textup{(#2#1#3)}}{ and \textup{(#2#1#3)}}
-{, \textup{(#2#1#3)}}{, and \textup{(#2#1#3)}}
-\Crefrangemultiformat{equation}{Equations~\textup{(#3#1#4)--(#5#2#6)}}%
-{ and \textup{(#3#1#4)--(#5#2#6)}}{, \textup{(#3#1#4)--(#5#2#6)}}{, and \textup{(#3#1#4)--(#5#2#6)}}
+\Crefrangeformat{equation}{Equations~\textup{#3(#1)#4--#5(#2)#6}}
+\Crefmultiformat{equation}{Equations~\textup{#2(#1)#3}}{ and \textup{#2(#1)#3}}
+{, \textup{#2(#1)#3}}{, and \textup{#2(#1)#3}}
+\Crefrangemultiformat{equation}{Equations~\textup{#3(#1)#4--#5(#2)#6}}%
+{ and \textup{#3(#1)#4--#5(#2)#6}}{, \textup{#3(#1)#4--#5(#2)#6}}{, and \textup{#3(#1)#4--#5(#2)#6}}
 
 % Make number non-italic in any environment.
 \crefdefaultlabelformat{#2\textup{#1}#3}
