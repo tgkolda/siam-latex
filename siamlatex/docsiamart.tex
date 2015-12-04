@@ -12,8 +12,8 @@
 %% Used in table and figure examples below
 \usepackage[caption=false]{subfig}
 
-%% Used for TIKZ example, shown in the "Figures" section below.
-\usepackage{tikz}
+%% Used for PgfPlots example, shown in the "Figures" section below.
+\usepackage{pgfplots}
 
 %% Used for creating new theorems, remarks
 \newsiamthm{claim}{Claim}
@@ -28,8 +28,6 @@
 %% For figures
 \usepackage{graphicx,epstopdf}
 
-%% For TikZ
-\usetikzlibrary{arrows,intersections}
 
 %% For referencing line numbers
 \Crefname{ALC@unique}{Line}{Lines}
@@ -338,7 +336,7 @@ lot of typing: \hyperref[thm:mvt]{Theorem~\ref*{thm:mvt}}.
 The \texttt{cleveref} package gets both the name and hyperlink
 automatically using a single macro: \cref{thm:mvt}.
 It also handles multiple references with the same macro, such as
-\cref{thm:mvt,fig:tikz,fig:testfig}.
+\cref{thm:mvt,fig:pgfplots,fig:testfig}.
 \end{example}
 
 %
@@ -709,51 +707,40 @@ listing only, listing options={%
 \newpage
 Another option for figures is a graphics-generator that is platform- and
 format-independent.
-PGF is a TeX macro package for generating  such graphics and works together with the most important TeX backend drivers, including pdftex and dvips. It comes with a user-friedly syntax layer called TikZ.
-More details can be found at \url{http://sourceforge.net/projects/pgf/}, and detailed instructions are available in the manual.
-\Cref{ex:tikz} shows the code to generate \cref{fig:tikz}, which uses TikZ/PGF.
-This example was written by Henri Menke at
-\url{http://texwelt.de/wissen/fragen/4912/skizze-zur-illustration-linearer-regression}.
+PGF is a TeX macro package for generating  such graphics and works together with the most important TeX backend drivers, including pdftex and dvips. 
+The user-friedly syntax layer called TikZ.
+Here we show an example using \texttt{PGFPLOTS}, useful for drawing high-quality 
+plots directly in \LaTeX.
+\Cref{ex:data} and \cref{ex:pgfplots} shows the data and code, respectively, to generate \cref{fig:pgfplots}, adapted from \cite{pgfplots}.
+
+\examplefile[label={ex:data},listing only,
+listing options={style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
+{Example data file}{data.dat}
+
 \begin{tcbverbatimwrite}{tmp_\jobname_tikz.tex}
-\begin{figure}[tbhp]  \centering
-  \begin{tikzpicture}[thick, >=stealth', dot/.style = {draw,fill = white,
-      circle, inner sep = 0pt, minimum size = 4pt}]
-    \coordinate (O) at (0,0);
-    \draw[->] (-0.3,0) -- (8,0) coordinate[label = {below:$x$}] (xmax);
-    \draw[->] (0,-0.3) -- (0,5) coordinate[label = {right:$f(x)$}] (ymax);
-    \path[name path=x] (0.3,0.5) -- (6.7,4.7);
-    \path[name path=y] plot[smooth] coordinates {(-0.3,2) (2,1.5) (4,2.8) (6,5)};
-    \scope[name intersections = {of = x and y, name = i}]
-    \fill[gray!20] (i-1) -- (i-2 |- i-1) -- (i-2) -- cycle;
-    \draw      (0.3,0.5) -- (6.7,4.7) node[pos=0.8, below right] {};
-    \draw[red] plot[smooth] coordinates {(-0.3,2) (2,1.5) (4,2.8) (6,5)};
-    \draw (i-1) node[dot, label = {above:$P$}] (i-1) {} -- node[left]
-    {$f(x_0)$} (i-1 |- O) node[dot, label = {below:$x_0$}] {};
-    \path (i-2) node[dot, label = {above:$Q$}] (i-2) {} -- (i-2 |- i-1)
-    node[dot] (i-12) {};
-    \draw           (i-12) -- (i-12 |- O) node[dot,
-    label = {below:$x_0 + \varepsilon$}] {};
-    \draw[blue, <->] (i-2) -- node[right] {$f(x_0 + \varepsilon) - f(x_0)$}
-    (i-12);
-    \draw[blue, <->] (i-1) -- node[below] {$\varepsilon$} (i-12);
-    \path       (i-1 |- O) -- node[below] {$\varepsilon$} (i-2 |- O);
-    \draw[gray]      (i-2) -- (i-2 -| xmax);
-    \draw[gray, <->] ([xshift = -0.5cm]i-2 -| xmax) -- node[fill = white]
-    {$f(x_0 + \varepsilon)$}  ([xshift = -0.5cm]xmax);
-    \endscope
+\begin{figure}[tbhp]
+  \centering
+  \begin{tikzpicture}
+    \begin{loglogaxis}[grid=major, title=Convergence Plot,
+      xlabel={Degrees of Freedom}, ylabel={$L_2$ Error},
+      legend entries={$d=2$,$d=3$}]
+      \addplot table [x=d2_dof,y=d2_l2_err] {data.dat};
+      \addplot table [x=d3_dof,y=d3_l2_err] {data.dat};
+    \end{loglogaxis}
   \end{tikzpicture}
-  \caption{Example TikZ figure by Henri Menke.}  
-  \label{fig:tikz}
+  \caption{Example \texttt{PGFPLOTS} figure.}
+  \label{fig:pgfplots}
 \end{figure}
 \end{tcbverbatimwrite}
 
-\examplefile[label={ex:tikz},%
-before upper={\preamble[\scriptsize]{\bs usetikzlibrary\{arrows,intersections\}}},%
+\examplefile[label={ex:pgfplots},%
+before upper={\preamble[\scriptsize]{\bs usepackage\{pgfplots\}}},%
 listing only, listing options={%
   style=siamlatex,basicstyle=\ttfamily\scriptsize}]%
 {Example TikZ/PGF for platform-independent graphics.}{tmp_\jobname_tikz.tex}
 
 \input{tmp_\jobname_tikz.tex}
+
 
 \newpage  
 \section{Algorithms}
