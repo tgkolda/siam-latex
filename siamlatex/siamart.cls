@@ -908,14 +908,14 @@ Vol.\ #3, No.\ #4, pp.\ #5
 \newcommand\append[2][?]{%
   \refstepcounter{section}%
   {\par\addvspace{\@sectionspace} 
-    \reset@font\normalsize\bfseries\appendixname\ \thesection. #2. }%
+    \reset@font\normalsize\bfseries\appendixname\ \thesection. #2\@mypunct{} }%
   \addcontentsline{toc}{section}{\appendixname~\thesection. #2}%
   \gobblepars
 }
 
 \newcommand\sappend[1]{%
   {\par\addvspace{\@sectionspace} 
-    \reset@font\normalsize\bfseries#1. }%
+    \reset@font\normalsize\bfseries#1\@mypunct{} }%
   \addcontentsline{toc}{section}{#1}%
   \gobblepars
 }
